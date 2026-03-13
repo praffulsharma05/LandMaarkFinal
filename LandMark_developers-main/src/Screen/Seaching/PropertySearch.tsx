@@ -11,6 +11,7 @@ const PropertySearch = () => {
   const [properties, setProperties] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [filterOptionsApiData, setFilterOptionsApiData] = useState({});
 
   const [filters, setFilters] = useState({
     city: "",
@@ -27,10 +28,10 @@ const PropertySearch = () => {
 
   const filterOptions = {
     cities: [],
-    bhk: [1, 2, 3, 4, 5],
-    property_types: ["Apartment", "Villa", "House"],
-    construction_status: ["Ready to Move", "Under Construction"],
-    construction_types: ["New", "Resale"]
+    bhk: [-1, 2, 3, 4, 5],
+    property_types: ["Faltu", "Villa", "House"],
+    construction_status: ["Faltu to Move", "Under Construction"],
+    construction_types: ["Faltu", "Resale"]
   };
 
   const buildQueryString = useCallback(() => {
@@ -90,9 +91,21 @@ const PropertySearch = () => {
     fetchProperties();
   };
 
+  const fetchOptions = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/options`); 
+      const data = await res.json();
+      console.log("Fetched filter options:", data);
+      setFilterOptionsApiData(data);
+    } catch (error) {
+      console.error("Error fetching options:", error);
+    }
+  };
+
   useEffect(() => {
     console.log("Initial fetch of properties from API");
     fetchProperties();
+    fetchOptions();
   }, []);
 
   console.log("Rendering PropertySearch with filters:", properties);
@@ -104,7 +117,7 @@ const PropertySearch = () => {
 
       <PropertyFilters
         filters={filters}
-        filterOptions={filterOptions}
+        filterOptions={filterOptionsApiData}
         priceError={priceError}
         handleFilterChange={handleFilterChange}
         handleSearch={handleSearch}

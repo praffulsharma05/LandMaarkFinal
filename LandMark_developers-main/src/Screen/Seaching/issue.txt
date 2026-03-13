@@ -1,0 +1,5 @@
+we are getting 5 bhk values but database 6. it means we are getting some mock data. it means our options api is not working.
+when we checked, it is not called.
+1. find where it is called?
+2. log its response.
+3. if it is not called? then call in useEffect

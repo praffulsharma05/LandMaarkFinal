@@ -1,11 +1,11 @@
 import React from "react";
 
 interface FilterOptions {
-  cities: string[];
-  bhk: number[];
-  property_types: string[];
-  construction_status: string[];
-  construction_types: string[];
+  cities?: string[];
+  bhk?: number[];
+  property_types?: string[];
+  construction_status?: string[];
+  construction_types?: string[];
 }
 
 interface Filters {
@@ -70,8 +70,8 @@ const PropertyFilters: React.FC<Props> = ({
               onChange={(e) => handleFilterChange("bhk", e.target.value)}
             >
               <option value="">All</option>
-              {filterOptions.bhk.map((b) => (
-                <option key={b} value={b}>{b} BHK</option>
+              {filterOptions?.bhk?.map((b) => (
+                <option key={b.bhk} value={b.bhk}>{b.bhk} BHK</option>
               ))}
             </select>
           </div>
@@ -83,8 +83,8 @@ const PropertyFilters: React.FC<Props> = ({
               onChange={(e) => handleFilterChange("property_type", e.target.value)}
             >
               <option value="">All</option>
-              {filterOptions.property_types.map((t) => (
-                <option key={t} value={t}>{t}</option>
+              {filterOptions?.property_type?.map((t) => (
+                <option key={t.name} value={t.name}>{t.name}</option>
               ))}
             </select>
           </div>
@@ -98,8 +98,8 @@ const PropertyFilters: React.FC<Props> = ({
               }
             >
               <option value="">All</option>
-              {filterOptions.construction_status.map((s) => (
-                <option key={s} value={s}>{s}</option>
+              {filterOptions?.construction_status?.map((s) => (
+                <option key={s.name} value={s.name}>{s.name}</option>
               ))}
             </select>
           </div>
