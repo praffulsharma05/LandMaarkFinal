@@ -55,7 +55,7 @@ export const propertyApiData = {
         "created_at": "2026-03-11T11:49:33.000Z", "latitude": null, "longitude": null,
         "image": null
     }, {
-        "property_id": 23,
+        "property_id": 232,
         "title": "1BHK Studio Apartment",
         "description": "Compact studio ideal for singles",
         "location": "Mumbai",
