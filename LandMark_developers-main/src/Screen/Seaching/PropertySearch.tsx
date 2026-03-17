@@ -4,11 +4,12 @@ import { useState, useEffect, useCallback } from "react";
 import PropertyFilters from "./PropertyFilters";
 import PropertyCards from "./PropertyCards";
 import "./Property.css";
+import { useLocation } from "react-router-dom";
 
 const PropertySearch = () => {
 
   const API_BASE_URL = "http://localhost:5000/api";
-
+  const { state } = useLocation();
   const [properties, setProperties] = useState<any[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -117,7 +118,7 @@ const PropertySearch = () => {
     setPriceError("");
 
     const delayDebounce = setTimeout(() => {
-      fetchProperties();
+      //fetchProperties();
     }, 400);
 
     return () => clearTimeout(delayDebounce);
@@ -126,6 +127,8 @@ const PropertySearch = () => {
 
   useEffect(() => {
     fetchOptions();
+    console.log("AI Search Data in PropertySearch:", state.aiResults); 
+    setProperties(state.aiResults || []); // Load AI search results if available
   }, []);
 
   return (
@@ -158,4 +161,4 @@ const PropertySearch = () => {
 
 export default PropertySearch;
 
-  
+ 

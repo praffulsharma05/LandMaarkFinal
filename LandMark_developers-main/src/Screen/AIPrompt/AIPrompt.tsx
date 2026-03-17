@@ -110,8 +110,8 @@ const AIPrompt = () => {
         `http://localhost:5000/api/propSearch/ai?query=${query}`
       );
 
-      const result = await res.json();
-
+      const result = (await res.json()).data;
+      console.log("Raw AI API Response:", result);
       // ✅ Normalize API response for PropertyCards
       const formattedData = (Array.isArray(result) ? result : [result]).map(
         (item: any, index: number) => ({
