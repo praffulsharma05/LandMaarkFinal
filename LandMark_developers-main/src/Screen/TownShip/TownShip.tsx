@@ -52,31 +52,14 @@ const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
     { key: "services", label: "Services" },
     { key: "news", label: "News & Guide" },
   ]; return (
-    <div className="">      
   
-  <div className="w-full">
-  {/* NAVBAR - Fixed at top */}
- 
-
-  {/* HERO SECTION - Below navbar */}
+  
    
-
-  
-</div>
-<div className="">
-  {/* NAVBAR - Fixed at top */}
- 
 
    
 
-  {/* STATS SECTION - Full width */}
-  
-</div>
-  {/* STATS */}
-   
 
-  {/* CTA */}
-     <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen min-h-screen bg-gray-100 mt-200 flex overflow-x-hidden">
+     <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen min-h-screen bg-gray-100 -mt-10 flex overflow-x-hidden">
       {/* LEFT CITY GRID */}
   
   
@@ -85,7 +68,7 @@ const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
           selectedCity ? "lg:w-[65%]" : "w-full"
         }`}
       >
-        <h1 className="text-3xl font-bold mb-8">Our Townships</h1>
+        <h1 className="text-3xl font-bold mt-30 mb-8">Our Townships</h1>
 
         <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(260px,1fr))]">
           {townshipData.map((item) => (
@@ -114,7 +97,7 @@ const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
         role="dialog"
         aria-modal="true"
         className={`fixed lg:relative right-0 top-0
-        h-150
+        h-160
         w-full sm:w-[50%] md:w-[50%] lg:w-[65%]
         bg-white shadow-2xl
         transition-transform duration-300
@@ -129,7 +112,7 @@ const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
               ref={closeButtonRef}
               aria-label="Close drawer"
               onClick={closeDrawer}
-              className="absolute top-4 right-4 z-50
+              className="absolute top-30 right-4 z-50
               bg-white shadow-md rounded-full
               w-10 h-10 flex items-center justify-center
               text-xl hover:bg-gray-100"
@@ -137,7 +120,7 @@ const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
               ✕
             </button>
             {/* CITY TITLE */}
-            <h2 className="text-4xl font-bold mt-6">
+            <h2 className="text-4xl font-bold mt-40">
               {selectedCity.city} Projects
             </h2>
             <p className="mt-3 text-gray-600">{selectedCity.description}</p>
@@ -176,7 +159,7 @@ const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
     </div>
    
 
-    </div>
+    
   );
 };
 

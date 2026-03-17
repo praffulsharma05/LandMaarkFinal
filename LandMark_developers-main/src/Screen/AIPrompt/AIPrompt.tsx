@@ -1,45 +1,35 @@
-// import React from "react";
-// import "./AIPrompt.css";
-
-// const AIPrompt = ({ show = true }) => {
-//   if (!show) return null;
-
-//   return (
-//     <div className="ai-floating-bar">
-//       <span className="sparkle">✨</span>
-//       <span className="sparkle">✦</span>
-
-//       <input
-//         className="ai-input"
-//         type="text"
-//         placeholder="i want to buy 2bhk in ajmer for around 1 crore"
-//       />
-//     </div>
-//   );
-// };
-
-// export default AIPrompt;
-
+ 
 import React from "react";
 import "./AIPrompt.css";
 
+
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  console.log("property");
+};
 const AIPrompt = ({ show = true }) => {
   if (!show) return null;
-
+ 
   return (
     <div className="ai-floating-bar">
-      <span className="sparkle">✦</span>
+      <span className="sparkle" >✦</span>
 
       <input
         className="ai-input"
-        type="text"
+        type="text" id="postList"
         placeholder="I want to buy 2bhk in ajmer for around 1 crore"
       />
 
-      <button className="generate-btn">
-        <span className="btn-icon">✦</span>
+      <button className="generate-btn"    onClick={() =>
+              document
+                .getElementById("properties")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }>
+        <span className="btn-icon" >✦</span>
         Generate
       </button>
+
+      
     </div>
   );
 };

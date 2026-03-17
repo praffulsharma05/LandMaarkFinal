@@ -18,7 +18,7 @@ export const Section9Data: Section9Type[] = [
     image: "https://images.unsplash.com/photo-1580674285054-bed31e145f59",
     title: "Zero Taxes",
     description:
-      "The UAE offers zero income, capital gains, and wealth tax, maximising returns for investors.",
+      "Investors benefit from a tax-friendly environment with no income, capital gains, or wealth taxes, allowing for greater financial growth and returns.",
   },
   {
     id: 3,
@@ -32,34 +32,34 @@ export const Section9Data: Section9Type[] = [
     image: "https://images.unsplash.com/photo-1588072432836-e10032774350",
     title: "World Class Education",
     description:
-      "Dubai offers top-tier schools and universities with globally recognized curricula.",
+      "Residents benefit from access to top-tier schools and universities offering globally recognized curricula.",
   },
   {
     id: 5,
     image: "https://propertyadviser.in/assets/front/images/real-estate-news/s1/entertainment-room-design-tips-11-s1.jpg",
     title: "Entertainment Hub",
     description:
-      "From iconic landmarks to theme parks, Dubai offers world-class entertainment experiences.",
+      "From iconic landmarks to exciting theme parks, the region offers world-class entertainment experiences.",
   },
   {
     id: 6,
     image: "https://images.unsplash.com/photo-1621905251918-48416bd8575a",
     title: "UAE Golden Visa",
     description:
-      "Real estate investments in Dubai can qualify buyers for long-term residency visas.",
+      "Real estate investments can provide opportunities for long-term residency benefits for qualified buyers.",
   },
   {
     id: 7,
     image: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91",
     title: "Communal Safety",
     description:
-      "The UAE ranks among the world's safest countries, ensuring peace of mind for families.",
+      "The region is known for its strong safety standards, providing peace of mind for families and residents.",
   },
   {
     id: 8,
     image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
     title: "Touristic Appeal",
     description:
-      "Dubai’s iconic landmarks, luxury lifestyle, and beaches attract millions yearly.",
+      " Iconic landmarks, a luxurious lifestyle, and beautiful beaches attract millions of visitors every year.",
   },
 ];

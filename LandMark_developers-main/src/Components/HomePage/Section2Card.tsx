@@ -16,8 +16,7 @@ const Section3Card: React.FC<Section3Item> = ({ image, title, price }) => {
         {title}
       </h3>
 
-      <p className="mt-3 text-lg text-teal-900">{price}</p>
-    </div>
+     </div>
   );
 };
 

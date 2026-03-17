@@ -4,7 +4,7 @@ import React from "react";
 import { Property } from "../../store/Properties/propertiesData";
 import "./PropertyCard.css";
 import { Heart } from "lucide-react";
-import {assets}  from "../../assets/assets";
+import { assets } from "../../assets/asset";
 interface Props {
   property: Property;
   selected: boolean;

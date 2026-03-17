@@ -28,7 +28,7 @@ const TownshipCard: React.FC<TownshipCardProps> = ({ item, onSelect }) => {
         <p className="text-sm text-gray-500 mt-1">
           {item.properties.length} Properties
         </p>
-        <p>{item.description}</p>
+        <p>{item.description}</p> 
       </div>
     </div>
   );

@@ -1,21 +1,4 @@
-// components/HomePage/Section3Card.tsx
-
-// import React from "react";
-// import { Section4CardItem } from "../../store/HomePage/section4Card";
-
-// const Section4Card = ({ icon, value, label }: Section4CardItem) => {
-//   return (
-//     <div className="bg-white rounded-2xl shadow-md flex flex-col items-center justify-center aspect-square p-6 text-center">
-//       <div className="text-5xl mb-6">{icon}</div>
-
-//       <h3 className="text-2xl font-semibold text-teal-900">{value}</h3>
-
-//       <p className="text-gray-600 mt-2">{label}</p>
-//     </div>
-//   );
-// };
-
-// export default Section4Card;
+ 
 import React from "react";
 import { Section4CardItem } from "../../store/HomePage/section4Card";
 
