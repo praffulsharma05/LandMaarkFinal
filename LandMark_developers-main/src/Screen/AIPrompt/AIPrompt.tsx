@@ -1,47 +1,9 @@
  
-// import React, { useState } from "react";
-// import "./AIPrompt.css";
-// import { useNavigate } from "react-router-dom";
-
-
-// const AIPrompt = ({ show = true }) => {
-//   const navigate = useNavigate();
-//   const [query, setQuery] = useState("");
-
-//   if (!show) return null;
-
-//   const handleGenerate = () => {
-//     // navigate with query
-//     navigate(`http://localhost:5000/api/propSearch/ai?query=${encodeURIComponent(query)}`, { state: { query } });
-//   };
- 
- 
-//   return (
-    // <div className="ai-floating-bar">
-    //   <span className="sparkle" >✦</span>
-
-    //   <input
-    //     className="ai-input"
-    //     type="text" id="postList"
-    //     placeholder="I want to buy 2bhk in ajmer for around 1 crore"
-    //   />
-
-    //   <button className="generate-btn"     onClick={handleGenerate}>
-    //     <span className="btn-icon" >✦</span>
-    //     Generate
-    //   </button>
-
-      
-    // </div>
-//   );
-// };
-
-// export default AIPrompt;
- 
 
 // import { useState } from "react";
 // import "./AIPrompt.css";
-// const PropertySearchPage = () => {
+// import { useNavigate } from "react-router-dom";
+// const AIPrompt = () => {
 //   const [query, setQuery] = useState<string>("");
 //   const [data, setData] = useState<any[]>([]);
 //   const [loading, setLoading] = useState<boolean>(false);
@@ -52,7 +14,7 @@
 //       alert("Please enter something");
 //       return;
 //     }
-
+ 
 //     setLoading(true);
 //     setSearched(true);
 
@@ -118,21 +80,21 @@
 //       {!loading && searched && data.length === 0 && (
 //         <p>No results found</p>
 //       )}
+      
 //     </div>
 //   );
 // };
 
-// export default PropertySearchPage;
-
-
-
+// export default AIPrompt;
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./AIPrompt.css";
+import { useNavigate } from "react-router-dom";
 
 const AIPrompt = () => {
   const [query, setQuery] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   const fetchData = async () => {
@@ -141,6 +103,8 @@ const AIPrompt = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
       const res = await fetch(
         `http://localhost:5000/api/propSearch/ai?query=${query}`
@@ -148,7 +112,7 @@ const AIPrompt = () => {
 
       const result = await res.json();
 
-      // 🔥 Normalize API data (VERY IMPORTANT)
+      // ✅ Normalize API response for PropertyCards
       const formattedData = (Array.isArray(result) ? result : [result]).map(
         (item: any, index: number) => ({
           property_id: item.id || index,
@@ -169,26 +133,27 @@ const AIPrompt = () => {
       });
 
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching AI data:", error);
     }
+
+    setLoading(false);
   };
+
   return (
     <div className="ai-floating-bar">
 
-    
-
+ 
       <input
         className="ai-input"
         type="text"
-        placeholder="I want 2bhk in ajmer under 1 crore"
+        placeholder="I want to buy 2bhk in ajmer for around 1 crore"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
 
       <button className="generate-btn" onClick={fetchData}>
-           <span className="btn-icon" >✦</span>
 
-      Search
+        {loading ? "Loading..." : "Search"}
       </button>
 
     </div>
