@@ -8,6 +8,7 @@ import {
   Property,
 } from "../../store/Properties/propertiesData";
 
+
 const Properties = () => {
   const [wishlist, setWishlist] = useState<number[]>([]);
 
