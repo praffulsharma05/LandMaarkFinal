@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./PropertyCards.css";
 interface Property {
   property_id: number;
   title: string;
@@ -35,9 +35,8 @@ const PropertyCards: React.FC<Props> = ({ properties, totalCount }) => {
 
               {property.image ? (
                 <img
-                  src={property.image}
-                  alt={property.title}
-                  className="property-main-image"
+                  src={"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c"}
+                   className="property-main-image"
                 />
               ) : (
                 <div className="no-image-placeholder">No Image</div>
@@ -80,3 +79,5 @@ const PropertyCards: React.FC<Props> = ({ properties, totalCount }) => {
 };
 
 export default PropertyCards;
+
+ 
