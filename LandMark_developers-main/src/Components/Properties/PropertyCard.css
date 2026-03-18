@@ -1,37 +1,18 @@
-.heart-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
+ 
 
-  height: 58px;     /* smaller square */
-  width: 58px;
+ .heart-icon {
+  width: 48px;      
+  height: 48px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: #ffffff;
-  border-radius: 50px;
-  border: 1px solid #e5e5e5;
-
-  cursor: pointer;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-}
-
-/* heart icon */
-.heart-icon {
-  width: 66px;     /* properly centered */
-  height: 66px;
-
-  stroke: #9ca3af; /* gray outline */
+  stroke: #9ca3af;  
   fill: transparent;
 
   transition: all 0.2s ease;
 }
 
-/* selected */
+
 .heart-icon.selected {
   stroke: #ef4444;
   fill: #ef4444;
-  transform: scale(1.9);
-}
+  transform: scale(0.8);
+}   

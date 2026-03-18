@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import PropertyFilters from "./PropertyFilters";
 import PropertyCards from "./PropertyCards";
-import "./Property.css";
+import "./PropertySearch.css";
 import { useLocation } from "react-router-dom";
 
 const PropertySearch = () => {
