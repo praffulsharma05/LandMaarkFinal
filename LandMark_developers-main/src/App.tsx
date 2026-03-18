@@ -9,7 +9,8 @@ import Properties from "./Screen/Properties/Properties";
 import Wishlist from "./Screen/Wishlist/Wishlist";
 import TownShip from "./Screen/TownShip/TownShip";
  import PropertySearch from "./Screen/Seaching/PropertySearch";
- function App() {
+import PropertyDetailPage from "./Screen/PropertyPageDetails/PropertyDetailPage";
+  function App() {
   return (
     <>
       <Navbar />
@@ -21,9 +22,9 @@ import TownShip from "./Screen/TownShip/TownShip";
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/townShip" element={<TownShip />} />
          <Route path="/search" element={<PropertySearch />} />
-
-      </Routes>
-      <Footer />/
+        <Route path="/details"  element={<PropertyDetailPage/>}/>
+       </Routes>
+      <Footer />
     </>
   );
 }

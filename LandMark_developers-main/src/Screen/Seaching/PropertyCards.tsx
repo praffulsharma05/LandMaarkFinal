@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./PropertyCards.css";
 interface Property {
   property_id: number;
@@ -21,6 +22,8 @@ interface Props {
 }
 
 const PropertyCards: React.FC<Props> = ({ properties, totalCount }) => {
+
+ 
   return (
     <div className="results-section">
 

@@ -7,9 +7,11 @@ import {
   propertiesData,
   Property,
 } from "../../store/Properties/propertiesData";
-
-
+import { useNavigate } from "react-router-dom";
+ 
 const Properties = () => {
+  const navigate = useNavigate();
+
   const [wishlist, setWishlist] = useState<number[]>([]);
 
   useEffect(() => {
@@ -19,6 +21,7 @@ const Properties = () => {
     }
   }, []);
 
+
   const toggleWishlist = (id: number) => {
     let updated;
 
@@ -27,10 +30,13 @@ const Properties = () => {
     } else {
       updated = [...wishlist, id];
     }
-
+  
     setWishlist(updated);
     Cookies.set("wishlist", JSON.stringify(updated), { expires: 7 });
   };
+   
+
+
 
   return (
     <div className="mx-auto max-w-7xl px-6 mt-10 py-10" >
@@ -47,6 +53,7 @@ const Properties = () => {
               property={property}
               selected={selected}
               onToggle={toggleWishlist}
+              onClick={() => goToDetails(property)}
             />
           );
         })}
