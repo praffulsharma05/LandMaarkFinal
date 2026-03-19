@@ -7,10 +7,8 @@ import {
   propertiesData,
   Property,
 } from "../../store/Properties/propertiesData";
-import { useNavigate } from "react-router-dom";
  
 const Properties = () => {
-  const navigate = useNavigate();
 
   const [wishlist, setWishlist] = useState<number[]>([]);
 

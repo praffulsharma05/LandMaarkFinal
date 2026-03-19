@@ -211,6 +211,21 @@ export const floorData = [
   { label: "Kitchen", value: "Vitrified Tiles" },
   { label: "Toilets", value: "Anti Skid Ceramic Tiles" },
   { label: "Balcony", value: "Anti skid ceramic tiles" }
+  
+];
+ 
+
+export const  fittingData = [
+  { label: "Toilets", value: "Wash Basin, EWC, Branded CP Fitting" },
+  { label: "Kitchen", value: "Granite platform with stainless steel sink" },
+  { label: "Doors", value: "Decorative Flush Door" }
+];
+
+export const wallData = [
+  { label: "Interior", value: "Acrylic Paint" },
+  { label: "Exterior", value: "Emulsion Paint" },
+  { label: "Kitchen", value: "Ceramic Tiles" },
+  { label: "Toilets", value: "Ceramic Tiles" }
 ];
 
 export const tabs = [
@@ -221,3 +236,4 @@ export const tabs = [
   { id: 'reviews', label: 'Reviews' },
   { id: 'pricing', label: 'Pricing' }
 ];
+

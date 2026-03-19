@@ -5,6 +5,7 @@ import { Property } from "../../store/Properties/propertiesData";
 import "./PropertyCard.css";
 import { Heart } from "lucide-react";
 import { assets } from "../../assets/asset";
+import { useNavigate } from "react-router-dom";
 interface Props {
   property: Property;
   selected: boolean;
@@ -12,8 +13,10 @@ interface Props {
 }
 
 const PropertyCard: React.FC<Props> = ({ property, selected, onToggle }) => {
+   const navigate = useNavigate();
   return (
-    <div className="group overflow-hidden rounded-2xl bg-white shadow hover:shadow-xl transition border">
+    <div className="cursor-pointer group overflow-hidden rounded-2xl bg-white shadow hover:shadow-xl transition border" 
+     >
       <div className="relative h-64 overflow-hidden">
         <img
           src={property.image}
@@ -34,7 +37,8 @@ const PropertyCard: React.FC<Props> = ({ property, selected, onToggle }) => {
 </button>
       </div>
 
-      <div className="p-6">
+      <div className="p-6" 
+       onClick={() => navigate(`/property/${property.id}`)}>
         <div className="flex justify-between mb-2">
           <h3 className="text-xl font-bold">{property.title}</h3>
           <span className="text-primary font-bold">{property.price}</span>

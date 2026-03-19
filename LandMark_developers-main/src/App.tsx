@@ -22,8 +22,8 @@ import PropertyDetailPage from "./Screen/PropertyPageDetails/PropertyDetailPage"
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/townShip" element={<TownShip />} />
          <Route path="/search" element={<PropertySearch />} />
-        <Route path="/details"  element={<PropertyDetailPage/>}/>
-       </Routes>
+    <Route path="/property/:id" element={<PropertyDetailPage />} />
+     </Routes>
       <Footer />
     </>
   );
