@@ -39,7 +39,7 @@ console.log(id);
       <ImageGallery images={propertyData.images} />
 
       {/* Price Card */}
-      <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
+      <div className="bg-white py-10 px-10 mt-10  shadow-sm mb-6">
              
 
         <div className="flex justify-between items-start">
@@ -47,16 +47,13 @@ console.log(id);
             <p className="text-3xl font-bold text-gray-900">
               ₹{propertyData.mainProperty.price.min} L - ₹{propertyData.mainProperty.price.max} L
             </p>
-            <p className="text-gray-600 mt-1">₹{propertyData.mainProperty.price.perSqft}/sq.ft</p>
-            <p className="text-sm text-gray-500 mt-2">EMI starts at ₹{propertyData.mainProperty.price.emi}K</p>
-            <p className="text-xs text-gray-400 mt-1">*Price excludes maintenance, floor rise etc...</p>
+            <p className="text-gray-600 text-left font-bold mt-1">₹{propertyData.mainProperty.price.perSqft}/sq.ft</p>
+            <p className="text-sm text-left text-gray-500 mt-2">EMI starts at ₹{propertyData.mainProperty.price.emi}K</p>
+            <p className="text-xs text-left text-gray-400 mt-1">*Price excludes maintenance, floor rise etc...</p>
           </div>
-<button className="bg-blue-100  px-6 py-2">
-  <span className=" text-blue">Contact Sellers</span>
+<button className="bg-blue-100   px-16 py-20" style={{background:'#03a1fc'}}>
+  <span className=" text-white font-bold ">Contact Sellers</span>
 </button>
-          
-            
-         
         </div>
       </div>
 

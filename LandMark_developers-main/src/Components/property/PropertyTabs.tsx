@@ -9,29 +9,44 @@ const PropertyTabs = ({ activeTab, setActiveTab, tabs, propertyData }) => {
       case 'overview':
         return (
           <div>
-            <h2 className="text-xl font-semibold mb-4">Property Overview</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <Bed className="w-5 h-5 text-gray-600 mb-2" />
-                <p className="text-sm text-gray-500">Bedrooms</p>
-                <p className="font-semibold">{propertyData.featuredProperty.bedrooms} BHK</p>
-              </div>
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <Bath className="w-5 h-5 text-gray-600 mb-2" />
-                <p className="text-sm text-gray-500">Bathrooms</p>
-                <p className="font-semibold">{propertyData.featuredProperty.bathrooms}</p>
-              </div>
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <Square className="w-5 h-5 text-gray-600 mb-2" />
-                <p className="text-sm text-gray-500">Area</p>
-                <p className="font-semibold">{propertyData.featuredProperty.area} sq.ft</p>
-              </div>
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <Calendar className="w-5 h-5 text-gray-600 mb-2" />
-                <p className="text-sm text-gray-500">Possession</p>
-                <p className="font-semibold">{propertyData.mainProperty.possession}</p>
-              </div>
-            </div>
+<h2 className="text-xl text-left font-semibold mb-6">
+  <span className="border-b-2 border-gray-300 text-left pb-1 inline-block w-1/4">
+    Property Overview
+  </span>
+</h2>           <div className="grid grid-cols-2 mt-10 md:grid-cols-4 gap-4 mb-16">
+  <div className="p-4 bg-gray-50 rounded-lg">
+    <div className="flex items-center gap-2 mb-2">
+      <Bed className="w-5 h-5 text-gray-600" />
+      <p className="text-sm text-gray-500">Bedrooms</p>
+    </div>
+    <p className="font-semibold">{propertyData.featuredProperty.bedrooms} BHK</p>
+  </div>
+  
+  <div className="p-4 bg-gray-50 rounded-lg">
+    <div className="flex items-center gap-2 mb-2">
+      <Bath className="w-5 h-5 text-gray-600" />
+      <p className="text-sm text-gray-500">Bathrooms</p>
+    </div>
+    <p className="font-semibold">{propertyData.featuredProperty.bathrooms}</p>
+  </div>
+  
+  <div className="p-4 bg-gray-50 rounded-lg">
+    <div className="flex items-center gap-2 mb-2">
+      <Square className="w-5 h-5 text-gray-600" />
+      <p className="text-sm text-gray-500">Area</p>
+    </div>
+    <p className="font-semibold">{propertyData.featuredProperty.area} sq.ft</p>
+  </div>
+  
+  <div className="p-4 bg-gray-50 rounded-lg">
+    <div className="flex items-center gap-2 mb-2">
+      <Calendar className="w-5 h-5 text-gray-600" />
+      <p className="text-sm text-gray-500">Possession</p>
+    </div>
+    <p className="font-semibold">{propertyData.mainProperty.possession}</p>
+  </div>
+ 
+</div>
             
             <div className="space-y-4">
               <p className="text-gray-700">
@@ -42,11 +57,15 @@ const PropertyTabs = ({ activeTab, setActiveTab, tabs, propertyData }) => {
                 This property in Jaipur is on floor {propertyData.featuredProperty.floor}. 
                 The total number of floors in this Flat is {propertyData.featuredProperty.totalFloors}.
               </p>
+          
             </div>
 
             <div className="mt-6 border-t pt-6">
-              <h3 className="font-semibold mb-3">Additional Details</h3>
-              <div className="grid grid-cols-2 gap-4">
+<h2 className="text-xl text-left font-semibold mb-6">
+  <span className="border-b-2 border-gray-300 text-left pb-1 inline-block w-1/4">
+ Additional Details
+  </span>
+</h2>                   <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-gray-500">Parking</p>
                   <p className="font-medium">{propertyData.featuredProperty.parking}</p>
