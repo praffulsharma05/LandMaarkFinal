@@ -17,12 +17,12 @@ const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { name: "HOME", path: "/" },
+    { name: "Home", path: "/" },
      
     { name: "Properties", path: "/Properties" },
     { name: "Wishlist", path: "/Wishlist" },
-    { name: "TownShip", path: "/Township" },
-    { name: "ABOUT", path: "/About" },
+    { name: "Township", path: "/Township" },
+    { name: "/About", path: "/About" },
     { name: "CONTACT", path: "/contactUs" },
   ];
 
@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
         <div className="max-w-8xl mx-auto px-6 flex items-center justify-between">
           
 
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center  gap-2">
             <img
             src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down,q=100/YNqMEWZ1PXT9OR5G/untitled-removebg-preview---edited-ad0zeWFJjhv7eqm2.png"
               alt="Real Estate"

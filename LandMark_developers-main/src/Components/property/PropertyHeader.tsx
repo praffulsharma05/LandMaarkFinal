@@ -5,8 +5,8 @@ const PropertyHeader = ({ property }) => {
   return (
     <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
       <div>
-        <h1 className="text-2xl font-semibold">{property.name}</h1>
-        <p className="text-blue-600 text-sm mt-1">By {property.builder}</p>
+        <h2 className="text-3xl text-left">{property.name}</h2>
+        <p className="text-blue-600text-3xl text-left text-sm mt-1">By {property.builder}</p>
         <p className="text-gray-600 text-sm mt-1 flex items-start gap-1">
           <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
           <span>{property.location}</span>

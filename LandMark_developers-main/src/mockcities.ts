@@ -1,0 +1,3 @@
+export const Cities =[{"city_id":2,"name":"Agra","state":"Uttar Pradesh","description":"Tajmahal visting place",
+    "image":"1773817421005-Screenshot (2).png"},
+    {"city_id":3,"name":"Jaunpur","state":"Uttar Pradesh","description":"Good city","image":null},{"city_id":4,"name":"Lucknow","state":"Uttar Pradesh","description":"Nawabo ka sahar","image":null},{"city_id":1,"name":"Varanasi","state":"Uttar Pradesh","description":"Clean and Religious place","image":"1773817288684-Screenshot (1).png"}]
