@@ -65,7 +65,7 @@ const FloorPlansPricing = ({ pricingCards, floorPlans }) => {
             </div>
 
             {/* Image */}
-            <div className="relative bg-gray-100 rounded-xl h-100 overflow-hidden mb-4">
+            <div className="relative bg-gray-100   h-100 overflow-hidden mb-4">
               <img
                 src="https://housing-images.n7net.in/012c1500/b83a3bea6784b96589c151345d4ed44e/v0/fs.jpeg"
                 alt="plan"

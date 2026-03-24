@@ -1,4 +1,5 @@
 import React from 'react';
+import './PropertTab.css'
 import {
   Bed, Bath, Square, Calendar, Star, Check, X, TrendingDown
 } from 'lucide-react';
@@ -325,10 +326,10 @@ const PropertyTabs = ({ activeTab, setActiveTab, tabs, propertyData }) => {
   };
 
   return (
-    <div>
+    <div >
       {/* Tabs Navigation */}
-      <div className="border-b border-gray-200 mb-6 overflow-x-auto">
-        <nav className="flex space-x-8">
+<div className="border-b border-gray-200 mb-6 overflow-x-auto no-scrollbar">
+          <nav className="flex space-x-8">
           {tabs.map(tab => (
             <button
               key={tab.id}

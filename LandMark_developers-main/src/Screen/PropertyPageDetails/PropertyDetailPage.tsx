@@ -1,5 +1,7 @@
 
  import React, { useState } from 'react';
+ import { Info } from "lucide-react";
+
 import {
   propertyData,
   tabs,
@@ -39,23 +41,48 @@ console.log(id);
       <ImageGallery images={propertyData.images} />
 
       {/* Price Card */}
-      <div className="bg-white py-10 px-10 mt-10  shadow-sm mb-6">
-             
+       <div className="bg-white py-6 px-8 mt-0 shadow-sm mb-6">
+  <div className="grid grid-cols-4 text-center divide-x divide-gray-200">
 
-        <div className="flex justify-between items-start">
-          <div>
-            <p className="text-3xl font-bold text-gray-900">
-              ₹{propertyData.mainProperty.price.min} L - ₹{propertyData.mainProperty.price.max} L
-            </p>
-            <p className="text-gray-600 text-left font-bold mt-1">₹{propertyData.mainProperty.price.perSqft}/sq.ft</p>
-            <p className="text-sm text-left text-gray-500 mt-2">EMI starts at ₹{propertyData.mainProperty.price.emi}K</p>
-            <p className="text-xs text-left text-gray-400 mt-1">*Price excludes maintenance, floor rise etc...</p>
-          </div>
-<button className="bg-blue-100   px-16 py-20" style={{background:'#03a1fc'}}>
-  <span className=" text-white font-bold ">Contact Sellers</span>
-</button>
-        </div>
-      </div>
+    {/* Configuration */}
+    <div>
+      <p className="text-lg font-semibold text-gray-900">
+        {propertyData.mainProperty.rating} BHK Apartment
+      </p>
+      <p className="text-gray-500 text-sm mt-1">Configuration</p>
+    </div>
+
+    {/* Possession */}
+    <div>
+      <p className="text-lg font-semibold text-gray-900">
+        {propertyData.mainProperty.possession}
+      </p>
+      <p className="text-gray-500 text-sm mt-1">Possession Starts</p>
+    </div>
+
+    {/* Avg Price */}
+    <div>
+      <p className="text-lg font-semibold text-gray-900">
+        ₹{propertyData.mainProperty.price.perSqft}/sq.ft
+      </p>
+      <p className="text-gray-500 text-sm mt-1">Avg. Price</p>
+    </div>
+
+    {/* Sizes */}
+    <div>
+      <p className="text-lg font-semibold text-gray-900">
+        {propertyData.mainProperty.price.max} - {propertyData.mainProperty.price.min} sq.ft
+      </p>
+    <p className="text-gray-500 text-sm mt-1 flex items-center justify-center gap-1">
+  <span>(Super Built-up Area</span>
+  <Info size={14} className="text-blue-600" />
+  <span>)</span>
+</p>
+      
+    </div>
+
+  </div>
+</div>
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
