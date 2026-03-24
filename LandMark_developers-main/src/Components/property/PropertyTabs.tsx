@@ -1,111 +1,102 @@
+ 
 import React from 'react';
-import './PropertTab.css'
-import {
-  Bed, Bath, Square, Calendar, Star, Check, X, TrendingDown
+import { 
+  Bed, Bath, Square, Calendar, Star, Check, X, TrendingDown, 
+  MapPin, Building2, Home, Ruler, Car, Trees, Wifi, Dumbbell,
+  Waves, Shield, Zap, ArrowUpDown, ParkingCircle
 } from 'lucide-react';
+import { CityProperty } from '../../services/services';
 
-const PropertyTabs = ({ activeTab, setActiveTab, tabs, propertyData }) => {
+interface PropertyTabsProps {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  tabs: Array<{ id: string; label: string }>;
+  property: CityProperty;
+  pricePerSqft: number;
+}
+
+const PropertyTabs: React.FC<PropertyTabsProps> = ({ 
+  activeTab, 
+  setActiveTab, 
+  tabs, 
+  property,
+  pricePerSqft 
+}) => {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'overview':
         return (
           <div>
-<h2 className="text-xl text-left font-semibold mb-6">
-  <span className="border-b-2 border-gray-300 text-left pb-1 inline-block w-1/4">
-    Property Overview
-  </span>
-</h2>           <div className="grid grid-cols-2 mt-10 md:grid-cols-4 gap-4 mb-16">
-  <div className="p-4 bg-gray-50 rounded-lg">
-    <div className="flex items-center gap-2 mb-2">
-      <Bed className="w-5 h-5 text-gray-600" />
-      <p className="text-sm text-gray-500">Bedrooms</p>
-    </div>
-    <p className="font-semibold">{propertyData.featuredProperty.bedrooms} BHK</p>
-  </div>
-  
-  <div className="p-4 bg-gray-50 rounded-lg">
-    <div className="flex items-center gap-2 mb-2">
-      <Bath className="w-5 h-5 text-gray-600" />
-      <p className="text-sm text-gray-500">Bathrooms</p>
-    </div>
-    <p className="font-semibold">{propertyData.featuredProperty.bathrooms}</p>
-  </div>
-  
-  <div className="p-4 bg-gray-50 rounded-lg">
-    <div className="flex items-center gap-2 mb-2">
-      <Square className="w-5 h-5 text-gray-600" />
-      <p className="text-sm text-gray-500">Area</p>
-    </div>
-    <p className="font-semibold">{propertyData.featuredProperty.area} sq.ft</p>
-  </div>
-  
-  <div className="p-4 bg-gray-50 rounded-lg">
-    <div className="flex items-center gap-2 mb-2">
-      <Calendar className="w-5 h-5 text-gray-600" />
-      <p className="text-sm text-gray-500">Possession</p>
-    </div>
-    <p className="font-semibold">{propertyData.mainProperty.possession}</p>
-  </div>
- 
-</div>
+            <h2 className="text-xl text-left font-semibold mb-6">
+              <span className="border-b-2 border-gray-300 text-left pb-1 inline-block w-1/4">
+                Property Overview
+              </span>
+            </h2>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Bed className="w-5 h-5 text-gray-600" />
+                  <p className="text-sm text-gray-500">Bedrooms</p>
+                </div>
+                <p className="font-semibold">{property.bhk} BHK</p>
+              </div>
+              
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Bath className="w-5 h-5 text-gray-600" />
+                  <p className="text-sm text-gray-500">Bathrooms</p>
+                </div>
+                <p className="font-semibold">{property.bhk}</p>
+              </div>
+              
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Square className="w-5 h-5 text-gray-600" />
+                  <p className="text-sm text-gray-500">Area</p>
+                </div>
+                <p className="font-semibold">{property.area_sqft?.toLocaleString()} sq.ft</p>
+              </div>
+              
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Calendar className="w-5 h-5 text-gray-600" />
+                  <p className="text-sm text-gray-500">Possession</p>
+                </div>
+                <p className="font-semibold">{property.construction_status || 'Ready to Move'}</p>
+              </div>
+            </div>
             
             <div className="space-y-4">
-              <p className="text-gray-700">
-                1 BHK Flat for sale in Jaipur. This property is in Jagatpura, which is a coveted investment location. 
-                This statefully designed 1 BHK unit is among Jaipur's best properties.
-              </p>
-              <p className="text-gray-700">
-                This property in Jaipur is on floor {propertyData.featuredProperty.floor}. 
-                The total number of floors in this Flat is {propertyData.featuredProperty.totalFloors}.
-              </p>
-          
+              <p className="text-gray-700">{property.description}</p>
             </div>
 
             <div className="mt-6 border-t pt-6">
-<h2 className="text-xl text-left font-semibold mb-6">
-  <span className="border-b-2 border-gray-300 text-left pb-1 inline-block w-1/4">
- Additional Details
-  </span>
-</h2>                   <div className="grid grid-cols-2 gap-4">
+              <h2 className="text-xl text-left font-semibold mb-6">
+                <span className="border-b-2 border-gray-300 text-left pb-1 inline-block w-1/4">
+                  Additional Details
+                </span>
+              </h2>
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-gray-500">Parking</p>
-                  <p className="font-medium">{propertyData.featuredProperty.parking}</p>
+                  <p className="font-medium">
+                    {property.amenities.some(a => a.amenity_name === 'Parking') ? 'Available' : 'Not Available'}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Balcony</p>
-                  <p className="font-medium">{propertyData.featuredProperty.balcony}</p>
+                  <p className="font-medium">{property.specifications?.Balcony || 'Not Specified'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Added</p>
-                  <p className="font-medium">{propertyData.featuredProperty.added}</p>
+                  <p className="text-sm text-gray-500">Property Type</p>
+                  <p className="font-medium">{property.propertyType}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Brokerage</p>
-                  <p className="font-medium text-green-600">No Charge</p>
+                  <p className="text-sm text-gray-500">Verified</p>
+                  <p className="font-medium text-green-600">{property.verified ? 'Yes' : 'No'}</p>
                 </div>
               </div>
-            </div>
-          </div>
-        );
-
-      case 'floorplans':
-        return (
-          <div>
-            <h2 className="text-xl font-semibold mb-6">Floor Plans & Pricing</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {propertyData.floorPlans.map((plan, idx) => (
-                <div key={idx} className="border rounded-lg overflow-hidden hover:shadow-lg transition">
-                  <img src={plan.image} alt={plan.type} className="w-full h-40 object-cover" />
-                  <div className="p-4">
-                    <h3 className="font-semibold text-lg">{plan.type}</h3>
-                    <p className="text-blue-600 font-bold mt-2">{plan.price}</p>
-                    <p className="text-sm text-gray-600">{plan.area} sq.ft</p>
-                    <button className="w-full mt-4 bg-blue-50 text-blue-600 py-2 rounded-lg hover:bg-blue-100 transition">
-                      View Details
-                    </button>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         );
@@ -115,10 +106,10 @@ const PropertyTabs = ({ activeTab, setActiveTab, tabs, propertyData }) => {
           <div>
             <h2 className="text-xl font-semibold mb-6">Amenities</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {propertyData.amenities.map((amenity, idx) => (
+              {property.amenities.map((amenity, idx) => (
                 <div key={idx} className="flex items-center p-3 bg-gray-50 rounded-lg">
-                  <span className="text-2xl mr-3">{amenity.icon}</span>
-                  <span className="font-medium">{amenity.name}</span>
+                  {getAmenityIconComponent(amenity.amenity_name)}
+                  <span className="font-medium ml-3">{amenity.amenity_name}</span>
                 </div>
               ))}
             </div>
@@ -135,27 +126,43 @@ const PropertyTabs = ({ activeTab, setActiveTab, tabs, propertyData }) => {
         return (
           <div>
             <div className="flex justify-between items-start mb-4">
-              <h2 className="text-xl font-semibold">Jagatpura Locality</h2>
+              <h2 className="text-xl font-semibold">{property.location} Locality</h2>
               <div className="flex items-center bg-green-50 px-3 py-1 rounded-full">
                 <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                <span className="ml-1 font-semibold">{propertyData.locality.rating}</span>
+                <span className="ml-1 font-semibold">4.2</span>
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <p className="text-2xl font-bold text-gray-800">{propertyData.locality.societies}</p>
-                <p className="text-sm text-gray-600">Societies</p>
+                <p className="text-2xl font-bold text-gray-800">{property.places?.length || 15}</p>
+                <p className="text-sm text-gray-600">Nearby Places</p>
               </div>
               <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <p className="text-2xl font-bold text-gray-800">{propertyData.locality.apartments}</p>
-                <p className="text-sm text-gray-600">Apartments</p>
+                <p className="text-2xl font-bold text-gray-800">5</p>
+                <p className="text-sm text-gray-600">Schools</p>
               </div>
               <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <p className="text-2xl font-bold text-gray-800">{propertyData.locality.ownerProperties}</p>
-                <p className="text-sm text-gray-600">Owner Properties</p>
+                <p className="text-2xl font-bold text-gray-800">3</p>
+                <p className="text-sm text-gray-600">Hospitals</p>
               </div>
             </div>
+
+            {property.places && property.places.length > 0 && (
+              <div className="mb-6">
+                <h3 className="font-semibold mb-3">Nearby Places</h3>
+                <div className="space-y-2">
+                  {property.places.slice(0, 5).map((place, idx) => (
+                    <div key={idx} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                      <span className="text-gray-700">{place.place_name}</span>
+                      <span className="text-sm text-blue-600">
+                        {(parseFloat(place.distance_meters) / 1000).toFixed(1)} km
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="space-y-6">
               <div>
@@ -164,12 +171,18 @@ const PropertyTabs = ({ activeTab, setActiveTab, tabs, propertyData }) => {
                   Good Things Here
                 </h3>
                 <ul className="space-y-2">
-                  {propertyData.locality.goodThings.map((item, idx) => (
-                    <li key={idx} className="flex items-start">
-                      <span className="text-green-500 mr-2">•</span>
-                      <span className="text-gray-700">{item}</span>
-                    </li>
-                  ))}
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">•</span>
+                    <span className="text-gray-700">Well-connected to major roads</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">•</span>
+                    <span className="text-gray-700">Nearby schools and hospitals</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">•</span>
+                    <span className="text-gray-700">Good neighborhood</span>
+                  </li>
                 </ul>
               </div>
 
@@ -179,85 +192,17 @@ const PropertyTabs = ({ activeTab, setActiveTab, tabs, propertyData }) => {
                   Things that need improvement
                 </h3>
                 <ul className="space-y-2">
-                  {propertyData.locality.improvements.map((item, idx) => (
-                    <li key={idx} className="flex items-start">
-                      <span className="text-red-500 mr-2">•</span>
-                      <span className="text-gray-700">{item}</span>
-                    </li>
-                  ))}
+                  <li className="flex items-start">
+                    <span className="text-red-500 mr-2">•</span>
+                    <span className="text-gray-700">Traffic during peak hours</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-red-500 mr-2">•</span>
+                    <span className="text-gray-700">Limited public transport options</span>
+                  </li>
                 </ul>
               </div>
             </div>
-
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <p className="text-blue-800">
-                <span className="font-semibold">Connectivity: </span>
-                Easy access to Jaipur International Airport via smooth roads. Connected to other parts via Airport Road, Mahal Road.
-              </p>
-            </div>
-          </div>
-        );
-
-      case 'reviews':
-        return (
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold">Resident Reviews</h2>
-              <div className="flex items-center">
-                <div className="flex items-center mr-4">
-                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                  <span className="ml-1 font-bold">{propertyData.locality.rating}</span>
-                  <span className="text-gray-500 ml-1">/5</span>
-                </div>
-                <span className="text-gray-500">(84 reviews)</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-600">Connectivity</p>
-                <div className="flex items-center">
-                  <span className="text-2xl font-bold mr-2">{propertyData.locality.connectivity}</span>
-                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                </div>
-              </div>
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-600">Neighborhood</p>
-                <div className="flex items-center">
-                  <span className="text-2xl font-bold mr-2">{propertyData.locality.neighborhood}</span>
-                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                </div>
-              </div>
-            </div>
-
-            {propertyData.reviews.map((review, idx) => (
-              <div key={idx} className="border rounded-lg p-4">
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <p className="font-semibold">{review.name}</p>
-                    <p className="text-sm text-gray-500">{review.type} • {review.time}</p>
-                  </div>
-                  <div className="flex items-center bg-green-50 px-2 py-1 rounded">
-                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                    <span className="ml-1 text-sm font-semibold">{review.rating}</span>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm">
-                    <span className="font-medium text-green-600">Good: </span>
-                    {review.good}
-                  </p>
-                  <p className="text-sm">
-                    <span className="font-medium text-red-600">Needs improvement: </span>
-                    {review.improvement}
-                  </p>
-                </div>
-              </div>
-            ))}
-
-            <button className="w-full mt-4 text-blue-600 font-medium hover:text-blue-800">
-              View All 84 Reviews →
-            </button>
           </div>
         );
 
@@ -270,53 +215,117 @@ const PropertyTabs = ({ activeTab, setActiveTab, tabs, propertyData }) => {
               <div className="bg-red-50 p-4 rounded-lg">
                 <div className="flex items-center mb-2">
                   <TrendingDown className="w-5 h-5 text-red-600 mr-2" />
-                  <span className="text-red-600 font-semibold">{propertyData.priceTrends.project.depreciation}%</span>
+                  <span className="text-red-600 font-semibold">2.5%</span>
                 </div>
-                <p className="text-sm text-gray-600">depreciation in avg. price/sq.ft for Axis Royal Samriddhi</p>
+                <p className="text-sm text-gray-600">depreciation in avg. price/sq.ft for {property.title}</p>
                 <p className="text-xs text-gray-500 mt-2">Last 1 year</p>
-                <p className="text-lg font-bold mt-2">₹{propertyData.priceTrends.project.avgRate}/sq.ft</p>
+                <p className="text-lg font-bold mt-2">₹{pricePerSqft.toLocaleString()}/sq.ft</p>
               </div>
 
               <div className="bg-red-50 p-4 rounded-lg">
                 <div className="flex items-center mb-2">
                   <TrendingDown className="w-5 h-5 text-red-600 mr-2" />
-                  <span className="text-red-600 font-semibold">{propertyData.priceTrends.locality.depreciation}%</span>
+                  <span className="text-red-600 font-semibold">3.2%</span>
                 </div>
-                <p className="text-sm text-gray-600">depreciation in avg. price/sq.ft for Jagatpura</p>
+                <p className="text-sm text-gray-600">depreciation in avg. price/sq.ft for {property.location}</p>
                 <p className="text-xs text-gray-500 mt-2">Last 1 year</p>
-                <p className="text-lg font-bold mt-2">₹{propertyData.priceTrends.locality.avgRate}/sq.ft</p>
+                <p className="text-lg font-bold mt-2">₹{Math.round(pricePerSqft * 0.95).toLocaleString()}/sq.ft</p>
               </div>
             </div>
 
-            {/* Price Trend Graph Placeholder */}
-            <div className="h-48 bg-gray-100 rounded-lg flex items-center justify-center mb-6">
-              <p className="text-gray-500">Price Trend Graph (Jul 2024 - Mar 2026)</p>
+            <div className="border-t pt-6">
+              <h3 className="font-semibold mb-4">Price Details</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between py-2 border-b">
+                  <span className="text-gray-600">Base Price</span>
+                  <span className="font-semibold">{property.price}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b">
+                  <span className="text-gray-600">Price per sq.ft</span>
+                  <span className="font-semibold">₹{pricePerSqft.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b">
+                  <span className="text-gray-600">Total Area</span>
+                  <span className="font-semibold">{property.area_sqft?.toLocaleString()} sq.ft</span>
+                </div>
+                <div className="flex justify-between py-2">
+                  <span className="text-gray-600">Estimated EMI</span>
+                  <span className="font-semibold text-blue-600">₹{(property.raw_price! / 200).toLocaleString()}/month</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'floorplans':
+        return (
+          <div>
+            <h2 className="text-xl font-semibold mb-6">Floor Plans</h2>
+            <div className="text-center p-8 bg-gray-100 rounded-lg">
+              <p className="text-gray-500">Floor plans coming soon for {property.bhk} BHK configuration</p>
+              <p className="text-sm text-gray-400 mt-2">Contact us for detailed floor plans</p>
+            </div>
+          </div>
+        );
+
+      case 'reviews':
+        return (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-semibold">Resident Reviews</h2>
+              <div className="flex items-center">
+                <div className="flex items-center mr-4">
+                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                  <span className="ml-1 font-bold">4.2</span>
+                  <span className="text-gray-500 ml-1">/5</span>
+                </div>
+                <span className="text-gray-500">(12 reviews)</span>
+              </div>
             </div>
 
-            <div className="border-t pt-6">
-              <h3 className="font-semibold mb-4">Price Comparison</h3>
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-2">Project</th>
-                    <th className="text-left py-2">1 Year Change</th>
-                    <th className="text-left py-2">Avg. Rate/sq.ft</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b">
-                    <td className="py-2">Axis Royal Samriddhi</td>
-                    <td className="py-2 text-red-600">-5.72%</td>
-                    <td className="py-2">₹2.7K</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2">Jagatpura (Locality)</td>
-                    <td className="py-2 text-red-600">-11.95%</td>
-                    <td className="py-2">₹4.5K</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <p className="text-sm text-gray-600">Connectivity</p>
+                <div className="flex items-center">
+                  <span className="text-2xl font-bold mr-2">4.0</span>
+                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                </div>
+              </div>
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <p className="text-sm text-gray-600">Neighborhood</p>
+                <div className="flex items-center">
+                  <span className="text-2xl font-bold mr-2">4.3</span>
+                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                </div>
+              </div>
             </div>
+
+            <div className="border rounded-lg p-4">
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <p className="font-semibold">Rahul Sharma</p>
+                  <p className="text-sm text-gray-500">Homeowner • 2 months ago</p>
+                </div>
+                <div className="flex items-center bg-green-50 px-2 py-1 rounded">
+                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                  <span className="ml-1 text-sm font-semibold">4.5</span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm">
+                  <span className="font-medium text-green-600">Good: </span>
+                  Great location, peaceful neighborhood, good construction quality
+                </p>
+                <p className="text-sm">
+                  <span className="font-medium text-red-600">Needs improvement: </span>
+                  Parking space could be better
+                </p>
+              </div>
+            </div>
+
+            <button className="w-full mt-4 text-blue-600 font-medium hover:text-blue-800">
+              View All Reviews →
+            </button>
           </div>
         );
 
@@ -326,10 +335,10 @@ const PropertyTabs = ({ activeTab, setActiveTab, tabs, propertyData }) => {
   };
 
   return (
-    <div >
+    <div>
       {/* Tabs Navigation */}
-<div className="border-b border-gray-200 mb-6 overflow-x-auto no-scrollbar">
-          <nav className="flex space-x-8">
+      <div className="border-b border-gray-200 mb-6 overflow-x-auto">
+        <nav className="flex space-x-8">
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -352,6 +361,23 @@ const PropertyTabs = ({ activeTab, setActiveTab, tabs, propertyData }) => {
       </div>
     </div>
   );
+};
+
+// Helper function to get icon component for amenities
+const getAmenityIconComponent = (amenityName: string) => {
+  const iconMap: Record<string, any> = {
+    'Gym': <Dumbbell className="w-5 h-5 text-blue-600" />,
+    'Parking': <ParkingCircle className="w-5 h-5 text-blue-600" />,
+    'Swimming pool': <Waves className="w-5 h-5 text-blue-600" />,
+    'Club House': <Building2 className="w-5 h-5 text-blue-600" />,
+    'Security': <Shield className="w-5 h-5 text-blue-600" />,
+    'Garden': <Trees className="w-5 h-5 text-blue-600" />,
+    'Children Play Area': <Trees className="w-5 h-5 text-blue-600" />,
+    'Power Backup': <Zap className="w-5 h-5 text-blue-600" />,
+    'Lift': <ArrowUpDown className="w-5 h-5 text-blue-600" />,
+  };
+  
+  return iconMap[amenityName] || <Home className="w-5 h-5 text-blue-600" />;
 };
 
 export default PropertyTabs;

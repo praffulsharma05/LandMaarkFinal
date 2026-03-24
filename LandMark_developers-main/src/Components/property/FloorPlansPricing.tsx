@@ -1,9 +1,37 @@
 import React, { useState } from 'react';
 import { Home, Ruler, Grid, Layers, ZoomIn, Move, RotateCw } from 'lucide-react';
+import { CityProperty } from '../../services/services';
 
-const FloorPlansPricing = ({ pricingCards, floorPlans }) => {
+interface FloorPlansPricingProps {
+  property: CityProperty;
+}
+
+const FloorPlansPricing: React.FC<FloorPlansPricingProps> = ({ property }) => {
   const [selectedUnit, setSelectedUnit] = useState('1bhk');
   const [selectedView, setSelectedView] = useState('2d');
+
+  // Create pricing cards from API data
+  const pricingCards = [
+    {
+      key: '1bhk',
+      type: `${property.bhk} BHK`,
+      price: property.price,
+      area: property.area_sqft?.toLocaleString() || '0',
+      base: Math.round(property.raw_price! / 1000000).toLocaleString()
+    }
+  ];
+
+  const floorPlansData = {
+    '1bhk': {
+      type: `${property.bhk} BHK Apartment`,
+      rooms: [
+        { name: 'Master Bedroom', dimensions: '12 x 14 ft' },
+        { name: 'Living Room', dimensions: '15 x 12 ft' },
+        { name: 'Kitchen', dimensions: '8 x 10 ft' },
+        { name: 'Bathroom', dimensions: '6 x 8 ft' }
+      ]
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -35,7 +63,7 @@ const FloorPlansPricing = ({ pricingCards, floorPlans }) => {
               </div>
 
               <p className="text-base font-bold text-blue-600 mb-1">
-                ₹{card.price}
+                {card.price}
               </p>
 
               <div className="flex items-center text-gray-600 text-xs mb-2">
@@ -44,8 +72,8 @@ const FloorPlansPricing = ({ pricingCards, floorPlans }) => {
               </div>
 
               <div className="border-t pt-2">
-                <p className="text-xs text-gray-500">Starting</p>
-                <p className="text-sm font-semibold">₹{card.base}</p>
+                <p className="text-xs text-gray-500">Starting from</p>
+                <p className="text-sm font-semibold">₹{card.base} L</p>
               </div>
             </div>
           ))}
@@ -53,24 +81,21 @@ const FloorPlansPricing = ({ pricingCards, floorPlans }) => {
 
         {/* Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left - Plan */}
           <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm">
             <div className="flex justify-between mb-4">
               <h3 className="font-semibold">
                 {selectedView === '2d' ? '2D Floor Plan' : '3D Floor Plan'}
               </h3>
               <span className="text-blue-600 text-sm">
-                {floorPlans[selectedUnit].type}
+                {floorPlansData[selectedUnit as keyof typeof floorPlansData]?.type}
               </span>
             </div>
 
-            {/* Image */}
-            <div className="relative bg-gray-100   h-100 overflow-hidden mb-4">
-              <img
-                src="https://housing-images.n7net.in/012c1500/b83a3bea6784b96589c151345d4ed44e/v0/fs.jpeg"
-                alt="plan"
-                className="w-full h-[500px] object-cover"
-              />
+            {/* Image Placeholder */}
+            <div className="relative bg-gray-100 h-96 overflow-hidden mb-4 rounded-lg">
+              <div className="flex items-center justify-center h-full">
+                <p className="text-gray-400">Floor plan image coming soon</p>
+              </div>
 
               {/* Toggle */}
               <div className="absolute top-3 left-3 flex gap-2">
@@ -101,16 +126,16 @@ const FloorPlansPricing = ({ pricingCards, floorPlans }) => {
 
               {/* Controls */}
               <div className="absolute top-3 right-3 flex gap-2">
-                <ZoomIn className="w-4 h-4 bg-white p-1 rounded cursor-pointer" />
-                <Move className="w-4 h-4 bg-white p-1 rounded cursor-pointer" />
-                <RotateCw className="w-4 h-4 bg-white p-1 rounded cursor-pointer" />
+                <ZoomIn className="w-8 h-8 bg-white p-1 rounded cursor-pointer" />
+                <Move className="w-8 h-8 bg-white p-1 rounded cursor-pointer" />
+                <RotateCw className="w-8 h-8 bg-white p-1 rounded cursor-pointer" />
               </div>
             </div>
 
             {/* Rooms */}
-            {selectedView === '3d' && (
+            {selectedView === '3d' && floorPlansData[selectedUnit as keyof typeof floorPlansData] && (
               <div className="grid grid-cols-2 gap-3">
-                {floorPlans[selectedUnit].rooms.map((room, i) => (
+                {floorPlansData[selectedUnit as keyof typeof floorPlansData].rooms.map((room, i) => (
                   <div key={i} className="bg-gray-50 p-3 rounded">
                     <p className="font-medium">{room.name}</p>
                     <p className="text-sm text-gray-500">{room.dimensions}</p>
@@ -126,3 +151,4 @@ const FloorPlansPricing = ({ pricingCards, floorPlans }) => {
 };
 
 export default FloorPlansPricing;
+  

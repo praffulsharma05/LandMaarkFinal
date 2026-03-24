@@ -37,14 +37,14 @@ const ImageGallery = ({ images }) => {
         <img
           src={images[currentImageIndex]}
           alt="Side"
-          className="w-full h-[215px] object-cover "
+          className="w-full h-[210px] object-cover "
         />
 
         <div className="relative">
           <img
             src={images[currentImageIndex]}
             alt="Side"
-            className="w-full h-[215px] object-cover "
+            className="w-full h-[210px] object-cover "
           />
 
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl">
