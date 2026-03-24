@@ -1,3 +1,4 @@
 export const ApiEndPoints = {
-    CITIES: 'api/cities'
+    CITIES: 'api/cities',
+    PROPERTIES:'api/properties'
 }
