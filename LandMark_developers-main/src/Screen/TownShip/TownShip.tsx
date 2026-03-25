@@ -7,8 +7,7 @@ import {
 } from "../../store/TownShip/townshipsData";
 import TownshipCard from "../../Components/TownShip/TownshipCard";
 import "./township.css";
-import { div } from "framer-motion/client";
-
+ 
 const TownShip: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState<Township | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -52,17 +51,8 @@ const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
     { key: "services", label: "Services" },
     { key: "news", label: "News & Guide" },
   ]; return (
-  
-  
-   
-
-   
-
-
      <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen min-h-screen bg-gray-100 -mt-10 flex overflow-x-hidden">
       {/* LEFT CITY GRID */}
-  
-  
       <div
         className={`transition-all duration-300 px-6 md:px-10  py-0 ${
           selectedCity ? "lg:w-[65%]" : "w-full"
@@ -76,9 +66,7 @@ const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
           ))}
         </div>
       </div>
-
       {/* MOBILE BACKDROP */}
-
       {selectedCity && (
         <div
           role="button"
@@ -90,9 +78,7 @@ const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
           className="fixed inset-0 bg-black/40 z-40 lg:hidden"
         />
       )}
-
       {/* RIGHT DRAWER */}
-
       <aside
         role="dialog"
         aria-modal="true"
@@ -157,10 +143,6 @@ const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
         )}
       </aside>
     </div>
-   
-
-    
   );
 };
-
 export default TownShip;

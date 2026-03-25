@@ -1,44 +1,9 @@
-/* .vertical-btn {
-  position: fixed;
-  right: 20px;          
-  top: 50%;
-  transform: translateY(-50%);
-
-  background: #2563eb;
-  color: white;
-
-  padding: 10px 8px;
-  height: 180px;         
-  width: 40px;
-
-  border: none;
-  border-radius: 30px;  
-
-  font-weight: 600;
-  cursor: pointer;
-
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-
-  transition: all 0.3s ease;
-}
-
-.vertical-btn:hover {
-  background: #1e40af;
-  transform: translateY(-50%) scale(1.05);
-} */
-
+ 
 
 .vertical-btn {
   position: fixed;
   right: 20px;
-  top: 50%;
+  top: 60%;
   transform: translateY(-50%);
 
   background: #2563eb;

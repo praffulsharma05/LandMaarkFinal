@@ -200,7 +200,7 @@ export const fetchProperties = async (): Promise<CityProperty[]> => {
       const imageUrl = item.image 
         ? `${ApiConstants.API_BASE_URL}uploads/${item.image}`
         : 'https://via.placeholder.com/300x200?text=Property+Image';
-
+console.log(imageUrl)
       return {
         id: item.property_id || 0,
         title: item.property_name || item.title || 'Property',

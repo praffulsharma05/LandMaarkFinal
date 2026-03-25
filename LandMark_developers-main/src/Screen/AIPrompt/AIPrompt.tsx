@@ -2,12 +2,10 @@
 import { useState } from "react";
 import "./AIPrompt.css";
 import { useNavigate } from "react-router-dom";
-import { ApiConstants } from "../../constants/ApiConstants";
 
 const AIPrompt = () => {
-  const [query, setQuery] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-
+  const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const fetchData = async () => {
@@ -19,57 +17,75 @@ const AIPrompt = () => {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        ApiConstants.API_BASE_URL + 
-        `api/propSearch/ai?query=${query}`
-      );
+      const url = `/api/propSearch/ai?query=${encodeURIComponent(query)}`;
+      console.log("🤖 AI Search URL:", url);
 
-      const result = (await res.json()).data;
-      console.log("Raw AI API Response:", result);
-      // ✅ Normalize API response for PropertyCards
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! ${res.status}`);
+      }
+
+      const json = await res.json();
+      console.log("🤖 AI Response:", json);
+
+      const result = json?.data || json;
+
+      if (!result || (Array.isArray(result) && result.length === 0)) {
+        alert("No results found");
+        return;
+      }
+
       const formattedData = (Array.isArray(result) ? result : [result]).map(
         (item: any, index: number) => ({
-          property_id: item.id || index,
-          title: item.title || item.name || "No Title",
-          image: item.image || "",
-          price: item.price || item.budget || "0",
-          location: item.location || item.city || "Unknown",
-          bhk: item.bhk || 2,
-          property_type: item.property_type || "Apartment",
-          construction_status: item.status || "Ready",
-          area_sqft: item.area || 1000,
+          property_id: item?.id || item?.property_id || index,
+          title: item?.title || item?.name || "No Title",
+          image: item?.image || "",
+          price: item?.price || item?.budget || "0",
+          location: item?.location || item?.city || "Unknown",
+          bhk: item?.bhk || 2,
+          property_type: item?.property_type || "Apartment",
+          construction_status: item?.status || item?.construction_status || "Ready",
+          area_sqft: item?.area || item?.area_sqft || 1000,
         })
       );
 
-      // 🚀 Navigate with data
+      console.log("🤖 Formatted AI Results:", formattedData);
+
       navigate("/search", {
         state: { aiResults: formattedData },
       });
 
     } catch (error) {
-      console.error("Error fetching AI data:", error);
+      console.error("❌ Error fetching AI data:", error);
+      alert("Something went wrong. Check console.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <div className="ai-floating-bar">
-
- 
       <input
         className="ai-input"
         type="text"
-        placeholder="I want to buy 2bhk in ajmer for around 1 crore"
+        placeholder="I want to buy 2bhk in Ajmer for around 1 crore"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && fetchData()}
       />
-
-      <button className="generate-btn" onClick={fetchData}>
-
+      <button
+        className="generate-btn"
+        onClick={fetchData}
+        disabled={loading}
+      >
         {loading ? "Loading..." : "Search"}
       </button>
-
     </div>
   );
 };

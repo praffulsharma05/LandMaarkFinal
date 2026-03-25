@@ -1,9 +1,283 @@
+// import { useState, useEffect, useCallback } from "react";
+// import PropertyFilters from "./PropertyFilters";
+// import PropertyCards from "./PropertyCards";
+// import {  useLocation } from "react-router-dom";
+// import { ApiConstants } from "../../constants/ApiConstants";
+//   interface Filters {
+//   city: string;
+//   bhk: string;
+//   property_type: string;
+//   construction_status: string;
+//   construction_type: string;
+//   minPrice: string;
+//   maxPrice: string;
+//   search: string;
+//   sale_type: string;
+//   verified: string;
+//   project: string;
+//   featured_agent: string;
+// }
+
+// const PropertySearch = () => {
+//   const API_BASE_URL = ApiConstants.API_BASE_URL + "api";
+//   const { state } = useLocation();
+//   const [properties, setProperties] = useState<any[]>([]);
+//   const [totalCount, setTotalCount] = useState(0);
+//   const [loading, setLoading] = useState(false);
+//   const [filterOptionsApiData, setFilterOptionsApiData] = useState({});
+//   const [isUsingAI, setIsUsingAI] = useState(false);
+
+//   const [filters, setFilters] = useState<Filters>({
+//     city: "",
+//     bhk: "",
+//     property_type: "",
+//     construction_status: "",
+//     construction_type: "",
+//     minPrice: "",
+//     maxPrice: "",
+//     search: "",
+//     sale_type: "",
+//     verified: "",
+//     project: "",
+//     featured_agent: ""
+//   });
+
+//   const [priceError, setPriceError] = useState("");
+
+//   const buildQueryString = useCallback(() => {
+//     const params = new URLSearchParams();
+
+//     if (filters.city) params.append("city", filters.city);
+//     if (filters.bhk) params.append("bhk", filters.bhk);
+//     if (filters.property_type) params.append("property_type", filters.property_type);
+//     if (filters.construction_status) params.append("construction_status", filters.construction_status);
+//     if (filters.construction_type) params.append("construction_type", filters.construction_type);
+//     if (filters.minPrice) params.append("minPrice", filters.minPrice);
+//     if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
+//     if (filters.search) params.append("search", filters.search);
+//     if (filters.sale_type) params.append("sale_type", filters.sale_type);
+//     if (filters.verified) params.append("verified", filters.verified);
+//     if (filters.project) params.append("project", filters.project);
+//     if (filters.featured_agent) params.append("featured_agent", filters.featured_agent);
+
+//     return params.toString();
+//   }, [filters]);
+
+//   const fetchProperties = useCallback(async () => {
+//     setLoading(true);
+//     setIsUsingAI(false);
+
+//     const query = buildQueryString();
+//     const url = `${API_BASE_URL}/properties${query ? `?${query}` : ""}`;
+// console.log("checking properties url", url);
+//     try {
+//       const res = await fetch(url);
+//       const data = await res.json();
+
+//       // Format the data for PropertyCards
+//       const formattedProperties = (data.data || []).map((item: any) => ({
+//         property_id: item.property_id,
+//         title: item.title || "No Title",
+//         image: item.image ? item.image : "",
+//         price: parseFloat(item.price || 0),
+//         location: item.location || "Unknown",
+//         bhk: parseInt(item.bhk) || 1,
+//         property_type: item.property_type || "Apartment",
+//         construction_status: item.construction_status || "Ready",
+//         construction_type: item.construction_type || "",
+//         area_sqft: parseFloat(item.area_sqft || 0),
+//         description: item.description || "",
+//         verified: item.verified || 0,
+//         created_at: item.created_at || new Date().toISOString(),
+//       }));
+
+//       setProperties(formattedProperties);
+//       setTotalCount(formattedProperties.length);
+//     } catch (error) {
+//       console.error("Error fetching properties:", error);
+//       setProperties([]);
+//       setTotalCount(0);
+//     } finally {
+//       setLoading(false);
+//     }
+//   }, [buildQueryString]);
+
+//   const handleFilterChange = (name: string, value: string) => {
+//     setFilters((prev) => ({ ...prev, [name]: value }));
+//   };
+
+//   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     setFilters((prev) => ({ ...prev, search: e.target.value }));
+//   };
+
+//   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+    
+//     // Check if any filters are applied
+//     const hasFilters = Object.values(filters).some(value => value !== "");
+    
+//     if (hasFilters) {
+//       fetchProperties();
+//     } else {
+//       // If no filters, show all properties
+//       fetchProperties();
+//     }
+//   };
+
+//   const resetFilters = () => {
+//     setFilters({
+//       city: "",
+//       bhk: "",
+//       property_type: "",
+//       construction_status: "",
+//       construction_type: "",
+//       minPrice: "",
+//       maxPrice: "",
+//       search: "",
+//       sale_type: "",
+//       verified: "",
+//       project: "",
+//       featured_agent: ""
+//     });
+//     setPriceError("");
+    
+//     // Fetch all properties after reset
+//     setTimeout(() => {
+//       fetchProperties();
+//     }, 100);
+//   };
+
+//   const fetchOptions = async () => {
+//     try {
+//       const res = await fetch(`${API_BASE_URL}/options`, {
+//       headers: {
+//         "ngrok-skip-browser-warning": "true"
+//       }
+//     });
+//       const data = await res.json();
+//       setFilterOptionsApiData(data);
+//     } catch (error) {
+//       console.error("Error fetching options:", error);
+//     }
+//   };
+//   // Validate price range
+//   useEffect(() => {
+//     if (
+//       filters.minPrice &&
+//       filters.maxPrice &&
+//       parseFloat(filters.minPrice) >= parseFloat(filters.maxPrice)
+//     ) {
+//       setPriceError("Min price must be less than max price");
+//     } else {
+//       setPriceError("");
+//     }
+//   }, [filters.minPrice, filters.maxPrice]);
+
+//   // Auto-fetch with debounce when filters change (optional)
+//   useEffect(() => {
+//     if (isUsingAI) return; // Don't auto-fetch if using AI results
+    
+//     const delayDebounce = setTimeout(() => {
+//       // Only auto-fetch if there are filters applied
+//       const hasFilters = Object.values(filters).some(value => value !== "");
+//       if (hasFilters) {
+//         fetchProperties();
+//       }
+//     }, 500);
+
+//     return () => clearTimeout(delayDebounce);
+//   }, [filters, fetchProperties, isUsingAI]);
+
+//   // Initial load
+//   useEffect(() => {
+//     fetchOptions();
+    
+//     // Check if we have AI search results from navigation state
+//     if (state?.aiResults && Array.isArray(state.aiResults)) {
+//       console.log("📊 Loading AI search results:", state.aiResults.length);
+      
+//       // Format AI results for PropertyCards
+//       const formattedAIResults = state.aiResults.map((item: any) => ({
+//         property_id: item.property_id,
+//         title: item.title || "No Title",
+//         image: item.image ? item.image : "",
+//         price: parseFloat(item.price || 0),
+//         location: item.location || "Unknown",
+//         bhk: parseInt(item.bhk) || 1,
+//         property_type: item.property_type || "Apartment",
+//         construction_status: item.construction_status || "Ready",
+//         construction_type: item.construction_type || "",
+//         area_sqft: parseFloat(item.area_sqft || 0),
+//         description: item.description || "",
+//         verified: item.verified || 0,
+//         created_at: item.created_at || new Date().toISOString(),
+//       }));
+      
+//       setProperties(formattedAIResults);
+//       setTotalCount(formattedAIResults.length);
+//       setIsUsingAI(true);
+//     } else {
+//       // Initial fetch of all properties
+//       fetchProperties();
+//     }
+//   }, []);
+
+//   return (
+//     <div className="min-h-screen bg-gray-5">
+     
+
+//       {/* Filters Section */}
+//       <div className="sticky top-25 z-4">
+//         <PropertyFilters
+//           filters={filters}
+//           filterOptions={filterOptionsApiData}
+//           priceError={priceError}
+//           handleFilterChange={handleFilterChange}
+//            handleSubmit={handleSubmit}
+//           resetFilters={resetFilters}
+//         />
+//       </div>
+
+//       {/* Results Section */}
+//       <div className="max-w-7xl mx-auto px-1 sm:px-1 lg:px-2 py-2">
+//         {loading ? (
+//           <div className="flex justify-center items-center py-20">
+//            </div>
+//         ) : (
+//           <>
+//             {/* Results Info */}
+//             {/* <div className="-mb-6">
+//               <p className="text-gray-600">
+//                 Showing <span className="font-semibold text-gray-900">{totalCount}</span> properties
+//                 {isUsingAI && (
+//                   <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+//                     AI Recommended
+//                   </span>
+//                 )}
+//               </p>
+//             </div> */}
+
+//             {/* Property Cards */}
+//             <PropertyCards
+//               properties={properties}
+//               totalCount={totalCount}
+//               loading={loading}
+//             />
+//           </>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default PropertySearch;
+
 import { useState, useEffect, useCallback } from "react";
 import PropertyFilters from "./PropertyFilters";
 import PropertyCards from "./PropertyCards";
 import { useLocation } from "react-router-dom";
-import { ApiConstants } from "../../constants/ApiConstants";
- interface Filters {
+
+interface Filters {
   city: string;
   bhk: string;
   property_type: string;
@@ -19,7 +293,7 @@ import { ApiConstants } from "../../constants/ApiConstants";
 }
 
 const PropertySearch = () => {
-  const API_BASE_URL = ApiConstants.API_BASE_URL + "api";
+  const API_BASE_URL = "/api";
   const { state } = useLocation();
   const [properties, setProperties] = useState<any[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -69,16 +343,42 @@ const PropertySearch = () => {
 
     const query = buildQueryString();
     const url = `${API_BASE_URL}/properties${query ? `?${query}` : ""}`;
+    console.log("🔍 Fetching properties from:", url);
 
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      console.log("📡 Response status:", res.status);
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
       const data = await res.json();
+      console.log("📦 Properties data received:", data);
+      
+      let propertiesData = [];
+      if (data.data && Array.isArray(data.data)) {
+        propertiesData = data.data;
+      } else if (Array.isArray(data)) {
+        propertiesData = data;
+      } else if (data.properties && Array.isArray(data.properties)) {
+        propertiesData = data.properties;
+      } else {
+        propertiesData = [];
+      }
+      
+      console.log("📊 Number of properties:", propertiesData.length);
 
-      // Format the data for PropertyCards
-      const formattedProperties = (data.data || []).map((item: any) => ({
-        property_id: item.property_id,
+      const formattedProperties = propertiesData.map((item: any) => ({
+        property_id: item.property_id || item.id,
         title: item.title || "No Title",
-        image: item.image ? item.image : "",
+        image: item.image || "",
         price: parseFloat(item.price || 0),
         location: item.location || "Unknown",
         bhk: parseInt(item.bhk) || 1,
@@ -91,10 +391,11 @@ const PropertySearch = () => {
         created_at: item.created_at || new Date().toISOString(),
       }));
 
+      console.log("✨ Formatted properties:", formattedProperties);
       setProperties(formattedProperties);
       setTotalCount(formattedProperties.length);
     } catch (error) {
-      console.error("Error fetching properties:", error);
+      console.error("❌ Error fetching properties:", error);
       setProperties([]);
       setTotalCount(0);
     } finally {
@@ -106,22 +407,9 @@ const PropertySearch = () => {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters((prev) => ({ ...prev, search: e.target.value }));
-  };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    // Check if any filters are applied
-    const hasFilters = Object.values(filters).some(value => value !== "");
-    
-    if (hasFilters) {
-      fetchProperties();
-    } else {
-      // If no filters, show all properties
-      fetchProperties();
-    }
+    fetchProperties();
   };
 
   const resetFilters = () => {
@@ -141,7 +429,6 @@ const PropertySearch = () => {
     });
     setPriceError("");
     
-    // Fetch all properties after reset
     setTimeout(() => {
       fetchProperties();
     }, 100);
@@ -149,19 +436,28 @@ const PropertySearch = () => {
 
   const fetchOptions = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/options`, {
-      headers: {
-        "ngrok-skip-browser-warning": "true"
+      const url = `${API_BASE_URL}/options`;
+      console.log("🔍 Fetching options from:", url);
+      
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
       }
-    });
+      
       const data = await res.json();
-      setFilterOptionsApiData(data);
+      console.log("📦 Options data:", data);
+      setFilterOptionsApiData(data.data || data);
     } catch (error) {
-      console.error("Error fetching options:", error);
+      console.error("❌ Error fetching options:", error);
     }
   };
-
-  // Validate price range
+ 
   useEffect(() => {
     if (
       filters.minPrice &&
@@ -174,12 +470,10 @@ const PropertySearch = () => {
     }
   }, [filters.minPrice, filters.maxPrice]);
 
-  // Auto-fetch with debounce when filters change (optional)
   useEffect(() => {
-    if (isUsingAI) return; // Don't auto-fetch if using AI results
+    if (isUsingAI) return;
     
     const delayDebounce = setTimeout(() => {
-      // Only auto-fetch if there are filters applied
       const hasFilters = Object.values(filters).some(value => value !== "");
       if (hasFilters) {
         fetchProperties();
@@ -189,19 +483,16 @@ const PropertySearch = () => {
     return () => clearTimeout(delayDebounce);
   }, [filters, fetchProperties, isUsingAI]);
 
-  // Initial load
   useEffect(() => {
     fetchOptions();
     
-    // Check if we have AI search results from navigation state
     if (state?.aiResults && Array.isArray(state.aiResults)) {
-      console.log("📊 Loading AI search results:", state.aiResults.length);
+      console.log("🤖 Loading AI search results:", state.aiResults.length);
       
-      // Format AI results for PropertyCards
       const formattedAIResults = state.aiResults.map((item: any) => ({
-        property_id: item.property_id,
+        property_id: item.property_id || item.id,
         title: item.title || "No Title",
-        image: item.image ? item.image : "",
+        image: item.image || "",
         price: parseFloat(item.price || 0),
         location: item.location || "Unknown",
         bhk: parseInt(item.bhk) || 1,
@@ -218,53 +509,34 @@ const PropertySearch = () => {
       setTotalCount(formattedAIResults.length);
       setIsUsingAI(true);
     } else {
-      // Initial fetch of all properties
       fetchProperties();
     }
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-5">
-     
-
-      {/* Filters Section */}
-      <div className="sticky top-25 z-4">
+    <div className="min-h-screen bg-gray-50">
+      <div className="sticky top-0 z-40 bg-white shadow-sm">
         <PropertyFilters
           filters={filters}
           filterOptions={filterOptionsApiData}
           priceError={priceError}
           handleFilterChange={handleFilterChange}
-           handleSubmit={handleSubmit}
+          handleSubmit={handleSubmit}
           resetFilters={resetFilters}
         />
       </div>
 
-      {/* Results Section */}
-      <div className="max-w-7xl mx-auto px-1 sm:px-1 lg:px-2 py-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading ? (
           <div className="flex justify-center items-center py-20">
-           </div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          </div>
         ) : (
-          <>
-            {/* Results Info */}
-            {/* <div className="-mb-6">
-              <p className="text-gray-600">
-                Showing <span className="font-semibold text-gray-900">{totalCount}</span> properties
-                {isUsingAI && (
-                  <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                    AI Recommended
-                  </span>
-                )}
-              </p>
-            </div> */}
-
-            {/* Property Cards */}
-            <PropertyCards
-              properties={properties}
-              totalCount={totalCount}
-              loading={loading}
-            />
-          </>
+          <PropertyCards
+            properties={properties}
+            totalCount={totalCount}
+            loading={loading}
+          />
         )}
       </div>
     </div>

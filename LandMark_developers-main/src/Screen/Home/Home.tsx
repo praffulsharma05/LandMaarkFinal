@@ -14,7 +14,7 @@ import useCarousel from "../../Hooks/useCarousel";
 
 import Section7Card from "../../Components/HomePage/Section7Card";
 import { Section7Data } from "../../store/HomePage/section7Card";
-
+ 
 import Section8Card from "../../Components/HomePage/Section8Card";
 import { Section8Data } from "../../store/HomePage/section8Card";
 import Section9Card from "../../Components/HomePage/section9Card";
@@ -29,9 +29,11 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
   console.log("Form Submitted");
 };
 
+ 
 const Home: React.FC = () => {
   const currentIndex = useCarousel(Section6Data.length, 5000);
 
+  
   return (
      
     <div className="-m-8">
@@ -183,7 +185,16 @@ const Home: React.FC = () => {
             has never been more accessible.
           </p>
           <div className="mt-10">
-            <button className="rounded-btn"> Enquire Now</button>
+             <button
+            onClick={() =>
+              document
+                .getElementById("properties")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+            className="rounded-btn"
+          >
+            ENQUIRE NOW
+          </button>
           </div>
         </div>
       </section>

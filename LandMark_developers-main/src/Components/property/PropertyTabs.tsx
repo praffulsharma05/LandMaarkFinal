@@ -6,7 +6,7 @@ import {
   Waves, Shield, Zap, ArrowUpDown, ParkingCircle
 } from 'lucide-react';
 import { CityProperty } from '../../services/services';
-
+ 
 interface PropertyTabsProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -14,7 +14,7 @@ interface PropertyTabsProps {
   property: CityProperty;
   pricePerSqft: number;
 }
-
+ 
 const PropertyTabs: React.FC<PropertyTabsProps> = ({ 
   activeTab, 
   setActiveTab, 
@@ -39,7 +39,7 @@ const PropertyTabs: React.FC<PropertyTabsProps> = ({
                   <Bed className="w-5 h-5 text-gray-600" />
                   <p className="text-sm text-gray-500">Bedrooms</p>
                 </div>
-                <p className="font-semibold">{property.bhk} BHK</p>
+                <p className="font-semibold">{property.bhk} BedRoom</p>
               </div>
               
               <div className="p-4 bg-gray-50 rounded-lg">
@@ -47,7 +47,7 @@ const PropertyTabs: React.FC<PropertyTabsProps> = ({
                   <Bath className="w-5 h-5 text-gray-600" />
                   <p className="text-sm text-gray-500">Bathrooms</p>
                 </div>
-                <p className="font-semibold">{property.bhk}</p>
+                <p className="font-semibold">{property.bhk }</p>
               </div>
               
               <div className="p-4 bg-gray-50 rounded-lg">
@@ -63,7 +63,7 @@ const PropertyTabs: React.FC<PropertyTabsProps> = ({
                   <Calendar className="w-5 h-5 text-gray-600" />
                   <p className="text-sm text-gray-500">Possession</p>
                 </div>
-                <p className="font-semibold">{property.construction_status || 'Ready to Move'}</p>
+                <p className="font-semibold">{property.construction_status }</p>
               </div>
             </div>
             
