@@ -171,8 +171,6 @@ const PropertyDetailPage = () => {
         setLoading(false);
       }
     };
-
-    loadProperty();
   }, [id]);
 
   if (loading) {
