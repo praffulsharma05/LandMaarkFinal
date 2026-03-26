@@ -1,8 +1,9 @@
  
  
 import React from "react";
- 
-const ContactUs: React.FC = () => {
+
+ const ContactUs: React.FC = () => {
+  const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.3572654485392!2d75.83077757543877!3d26.892154476659382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db73f355671c9%3A0x9f2324b9a7d96309!2sAlvion%20Technologies!5e0!3m2!1sen!2sin!4v1774440608643!5m2!1sen!2sin`;
   return (
     <div
       className="relative left-1/2 -m-8 right-1/2 -ml-[50vw] -mr-[50vw] w-screen min-h-screen
@@ -20,16 +21,32 @@ const ContactUs: React.FC = () => {
             LANDMAARK DEVELOPERS
           </h1>
         </div>
+        
       </header>
 
       {/* MAP SECTION */}
-      
+      <div className="relative w-full h-[450px] right-10  md:h-[450px] lg:h-[450px] mt-30 overflow-hidden rounded-2xl">
+      <iframe
+        title="Google Map of Location"
+        src={mapUrl}
+        className="absolute  left-[20%] w-250 h-full"
+        style={{ border: 0 }}
+        allowFullScreen={true}
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+      />
+    </div>
 
       {/* MAIN CONTENT */}
       <main className="w-full px-6 md:px-16 lg:px-32 py-20 grid lg:grid-cols-2 gap-20 items-start">
 
         {/* LEFT TEXT */}
         <div>
+          
+          <div className="  h-[400px] w-full">
+      {/* Other Contact Content */}
+
+     </div>
           <h2 className="text-5xl lg:text-6xl font-light leading-tight">
             Let’s Build Your
             <span className="block font-semibold text-amber-400">
@@ -111,3 +128,4 @@ const ContactUs: React.FC = () => {
 };
 
 export default ContactUs;
+  

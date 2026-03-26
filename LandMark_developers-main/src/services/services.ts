@@ -1,11 +1,11 @@
-// // src/services/api.ts
-import { ApiConstants } from "../constants/ApiConstants";
-import{ ApiEndPoints} from "../constants/ApiEndpoints"
-
+// // // src/services/api.ts
+// import { ApiConstants } from "../constants/ApiConstants";
+// import{ ApiEndPoints} from "../constants/ApiEndpoints"
 
 // export interface CityProperty {
 //   id: number;
 //   title: string;
+//   builder:string;
 //   price: string;
 //   location: string;
 //   area: string;
@@ -15,7 +15,7 @@ import{ ApiEndPoints} from "../constants/ApiEndpoints"
 //   propertyType: string;
 //   description: string;
 //   verified: boolean;
-
+  
 //   amenities: Array<{ amenity_id: number; amenity_name: string }>;
 //   places: Array<{
 //     place_id: number;
@@ -30,8 +30,20 @@ import{ ApiEndPoints} from "../constants/ApiEndpoints"
 //   construction_status?: string;
 //   area_sqft?: number;
 //   raw_price?: number;
+  
+//   // Additional fields from API
+//   project_units?: string | number;
+//   project_area?: string;
+//   size?: string;
+//   project_size?: string;
+//   launch_date?: string;
+//   avg_price?: string;
+//   possession_date?: string;
+//   configuration?: string;
+//   rera_id?: string;
+//   nearby_places?: Array<{ name: string; distance: string }>;
+//   created_at?: string;
 // }
-
 // export const fetchProperties = async (): Promise<CityProperty[]> => {
 //   try {
 //     const response = await fetch(`${ApiConstants.API_BASE_URL}${ApiEndPoints.PROPERTIES}`, {
@@ -39,14 +51,11 @@ import{ ApiEndPoints} from "../constants/ApiEndpoints"
 //         'ngrok-skip-browser-warning': 'true',
 //       },
 //     });
-    
 //     if (!response.ok) {
 //       throw new Error(`HTTP error! status: ${response.status}`);
 //     }
-    
 //     const result = await response.json();
 //     const propertiesData = result.data || [];
-    
 //     return propertiesData.map((item: any) => {
 //       // Safely parse price
 //       const numericPrice = item.price ? parseFloat(item.price) : 0;
@@ -56,7 +65,6 @@ import{ ApiEndPoints} from "../constants/ApiEndpoints"
 //         minimumFractionDigits: 0,
 //         maximumFractionDigits: 0,
 //       }).format(numericPrice) : 'Contact for price';
-
 //       // Safely determine tag
 //       let tag = 'Featured';
 //       if (item.construction_status === 'Ready to Move') {
@@ -73,7 +81,7 @@ import{ ApiEndPoints} from "../constants/ApiEndpoints"
 //       const imageUrl = item.image 
 //         ? `${ApiConstants.API_BASE_URL}uploads/${item.image}`
 //         : 'https://via.placeholder.com/300x200?text=Property+Image';
-
+// console.log(imageUrl)
 //       return {
 //         id: item.property_id || 0,
 //         title: item.property_name || item.title || 'Property',
@@ -95,6 +103,19 @@ import{ ApiEndPoints} from "../constants/ApiEndpoints"
 //         longitude: item.longitude,
 //         construction_status: item.construction_status || 'Ready to Move',
 //         area_sqft: areaSqft,
+        
+//         // Include additional fields
+//         project_units: item.project_units,
+//         project_area: item.project_area,
+//         size: item.size,
+//         project_size: item.project_size,
+//         launch_date: item.launch_date,
+//         avg_price: item.avg_price,
+//         possession_date: item.possession_date,
+//         configuration: item.configuration,
+//         rera_id: item.rera_id,
+//         nearby_places: item.nearby_places,
+//         created_at: item.created_at,
 //       };
 //     });
 //   } catch (error) {
@@ -113,13 +134,24 @@ import{ ApiEndPoints} from "../constants/ApiEndpoints"
 //     return null;
 //   }
 // };
+// // src/services/api.ts 
 
 
+
+
+
+
+
+
+
+
+import { ApiConstants } from "../constants/ApiConstants";
+import { ApiEndPoints } from "../constants/ApiEndpoints";
 
 export interface CityProperty {
   id: number;
   title: string;
-  builder:string;
+  builder?: string; // Made optional as it might not always be present
   price: string;
   location: string;
   area: string;
@@ -142,6 +174,7 @@ export interface CityProperty {
   latitude?: string;
   longitude?: string;
   construction_status?: string;
+  construcstion_type?: string; // Fixed typo in property name
   area_sqft?: number;
   raw_price?: number;
   
@@ -159,11 +192,22 @@ export interface CityProperty {
   created_at?: string;
 }
 
+// New interface for property images
+export interface PropertyImage {
+  id: number;
+  property_id: number;
+  image_url: string;
+  is_primary: boolean;
+  caption?: string;
+  created_at?: string;
+}
+
 export const fetchProperties = async (): Promise<CityProperty[]> => {
   try {
     const response = await fetch(`${ApiConstants.API_BASE_URL}${ApiEndPoints.PROPERTIES}`, {
       headers: {
         'ngrok-skip-browser-warning': 'true',
+        'Content-Type': 'application/json',
       },
     });
     
@@ -200,10 +244,11 @@ export const fetchProperties = async (): Promise<CityProperty[]> => {
       const imageUrl = item.image 
         ? `${ApiConstants.API_BASE_URL}uploads/${item.image}`
         : 'https://via.placeholder.com/300x200?text=Property+Image';
-console.log(imageUrl)
+
       return {
         id: item.property_id || 0,
         title: item.property_name || item.title || 'Property',
+        builder: item.builder || '', // Added builder field
         price: formattedPrice,
         raw_price: numericPrice,
         location: item.location || 'Location not specified',
@@ -220,7 +265,8 @@ console.log(imageUrl)
         overview: item.overview || {},
         latitude: item.latitude,
         longitude: item.longitude,
-        construction_status: item.construction_status || 'Ready to Move',
+        construction_status: item.construction_status || '',
+        construcstion_type: item.construction_type || '',
         area_sqft: areaSqft,
         
         // Include additional fields
@@ -243,13 +289,51 @@ console.log(imageUrl)
   }
 };
 
+// New function to fetch property images by property ID
+export const fetchPropertyImages = async (propertyId: number): Promise<PropertyImage[]> => {
+  try {
+    const response = await fetch(`${ApiConstants.API_BASE_URL}${ApiEndPoints.PROPERTY_IMAGES}?property_id=${propertyId}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    const imagesData = result.data || [];
+    
+    return imagesData.map((item: any) => ({
+      id: item.id,
+      property_id: item.property_id,
+      image_url: item.image_url ? `${ApiConstants.API_BASE_URL}uploads/${item.image_url}` : '',
+      is_primary: item.is_primary === 1,
+      caption: item.caption || '',
+      created_at: item.created_at,
+    }));
+  } catch (error) {
+    console.error('Error fetching property images:', error);
+    return [];
+  }
+};
+
 export const fetchPropertyById = async (id: number): Promise<CityProperty | null> => {
   try {
     const properties = await fetchProperties();
-    const property = properties.find(p => p.id === parseInt(id.toString()));
+    const property = properties.find(p => p.id === id);
     return property || null;
   } catch (error) {
     console.error('Error fetching property by ID:', error);
     return null;
   }
+};
+
+// Add default export for convenience
+export default {
+  fetchProperties,
+  fetchPropertyImages,
+  fetchPropertyById,
 };

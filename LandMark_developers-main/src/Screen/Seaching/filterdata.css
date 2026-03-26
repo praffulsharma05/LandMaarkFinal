@@ -1,0 +1,5 @@
+.filter-pill {
+  @apply px-4 py-2 rounded-full border border-gray-300 bg-white text-sm 
+  focus:outline-none focus:ring-2 focus:ring-blue-500 
+  hover:border-gray-400 transition cursor-pointer;
+}

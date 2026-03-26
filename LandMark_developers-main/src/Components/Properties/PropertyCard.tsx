@@ -49,7 +49,7 @@ const PropertyCard: React.FC<Props> = ({ property, selected, onToggle }) => {
         </div>
 
         <div className="text-gray-500 mb-4 flex items-center gap-1">
-          <span>📍 {property.location}</span>
+          <span> {property.location}</span>
         </div>
 
         <div className="flex justify-between items-center border-t pt-4">

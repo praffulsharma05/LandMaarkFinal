@@ -1,186 +1,210 @@
-/* Wishlist.css
+/* Wishlist.css */
 
 /* Full page styles */
 html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
+margin: 0;
+padding: 0;
+width: 100%;
+min-height: 100%;
+overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Root container fix (IMPORTANT for full width) */
+#root, .app, .container {
+width: 100%;
+max-width: 100%;
+margin: 0;
+padding: 0;
+}
+
+/* Full width wrapper */
+.full-width {
+width: 100%;
+max-width: 100%;
 }
 
 /* Animations */
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+from {
+opacity: 0;
+transform: translateY(-20px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+from { opacity: 0; }
+to { opacity: 1; }
 }
 
 @keyframes scaleIn {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+from {
+transform: scale(0.9);
+opacity: 0;
+}
+to {
+transform: scale(1);
+opacity: 1;
+}
 }
 
 @keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.05); }
 }
 
-.animate-slideDown {
-  animation: slideDown 0.3s ease-out;
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.5s ease-out;
-}
-
-.animate-scaleIn {
-  animation: scaleIn 0.3s ease-out;
-}
-
-.animate-pulse-slow {
-  animation: pulse 2s infinite;
-}
+.animate-slideDown { animation: slideDown 0.3s ease-out; }
+.animate-fadeIn { animation: fadeIn 0.5s ease-out; }
+.animate-scaleIn { animation: scaleIn 0.3s ease-out; }
+.animate-pulse-slow { animation: pulse 2s infinite; }
 
 /* Line clamp utility */
 .line-clamp-1 {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+display: -webkit-box;
+-webkit-line-clamp: 1;
+-webkit-box-orient: vertical;
+overflow: hidden;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f5f0e9;
+background: #f5f0e9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #b7a48b;
-  border-radius: 5px;
-  transition: all 0.3s ease;
+background: #b7a48b;
+border-radius: 5px;
+transition: all 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #8b7356;
+background: #8b7356;
 }
 
 /* Smooth scrolling */
+
 * {
   scroll-behavior: smooth;
-}
+  box-sizing: border-box; /* Prevent width overflow */
+  }
 
 /* Loading skeleton animation */
 @keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
+0% { background-position: -1000px 0; }
+100% { background-position: 1000px 0; }
 }
 
 .skeleton-loading {
-  background: linear-gradient(90deg, #f0e9e0 25%, #e5dbd0 50%, #f0e9e0 75%);
-  background-size: 1000px 100%;
-  animation: shimmer 2s infinite;
+background: linear-gradient(90deg, #f0e9e0 25%, #e5dbd0 50%, #f0e9e0 75%);
+background-size: 1000px 100%;
+animation: shimmer 2s infinite;
 }
 
 /* Card hover effects */
 .property-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+width: 100%;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .property-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 25px 30px -12px rgba(139, 115, 86, 0.2);
+transform: translateY(-8px);
+box-shadow: 0 25px 30px -12px rgba(139, 115, 86, 0.2);
 }
 
 /* Image overlay gradient */
 .image-overlay {
-  background: linear-gradient(to top, rgba(139, 115, 86, 0.3), transparent);
+background: linear-gradient(to top, rgba(139, 115, 86, 0.3), transparent);
+}
+
+/* Grid full width fix */
+.grid {
+width: 100%;
 }
 
 /* Responsive adjustments */
 @media (max-width: 640px) {
-  .grid {
-    gap: 1rem;
-  }
-  
-  .px-8 {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
+.grid {
+gap: 1rem;
+}
+
+.px-8 {
+padding-left: 1rem;
+padding-right: 1rem;
+}
 }
 
 /* Focus styles for accessibility */
 *:focus-visible {
-  outline: 2px solid #b7a48b;
-  outline-offset: 2px;
+outline: 2px solid #b7a48b;
+outline-offset: 2px;
 }
 
 /* Glass morphism effect */
 .glass-effect {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+background: rgba(255, 255, 255, 0.7);
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 /* Hover scale effect */
 .hover-scale {
-  transition: transform 0.2s ease;
+transition: transform 0.2s ease;
 }
 
 .hover-scale:hover {
-  transform: scale(1.02);
+transform: scale(1.02);
 }
 
 /* Price tag glow */
 .price-glow {
-  box-shadow: 0 0 20px rgba(183, 164, 139, 0.3);
+box-shadow: 0 0 20px rgba(183, 164, 139, 0.3);
 }
 
 /* Selection animation */
 @keyframes selectPop {
-  0% {
-    transform: scale(0.9);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+0% { transform: scale(0.9); }
+50% { transform: scale(1.1); }
+100% { transform: scale(1); }
 }
 
 .select-animation {
-  animation: selectPop 0.2s ease-out;
-} 
+animation: selectPop 0.2s ease-out;
+}
+
+/* Sidebar full height (optional) */
+.sidebar {
+position: fixed;
+top: 0;
+left: 0;
+height: 100vh;
+}
+
+/* Section full width background */
+.section {
+width: 100%;
+}
+
+.section-inner {
+max-width: 1200px;
+margin: 0 auto;
+}
+/* Wishlist.css - Add these rules */
+
+/* Ensure flex container takes full height */
+.flex-1 {
+  flex: 1 1 0%;
+  min-height: 0; /* Important for flex children */
+}
+
+/* Optional: Make the empty state container truly centered */
+.flex.items-center.justify-center {
+  min-height: calc(100vh - 80px); /* Adjust 80px to match your header height */
+}

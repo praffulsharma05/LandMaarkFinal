@@ -10,7 +10,7 @@ import Wishlist from "./Screen/Wishlist/Wishlist";
 import TownShip from "./Screen/TownShip/TownShip";
  import PropertySearch from "./Screen/Seaching/PropertySearch";
 import PropertyDetailPage from "./Screen/PropertyPageDetails/PropertyDetailPage";
-  function App() {
+    function App() {
   return (
     <>
       <Navbar />
@@ -22,7 +22,8 @@ import PropertyDetailPage from "./Screen/PropertyPageDetails/PropertyDetailPage"
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/townShip" element={<TownShip />} />
          <Route path="/search" element={<PropertySearch />} />
-    <Route path="/property/:id" element={<PropertyDetailPage />} />
+     <Route path="/property/:id" element={<PropertyDetailPage />} />
+      
      </Routes>
       <Footer />
     </>

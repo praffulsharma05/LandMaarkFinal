@@ -268,7 +268,7 @@ const Home: React.FC = () => {
               <iframe
                 className="w-full h-full"
                 src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                title="LandMark Properties"
+                title="LandMaark Properties"
                 allowFullScreen
               ></iframe>
             </div>

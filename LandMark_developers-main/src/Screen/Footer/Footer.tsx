@@ -17,7 +17,7 @@ const Footer = () => {
   const locations = [
     
     {
-      city: "Ajmer- LandMark Properties",
+      city: "Ajmer- LandMaark Properties",
       address: "676H+2G2 -  Street New Salata, Doha, Qatar",
       phone: "CALL NOW",
     },
@@ -142,14 +142,14 @@ const Footer = () => {
                 className="flex items-center hover:text-yellow-400 transition-colors"
               >
                 <Globe className="w-3 h-3 mr-1 text-yellow-400" />
-                www.LandMarkproperties.com
+                www.LandMaarkproperties.com
               </a>
             </div>
 
             {/* Copyright */}
             <div className="text-xs mb-8 text-gray-500">
               <p>
-                © {new Date().getFullYear()}LandMark Properties. All rights
+                © {new Date().getFullYear()}LandMaark Properties. All rights
                 reserved.
               </p>
             </div>

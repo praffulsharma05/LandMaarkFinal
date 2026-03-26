@@ -39,7 +39,7 @@ export const Section9Data: Section9Type[] = [
     image: "https://propertyadviser.in/assets/front/images/real-estate-news/s1/entertainment-room-design-tips-11-s1.jpg",
     title: "Entertainment Hub",
     description:
-      "From iconic landmarks to exciting theme parks, the region offers world-class entertainment experiences.",
+      "From iconic landmaarks to exciting theme parks, the region offers world-class entertainment experiences.",
   },
   {
     id: 6,
@@ -60,6 +60,6 @@ export const Section9Data: Section9Type[] = [
     image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
     title: "Touristic Appeal",
     description:
-      " Iconic landmarks, a luxurious lifestyle, and beautiful beaches attract millions of visitors every year.",
+      " Iconic landmaarks, a luxurious lifestyle, and beautiful beaches attract millions of visitors every year.",
   },
 ];

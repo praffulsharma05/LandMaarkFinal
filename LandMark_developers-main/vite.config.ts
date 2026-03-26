@@ -1,35 +1,14 @@
-// import { defineConfig } from 'vite'
-// import react from '@vitejs/plugin-react'
-// import tailwindcss from '@tailwindcss/vite'
-// import path from "path";
-
-// // https://vite.dev/config/
-// export default defineConfig({
-//   plugins: [react(),
-//         tailwindcss(),
-
-//   ],
-//   resolve: {
-//     alias: {
-//       "@": path.resolve(__dirname, "./src"),
-//     },
-//   },
-  
-  
-// })
- 
- 
  import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+
 export default defineConfig({
-  plugins: [react(),
- tailwindcss()  ],
+  plugins: [react(), tailwindcss()],
   server: {
     port: 5173,
     proxy: {
       '/api': {
-        target: 'https://biotic-shasta-undeliberative.ngrok-free.dev',
+        target: 'https://jess-unbroadcasted-audrina.ngrok-free.dev', // Use the working URL
         changeOrigin: true,
         secure: false,
         configure: (proxy) => {
@@ -39,7 +18,7 @@ export default defineConfig({
         }
       },
       '/uploads': {
-        target: 'https://biotic-shasta-undeliberative.ngrok-free.dev',
+        target: 'https://jess-unbroadcasted-audrina.ngrok-free.dev', // Use the working URL
         changeOrigin: true,
         secure: false,
         configure: (proxy) => {
