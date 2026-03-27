@@ -260,17 +260,3 @@ const PropertyCards: React.FC<Props> = ({ properties, totalCount, loading = fals
 
 export default PropertyCards;
 
-//    {/* Amenities */}
-            // {property.amenities?.length > 0 && (
-            //   <div className="mt-3 flex flex-wrap gap-2">
-            //     <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-            //       {property.amenities[0].amenity_name}
-            //     </span>
-
-            //     {property.amenities.length > 1 && (
-            //       <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-            //         +{property.amenities.length - 1} more
-            //       </span>
-            //     )}
-            //   </div>
-            // )}

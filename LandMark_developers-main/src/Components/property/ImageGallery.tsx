@@ -1,4 +1,4 @@
-// ImageGallery.jsx - Updated version
+
 import React, { useState, useEffect } from 'react';
 import { Heart, Share2Icon } from 'lucide-react';
 import ImageGalleryModal from '../../Components/ImageGalleryModal/ImageGalleryModal';
