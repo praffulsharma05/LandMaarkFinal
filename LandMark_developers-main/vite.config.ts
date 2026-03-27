@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'https://jess-unbroadcasted-audrina.ngrok-free.dev', // Use the working URL
+        target: 'https://biotic-shasta-undeliberative.ngrok-free.dev', // Use the working URL
         changeOrigin: true,
         secure: false,
         configure: (proxy) => {
@@ -18,7 +18,7 @@ export default defineConfig({
         }
       },
       '/uploads': {
-        target: 'https://jess-unbroadcasted-audrina.ngrok-free.dev', // Use the working URL
+        target: 'https://biotic-shasta-undeliberative.ngrok-free.dev', // Use the working URL
         changeOrigin: true,
         secure: false,
         configure: (proxy) => {

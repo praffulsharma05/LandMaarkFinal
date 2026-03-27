@@ -201,7 +201,7 @@ import { fetchPropertyById, CityProperty } from '../../services/services';
 import PropertyHeader from '../../Components/property/PropertyHeader';
 import ImageGallery from '../../Components/property/ImageGallery';
 import PropertyTabs from '../../Components/property/PropertyTabs';
-import FloorPlansPricing from '../../Components/property/FloorPlansPricing';
+// import FloorPlansPricing from '../../Components/property/FloorPlansPricing';
 import PropertyOverview from '../../Components/property/PropertyOverview';
 import AmenitiesSpecs from '../../Components/property/AmenitiesSpecs';
 import ContactCard from '../../Components/property/ContactCard';
@@ -308,7 +308,7 @@ const PropertyDetailPage = () => {
       <div className="bg-white py-6 px-8 mt-0 shadow-sm mb-6">
         <div className="grid grid-cols-4 text-center divide-x divide-gray-200">
           <div>
-            <p className="text-lg font-semibold text-gray-900">
+            <p className="text-lg font-semibold   text-gray-900">
               {property.bhk} BHK {property.propertyType}
             </p>
             <p className="text-gray-500 text-sm mt-1">Configuration</p>
@@ -340,8 +340,7 @@ const PropertyDetailPage = () => {
           </div>
         </div>
       </div>
-
-      {/* Main Content Grid */}
+       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <PropertyTabs 
@@ -360,8 +359,8 @@ const PropertyDetailPage = () => {
       </div>
 
       {/* Floor Plans and Pricing Section */}
-      <FloorPlansPricing property={property} />
-
+      {/* <FloorPlansPricing property={property} /> */}
+ 
       {/* Property Overview Section */}
       <PropertyOverview 
         property={property}

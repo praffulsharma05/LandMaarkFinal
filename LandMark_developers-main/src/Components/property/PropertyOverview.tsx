@@ -41,8 +41,8 @@ const PropertyOverview: React.FC<PropertyOverviewProps> = ({ property, pricePerS
     <div className="max-w-7xl mx-auto px-4 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-3 -mt-10">
         <div className="lg:col-span-2 bg-white p-8 shadow-sm">
-          <h2 className="text-3xl text-left w-7/13 left-0 border-b border-gray-400 font-bold mb-8">
-            {property.title}Overview
+          <h2 className="text-3xl text-left w-7/13 left-0 border-b w-full border-gray-400 font-bold mb-8">
+            {property.title} Overview
           </h2>
           
           {/* Overview Items Grid */}
@@ -59,7 +59,8 @@ const PropertyOverview: React.FC<PropertyOverviewProps> = ({ property, pricePerS
           </div>
 
           {/* Action Buttons */}
-          <ActionButtons 
+          
+          <ActionButtons    
             onShare={handleShare}
             onSave={handleSave}
             onAskDetails={handleAskDetails}

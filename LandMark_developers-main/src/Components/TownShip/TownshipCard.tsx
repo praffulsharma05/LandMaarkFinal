@@ -10,10 +10,10 @@ const TownshipCard: React.FC<TownshipCardProps> = ({ item, onSelect }) => {
   return (
     <div
       onClick={() => onSelect(item)}
-      className="group bg-white rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition duration-300"
+      className="header group bg-white mb-20 mt-20 rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition duration-300"
     >
       {/* City Image */}
-      <div className=" overflow-hidden">
+      <div className=" h-70 overflow-hidden">
         <img
           src={item.image}
           alt={item.city}
@@ -23,12 +23,12 @@ const TownshipCard: React.FC<TownshipCardProps> = ({ item, onSelect }) => {
 
       {/* City Info */}
       <div className="p-7   ">
-        <h3 className="font-semibold  text-lg text-gray-800">{item.city}</h3>
+        <h3 className="font-semibold text-left  text-lg text-gray-800">{item.city}</h3>
 
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-500  text-right mt-1">
           {item.properties.length} Properties
         </p>
-        <p>{item.description}</p> 
+        <p className="text-left">{item.description}</p> 
       </div>
     </div>
   );

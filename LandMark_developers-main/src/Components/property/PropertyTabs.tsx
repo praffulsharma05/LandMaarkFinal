@@ -34,41 +34,41 @@ const PropertyTabs: React.FC<PropertyTabsProps> = ({
             </h2>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-              <div className="p-4 bg-gray-50 rounded-lg">
+              <div className="p-4  rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <Bed className="w-5 h-5 text-gray-600" />
                   <p className="text-sm text-gray-500">Bedrooms</p>
                 </div>
-                <p className="font-semibold">{property.bhk} BedRoom</p>
+                <p className="font-lg text-left">{property.bhk} BedRoom</p>
               </div>
               
-              <div className="p-4 bg-gray-50 rounded-lg">
+              <div className="p-4  rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <Bath className="w-5 h-5 text-gray-600" />
                   <p className="text-sm text-gray-500">Bathrooms</p>
                 </div>
-                <p className="font-semibold">{property.bhk }</p>
+                <p className=" font-lg text-left">{property.bhk }</p>
               </div>
               
-              <div className="p-4 bg-gray-50 rounded-lg">
+              <div className="p-4  rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <Square className="w-5 h-5 text-gray-600" />
                   <p className="text-sm text-gray-500">Area</p>
                 </div>
-                <p className="font-semibold">{property.area_sqft?.toLocaleString()} sq.ft</p>
+                <p className="font-lg text-left">{property.area_sqft?.toLocaleString()} sq.ft</p>
               </div>
               
-              <div className="p-4 bg-gray-50 rounded-lg">
+              <div className="p-4  rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <Calendar className="w-5 h-5 text-gray-600" />
                   <p className="text-sm text-gray-500">Possession</p>
                 </div>
-                <p className="font-semibold">{property.construction_status }</p>
+                <p className="font-lg text-left">{property.construction_status }</p>
               </div>
             </div>
             
             <div className="space-y-4">
-              <p className="text-gray-700">{property.description}</p>
+              <p className="text-gray-00">{property.description}</p>
             </div>
 
             <div className="mt-6 border-t pt-6">
