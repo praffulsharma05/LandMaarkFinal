@@ -91,10 +91,21 @@ const PropertyCards2: React.FC<Props> = ({ properties, totalCount, loading = fal
                 <span className="detail-item">{property.property_type}</span>
               </div>
               
-              <div className="property-status">
-                <span className={`status-badge ${property.construction_status?.toLowerCase().replace(/\s+/g, '-')}`}>
+              <div className="property-badges">
+                <span className={`status-badge ${
+                  property.construction_status 
+                    ? property.construction_status.toLowerCase().replace(/\s+/g, '-')
+                    : 'n-a'
+                }`}>
                   {property.construction_status || "N/A"}
                 </span>
+                {property.construction_type && (
+                  <span className={`type-badge ${
+                    property.construction_type.toLowerCase().replace(/\s+/g, '-')
+                  }`}>
+                    {property.construction_type}
+                  </span>
+                )}
               </div>
             </div>
           </div>
