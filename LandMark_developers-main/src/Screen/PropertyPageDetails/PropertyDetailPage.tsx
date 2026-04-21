@@ -257,7 +257,7 @@ const PropertyDetailPage = () => {
           <p className="text-red-600 mb-4">{error || 'Property not found'}</p>
           <button
             onClick={() => window.history.back()}
-            className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition"
+            className="bg-primary text-black px-4 py-2 rounded-lg hover:bg-primary-dark transition"
           >
             Go Back
           </button>

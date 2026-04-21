@@ -147,7 +147,7 @@ const TownShip: React.FC = () => {
             {/* VERTICAL BUTTON */}
             <button 
               className="vertical-btn"
-              onClick={() => navigate('/search')}
+              onClick={() => navigate(`/search2/${selectedCity.township_id}`)}
             >
               <span>View More</span>
             </button>
