@@ -44,13 +44,23 @@ const PropertySearch2 = () => {
   };
 
   const resetFilters = () => {
-    setFilters({
+    const clearedFilters = {
       city: "", bhk: "", property_type: "", construction_status: "",
       construction_type: "", minPrice: "", maxPrice: "",
       search: "", sale_type: "", verified: "", project: "", featured_agent: ""
-    });
+    };
+    setFilters(clearedFilters);
     setPriceError("");
-    loadProperties();
+    
+    // Call load with cleared filters
+    setLoading(true);
+    setTimeout(async () => {
+      const query = buildQueryString(clearedFilters);
+      const data = await fetchProperties(townshipId, query);
+      setProperties(data);
+      setTotalCount(data.length);
+      setLoading(false);
+    }, 100);
   };
 
   return (
