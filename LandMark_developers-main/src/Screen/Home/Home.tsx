@@ -91,18 +91,58 @@ const Home: React.FC = () => {
     </div>
   </section>
 
+  {/* Mobile Hero Section */}
+  <section className="md:hidden relative w-full min-h-screen pt-12 overflow-hidden">
+    <div className="absolute inset-0">
+      <img
+        src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=800"
+        alt="Luxury Dubai Property"
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black/50"></div>
+    </div>
+
+    <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 text-center py-10">
+      <h2 className="text-2xl sm:text-3xl font-bold tracking-widest text-white mb-8 drop-shadow-lg">
+        LANDMAARK
+      </h2>
+      <h1 className="text-2xl sm:text-3xl font-bold leading-tight tracking-wide text-white mb-4 drop-shadow-lg">
+        LEGACY OF EXCELLENCE IN LUXURY REAL ESTATE
+      </h1>
+
+      <p className="text-xs sm:text-sm tracking-wide text-gray-200 mb-8 drop-shadow-lg">
+        CHOOSE FROM A RANGE OF APARTMENTS, VILLAS AND TOWNHOUSES
+      </p>
+
+      <button
+        onClick={() =>
+          document
+            .getElementById("enquiry-form")
+            ?.scrollIntoView({ behavior: "smooth" })
+        }
+        className="rounded-btn text-xs sm:text-sm px-6 sm:px-8 py-3 sm:py-3 mb-8 inline-flex"
+      >
+        ENQUIRE NOW
+      </button>
+
+      <div className="w-full max-w-sm mt-8">
+        <AIPrompt />
+      </div>
+    </div>
+  </section>
+
  
  
 
      {/* Second Section */}
-      <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gray-100 py-10 px-4 md:px-32">
+      <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gray-100 py-8 sm:py-10 md:py-12 px-4 sm:px-8 md:px-32">
         
-        <h2 className="text-4xl md:text-5xl tracking-[6px] font-serif text-teal-950 mb-10">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[3px] sm:tracking-[6px] font-serif text-teal-950 mb-8 md:mb-10">
           FIND YOUR PERFECT HOME
         </h2>
 
          
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
           {Section3Data.map((item) => (
             <Section3Card
               key={item.id}
@@ -115,8 +155,8 @@ const Home: React.FC = () => {
         </div>
 
    
-        <div className="mt-20">
-          <button className="rounded-btn  ">
+        <div className="mt-12 md:mt-20">
+          <button className="rounded-btn text-sm sm:text-base">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -132,21 +172,21 @@ const Home: React.FC = () => {
       </section>
       {/* Third Section */}
         
-      <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-[#f5f2ec] py-10 px-4 md:px-32">
-        <div className="w-full px-6 lg:px-20">
-          <div className="text-center mb-10">
-            <h2 className="text-6xl tracking-wider text-teal-900 font-light">
+      <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-[#f5f2ec] py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-32">
+        <div className="w-full px-2 sm:px-4 lg:px-20">
+          <div className="text-center mb-8 md:mb-10">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wider text-teal-900 font-light">
               WHY LandMaark PROPERTIES?
             </h2>
 
-            <p className="mt-4 text-gray-700 max-w-5xl mx-auto leading-relaxed text-lg">
+            <p className="mt-4 text-gray-700 max-w-5xl mx-auto leading-relaxed text-sm sm:text-base lg:text-lg">
               Renowned for iconic developments and exceptional craftsmanship,
               LandMaark Properties blends elegance, innovation, and world-class
               amenities.
             </p>
           </div>
 
-           <div className="grid md:grid-cols-3 gap-10">
+           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-10">
             {sectionData.map((item, index) => (
               <SectionCard
                 key={index}
@@ -159,13 +199,13 @@ const Home: React.FC = () => {
          </div>
       </section>
 
-      <section className="bg-[#f4f4f2] relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen py-10 px-4 md:px-32">
+      <section className="bg-[#f4f4f2] relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-32">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl tracking-[3px] font-semibold text-[#1c3b2a] mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl tracking-[2px] md:tracking-[3px] font-semibold text-[#1c3b2a] mb-6 md:mb-8">
             EXPLORE OUR ICONIC PROPERTIES
           </h2>
 
-          <p className="max-w-3xl mx-auto text-gray-600 leading-relaxed mb-16 text-sm md:text-base">
+          <p className="max-w-3xl mx-auto text-gray-600 leading-relaxed mb-10 md:mb-16 text-xs sm:text-sm md:text-base">
          LandMaark Properties is known for creating exceptional living spaces that combine luxury,
           comfort, and timeless design. From elegant residential towers to thoughtfully planned communities, 
           every LandMaark development reflects a commitment to quality craftsmanship and modern living.
@@ -173,25 +213,25 @@ const Home: React.FC = () => {
             and a sense of lasting value.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-7">
             {Section5Data.map((item) => (
               <Section5Card key={item.id} property={item} />
             ))}
           </div>
-          <p className="mt-10">
+          <p className="mt-8 md:mt-10 text-xs sm:text-sm text-gray-600">
             Explore LandMaark townhouses in Dubai, exquisite DAMAC villas, and
             off-plan projects that redefine modern luxury. With flexible DAMAC
             payment plans and prime locations, investing in DAMAC real estate
             has never been more accessible.
           </p>
-          <div className="mt-10">
+          <div className="mt-8 md:mt-10">
              <button
             onClick={() =>
               document
                 .getElementById("properties")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
-            className="rounded-btn"
+            className="rounded-btn text-sm sm:text-base"
           >
             ENQUIRE NOW
           </button>
@@ -200,20 +240,20 @@ const Home: React.FC = () => {
       </section>
       
        
-      <section className="bg-[#f6f3ee] relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen py-5 px-4 md:px-32 ">
+      <section className="bg-[#f6f3ee] relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-32">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl md:text-5xl tracking-[3px] font-semibold text-[#1c3b2a] mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-[2px] md:tracking-[3px] font-semibold text-[#1c3b2a] mb-6 md:mb-8">
             A WORLD OF LUXURY
           </h2>
 
-          <p className="max-w-3xl mx-auto text-gray-600 leading-relaxed mb-10 text-sm md:text-base">
+          <p className="max-w-3xl mx-auto text-gray-600 leading-relaxed mb-8 md:mb-10 text-xs sm:text-sm md:text-base">
             Discover the finest in DAMAC Properties Dubai from expansive master
             communities to exclusive designer branded residences through the
             LandMaark Properties official website and experience extraordinary
             living, effortlessly within your reach.
           </p>
 
-          <div className="relative w-full h-150 overflow-hidden ">
+          <div className="relative w-full h-80 sm:h-96 md:h-150 overflow-hidden">
             {Section6Data.map((item, index) => (
               <Section6Card
                 key={item.id}
@@ -224,19 +264,19 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
-      <section className="bg-white relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen  py-5 px-4 md:px-32">
-        <div className="max-w-7xl mx-auto mb-10 mt-1 text-center">
-          <h2 className="text-4xl md:text-5xl tracking-[6px] font-semibold text-[#1c3b2a] mb-6">
+      <section className="bg-white relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-32">
+        <div className="max-w-7xl mx-auto mb-8 md:mb-10 mt-1 text-center">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-[4px] md:tracking-[6px] font-semibold text-[#1c3b2a] mb-6 md:mb-8">
             CURATED COLLABORATIONS
           </h2>
 
-          <p className="max-w-4xl mx-auto text-gray-600 text-lg leading-relaxed mb-16">
+          <p className="max-w-4xl mx-auto text-gray-600 text-xs sm:text-sm md:text-lg leading-relaxed mb-10 md:mb-16">
             LandMaark Properties brings new and exciting living concepts to life,
             with superior designs and details, by working with the finest
             designers and partnering with some of the most prestigious fashion
             and lifestyle brands.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {Section7Data.map((item) => (
               <Section7Card key={item.id} item={item} />
             ))}
@@ -275,13 +315,13 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
-      <section className="bg-white relative py-20 px-6">
+      <section className="bg-white relative py-8 sm:py-10 md:py-20 px-4 sm:px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-center text-4xl md:text-5xl tracking-[6px] font-semibold text-[#0d2c24] mb-16">
+          <h2 className="text-center text-3xl sm:text-4xl md:text-5xl tracking-[4px] md:tracking-[6px] font-semibold text-[#0d2c24] mb-10 md:mb-16">
             WHY INVEST IN US?
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
             {Section9Data.map((item) => (
               <Section9Card key={item.id} item={item} />
             ))}
@@ -294,57 +334,57 @@ const Home: React.FC = () => {
   <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 -mt-10">
 
     {/* Left Text */}
-    <div className="px-16 py-20 flex flex-col justify-center">
-      <h2 className="text-5xl font-serif tracking-wide text-[#0d2c24] leading-snug mb-12">
+    <div className="px-6 sm:px-12 md:px-16 py-12 md:py-20 flex flex-col justify-center">
+      <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif tracking-wide text-[#0d2c24] leading-snug mb-8 md:mb-12">
         Where Luxury Meets Legacy
       </h2>
 
-      <p className="max-w-xl text-gray-600 text-base leading-relaxed">
+      <p className="max-w-xl text-gray-600 text-sm md:text-base leading-relaxed">
         Discover the perfect blend of luxury and legacy at LandMaark Properties.
       </p>
     </div>
 
     {/* Form */}
-    <div className="bg-[#dedede] px-16 py-20">
+    <div className="bg-[#dedede] px-6 sm:px-12 md:px-16 py-12 md:py-20">
 
-      <h3 className="text-3xl text-left tracking-wide text-[#2f3e46] border-b-2 border-[#2f3e46] inline-block mb-4">
+      <h3 className="text-2xl sm:text-3xl text-left tracking-wide text-[#2f3e46] border-b-2 border-[#2f3e46] inline-block mb-4">
         DISCOVER YOUR NEXT ADDRESS
       </h3>
 
-      <p className="text-gray-600 mb-10">
+      <p className="text-xs sm:text-sm text-gray-600 mb-6 md:mb-10">
         *All fields are compulsory
       </p>
 
-      <form className="space-y-8" onSubmit={handleSubmit}>
+      <form className="space-y-6 md:space-y-8" onSubmit={handleSubmit}>
 
         <input
           type="text"
           placeholder="First Name *"
           required
-          className="w-full bg-transparent border-b border-gray-500 py-2 focus:outline-none"
+          className="w-full bg-transparent border-b border-gray-500 py-2 text-sm focus:outline-none"
         />
 
         <input
           type="email"
           placeholder="Email *"
           required
-          className="w-full bg-transparent border-b border-gray-500 py-2 focus:outline-none"
+          className="w-full bg-transparent border-b border-gray-500 py-2 text-sm focus:outline-none"
         />
 
         <input
           type="tel"
           placeholder="+91 Phone *"
           required
-          className="w-full bg-transparent border-b border-gray-500 py-2 focus:outline-none"
+          className="w-full bg-transparent border-b border-gray-500 py-2 text-sm focus:outline-none"
         />
 
         <textarea
           rows={4}
           placeholder="Write your comments..."
-          className="w-full border border-gray-400 rounded-lg p-3 focus:outline-none"
+          className="w-full border border-gray-400 rounded-lg p-3 text-sm focus:outline-none"
         />
 
-        <button className="rounded-btn">
+        <button className="rounded-btn text-sm">
           Get a call back!
         </button>
 
@@ -353,26 +393,26 @@ const Home: React.FC = () => {
 
   </div>
 
-  <div className="bg-[#e6e6e6] py-10">
-    <h2 className="text-6xl text-gray-500 px-20 font-light">
+  <div className="bg-[#e6e6e6] py-8 md:py-10">
+    <h2 className="text-4xl md:text-6xl text-gray-500 px-6 md:px-20 font-light">
       Live the luxury
     </h2>
   </div>
 
 </section>
-  <section className="md:hidden w-full bg-[#f4f1ec] px-6 py-16">
+  <section className="md:hidden w-full bg-[#f4f1ec] px-4 sm:px-6 py-12 sm:py-16">
 
   <h2 className="text-2xl font-serif text-[#0d2c24] mb-4">
     Where Luxury Meets Legacy
   </h2>
 
-  <p className="text-gray-600 text-sm mb-10">
+  <p className="text-gray-600 text-xs sm:text-sm mb-8">
     Discover the perfect blend of luxury and legacy at LandMaark Properties.
   </p>
 
-  <div className="bg-[#dedede] p-6 rounded-lg">
+  <div className="bg-[#dedede] p-4 sm:p-6 rounded-lg">
 
-    <h3 className="text-xl text-[#2f3e46] border-b border-[#2f3e46] inline-block mb-4">
+    <h3 className="text-lg sm:text-xl text-[#2f3e46] border-b border-[#2f3e46] inline-block mb-4">
       DISCOVER YOUR NEXT ADDRESS
     </h3>
 
@@ -380,44 +420,44 @@ const Home: React.FC = () => {
       *All fields are compulsory
     </p>
 
-    <form className="space-y-6" onSubmit={handleSubmit}>
+    <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
 
       <input
         type="text"
         placeholder="First Name *"
         required
-        className="w-full bg-transparent border-b border-gray-500 py-2 focus:outline-none"
+        className="w-full bg-transparent border-b border-gray-500 py-2 text-xs focus:outline-none"
       />
 
       <input
         type="email"
         placeholder="Email *"
         required
-        className="w-full bg-transparent border-b border-gray-500 py-2 focus:outline-none"
+        className="w-full bg-transparent border-b border-gray-500 py-2 text-xs focus:outline-none"
       />
 
       <input
         type="tel"
         placeholder="+91 Phone *"
         required
-        className="w-full bg-transparent border-b border-gray-500 py-2 focus:outline-none"
+        className="w-full bg-transparent border-b border-gray-500 py-2 text-xs focus:outline-none"
       />
 
       <textarea
         rows={4}
         placeholder="Write your comments..."
-        className="w-full border border-gray-400 rounded-lg p-3 focus:outline-none"
+        className="w-full border border-gray-400 rounded-lg p-3 text-xs focus:outline-none"
       />
 
-      <button className="rounded-btn w-full">
+      <button className="rounded-btn w-full text-xs sm:text-sm">
         Get a call back!
       </button>
 
     </form>
   </div>
 
-  <div className="bg-[#e6e6e6] py-8 mt-10">
-    <h2 className="text-3xl text-gray-500 font-light">
+  <div className="bg-[#e6e6e6] py-6 sm:py-8 mt-8">
+    <h2 className="text-2xl sm:text-3xl text-gray-500 font-light px-4">
       Live the luxury
     </h2>
   </div>

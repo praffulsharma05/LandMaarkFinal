@@ -8,7 +8,7 @@ export const ApiEndPoints = {
     AI_SEARCH: 'api/propSearch/ai',
     TOWNSHIPS: "api/townships",
     TOWNSHIP_PROPERTIES: (id: number) => `api/townships/${id}/popular-properties`,
-        TOWNSHIP_ALL_PROPERTIES: (id: number) => `api/townships/${id}/all-properties`,
+    TOWNSHIP_ALL_PROPERTIES: (id: number) => `api/townships/${id}/all-properties`,
 
 }
  
