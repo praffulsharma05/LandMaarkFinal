@@ -7,6 +7,12 @@ const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
+  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -16,11 +22,20 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   const navLinks = [
     { name: "Home", path: "/" },
-     
-    // { name: "Property", path: "/search" },
-    // { name: "", path: "/Wishlist" },
     { name: "Township", path: "/Township" },
     { name: "About", path: "/About" },
     { name: "Contact", path: "/contactUs" },
@@ -30,100 +45,140 @@ const Navbar: React.FC = () => {
     <>
       {/* Navbar */}
       <header
-        className={`fixed top-0 left-0 opacity-85 w-full z-9999 transition-all duration-500
-  ${
-    scrolled
-      ? "bg-black/90 backdrop-blur-md py-2"
-      : "bg-linear-to-r from-black/80 to-black/60 py-3"
-  }`}
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500
+          ${
+            scrolled
+              ? "bg-black/95 backdrop-blur-md py-2 shadow-lg"
+              : "bg-gradient-to-r from-black/90 to-black/70 py-3"
+          }`}
       >
-        <div className="max-w-8xl mx-auto px-6 flex items-center justify-between">
-          
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <Link
+              to="/"
+              className="flex items-center gap-2 flex-shrink-0 transition-transform duration-300 hover:scale-105"
+            >
+              <img
+                src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down,q=100/YNqMEWZ1PXT9OR5G/untitled-removebg-preview---edited-ad0zeWFJjhv7eqm2.png"
+                alt="Real Estate"
+                className="h-12 sm:h-14 md:h-16 lg:h-20 object-contain w-auto"
+              />
+            </Link>
 
-          <Link to="/" className="flex items-center  gap-2">
-            <img
-            src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down,q=100/YNqMEWZ1PXT9OR5G/untitled-removebg-preview---edited-ad0zeWFJjhv7eqm2.png"
-              alt="Real Estate"
-              className="h-20 object-contain"
-            />
-          </Link>
- 
-          {/* Desktop Menu */}
-          <nav className="hidden lg:flex items-center gap-4 text-sm tracking-widest">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={`relative text-gray-300 hover:text-white transition duration-300 pb-2 ${
-                  location.pathname === link.path ? "text-white" : ""
-                }`}
-              >
-                {link.name}
+            {/* Desktop Menu */}
+            <nav className="hidden md:flex items-center gap-4 lg:gap-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={`relative text-gray-300 hover:text-white transition-colors duration-300 text-sm lg:text-base font-medium tracking-wide pb-2 group
+                    ${location.pathname === link.path ? "text-yellow-400" : ""}`}
+                >
+                  {link.name}
+                  {/* Animated underline */}
+                  <span
+                    className={`absolute left-0 bottom-0 h-0.5 bg-yellow-400 transition-all duration-300 ${
+                      location.pathname === link.path
+                        ? "w-full"
+                        : "w-0 group-hover:w-full"
+                    }`}
+                  />
+                </Link>
+              ))}
+            </nav>
 
-                {/* Gold underline */}
-                <span
-                  className={`absolute left-0 bottom-0 h-0.5 bg-yellow-500 transition-all duration-300 ${
-                    location.pathname === link.path
-                      ? "w-full"
-                      : "w-0 group-hover:w-full"
-                  }`}
-                ></span>
-              </Link>
-            ))}
-          </nav>
-
-          {/* Book Button */}
-
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden text-white"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+            {/* Mobile Menu Button - Yellow Background */}
+            <button
+              className="md:hidden relative z-50 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg p-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:ring-offset-2 focus:ring-offset-black shadow-lg"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isOpen}
+            >
+              {isOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-black shadow-2xl transform transition-transform duration-500 z-9998 ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex justify-between items-center px-6 h-20 border-b border-gray-800">
-          <span className="text-lg font-semibold text-white">Menu</span>
+        className={`fixed inset-0 bg-black/80 backdrop-blur-sm z-40 transition-all duration-500 md:hidden
+          ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        onClick={() => setIsOpen(false)}
+        aria-hidden="true"
+      />
 
-          <button aria-label="Close menu" onClick={() => setIsOpen(false)}>
-            <X className="text-white" />
+      {/* Mobile Menu Panel */}
+      <div
+        className={`fixed top-0 right-0 h-full w-[280px] sm:w-80 bg-gradient-to-b from-black/95 to-black/98 backdrop-blur-md shadow-2xl z-50 transition-transform duration-500 ease-out md:hidden
+          ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+      >
+        {/* Mobile Menu Header with Yellow Accent */}
+        <div className="flex justify-between items-center px-6 h-20 border-b border-yellow-500/30">
+          <span className="text-lg font-semibold text-white tracking-wide">Menu</span>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="text-gray-400 hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 rounded-lg p-1"
+            aria-label="Close menu"
+          >
+            <X size={24} />
           </button>
         </div>
 
-        <div className="flex flex-col p-6 gap-5">
-          {navLinks.map((link) => (
+        {/* Mobile Navigation Links */}
+        <nav className="flex flex-col p-6 gap-5">
+          {navLinks.map((link, index) => (
             <Link
               key={link.name}
               to={link.path}
               onClick={() => setIsOpen(false)}
-              className="text-gray-300 hover:text-white text-lg"
+              className={`relative text-gray-300 hover:text-yellow-400 text-lg font-medium transition-all duration-300 py-2 group
+                ${location.pathname === link.path ? "text-yellow-400" : ""}`}
+              style={{
+                animation: isOpen ? `slideIn 0.3s ease-out ${index * 0.07}s forwards` : "none",
+                opacity: 0,
+                transform: "translateX(20px)",
+              }}
             >
               {link.name}
+              {/* Animated underline for mobile */}
+              <span
+                className={`absolute left-0 -bottom-1 h-0.5 bg-yellow-400 transition-all duration-300 ${
+                  location.pathname === link.path ? "w-8" : "w-0 group-hover:w-8"
+                }`}
+              />
             </Link>
           ))}
-        </div>
+        </nav>
       </div>
 
-      {/* Overlay */}
-      {isOpen && (
-        <div
-          role="button"
-          tabIndex={0}
-          className="fixed inset-0 bg-black/60 z-9997"
-          onClick={() => setIsOpen(false)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") setIsOpen(false);
-          }}
-        ></div>
-      )}
+      {/* Animation Keyframes */}
+      <style>{`
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        @keyframes pulse {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+        }
+        
+        .menu-button-animation {
+          animation: pulse 0.3s ease-in-out;
+        }
+      `}</style>
     </>
   );
 };
