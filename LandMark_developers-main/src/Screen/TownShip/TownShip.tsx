@@ -1,29 +1,18 @@
  
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Township,
-  Property,
-} from "../../store/TownShip/townshipsData";
+import { Township } from "../../store/TownShip/TownshipTypes";
 import TownshipCard from "../../Components/TownShip/TownshipCard";
-import { fetchTownships } from "../../services/TownshipService";
+import { useTownships } from "../../Hooks/useTownships";
+import { useTownshipProperties } from "../../Hooks/useTownshipProperties";
 import "./township.css";
  
 const TownShip: React.FC = () => {
   const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState<Township | null>(null);
-  const [townships, setTownships] = useState<Township[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { townships, loading } = useTownships();
+  const { properties, loading: propertiesLoading } = useTownshipProperties(selectedCity?.township_id || null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const loadTownships = async () => {
-      const data = await fetchTownships();
-      setTownships(data);
-      setLoading(false);
-    };
-    loadTownships();
-  }, []);
 
   const openCity = (item: Township) => {
     setSelectedCity(item);
@@ -115,22 +104,26 @@ const TownShip: React.FC = () => {
             </h2>
             <p className="mt-3 text-gray-600">{selectedCity.description || selectedCity.location}</p>
             {/* PROPERTY GRID */}
-            {selectedCity.properties && selectedCity.properties.length > 0 ? (
+            {propertiesLoading ? (
+              <div className="flex justify-center items-center py-10">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              </div>
+            ) : properties.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-10">
-                {selectedCity.properties.map((property: Property) => (
+                {properties.map((property) => (
                   <div
-                    key={property.id}
+                    key={property.property_id}
                     className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition"
                   >
                     <img
                       src={property.image}
-                      alt={property.title}
+                      alt={property.property_name}
                       className="w-full h-48 object-cover"
                     />
 
                     <div className="p-4">
                       <h3 className="font-semibold text-gray-800">
-                        {property.title}
+                        {property.property_name}
                       </h3>
 
                       <p className="text-sm text-gray-600 mt-2">
