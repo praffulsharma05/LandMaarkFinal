@@ -117,13 +117,13 @@ const TownShip: React.FC = () => {
                   >
                     <img
                       src={property.image}
-                      alt={property.property_name}
+                      alt={property.title}
                       className="w-full h-48 object-cover"
                     />
 
                     <div className="p-4">
                       <h3 className="font-semibold text-gray-800">
-                        {property.property_name}
+                        {property.title}
                       </h3>
 
                       <p className="text-sm text-gray-600 mt-2">

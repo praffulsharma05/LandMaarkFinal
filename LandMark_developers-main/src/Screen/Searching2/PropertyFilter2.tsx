@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { CurrencyRupeeIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
+import { ApiConstants } from "../../constants/ApiConstants";
+import { ApiEndPoints } from "../../constants/ApiEndpoints";
 
 interface FiltersType {
   city: string;
@@ -27,64 +30,45 @@ interface Props {
 
 const PropertyFilters2: React.FC<Props> = ({
   filters,
-  filterOptions,
+  filterOptions: propFilterOptions,
   priceError,
   handleFilterChange,
   handleSubmit,
   resetFilters
 }) => {
-  //   const [cities, setCities] = useState<{ city_id: number; name: string }[]>([]);
-  //   const [isLoadingCities, setIsLoadingCities] = useState(false);
+  const [optionsData, setOptionsData] = useState<any>({});
 
-  //   const fetchCities = async () => {
-//     setIsLoadingCities(true);
-//     try {
-//       const url = "/api/cities";
-//       console.log("🏙️ Fetching cities from:", url);
+  const fetchOptions = async () => {
+    try {
+      const url = `${ApiConstants.API_BASE_URL}${ApiEndPoints.OPTIONS}`;
+      console.log("🔍 Fetching options from:", url);
 
-//       const res = await fetch(url, {
-//         method: 'GET',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         }
-//       });
-//       if (!res.ok) {
-//         throw new Error(`HTTP error! status: ${res.status}`);
-//       }
-//       const json = await res.json();
-//       console.log("🏙️ Cities API response:", json);
-
-//       const citiesData = json.data || json || [];
-//       setCities(citiesData);
-//     } catch (error) {
-//       console.error("❌ Error fetching cities:", error);
-//     } finally {
-//       setIsLoadingCities(false);
-//     }
-//   };
-  
-  //   useEffect(() => {
-    //     fetchCities();
-    //   }, []);
-
-  // Helper function to safely get value from option (handles both string and object)
-  const getOptionValue = (option: any): string => {
-    if (typeof option === 'string') return option;
-    if (option && typeof option === 'object') {
-      return option.name || option.bhk?.toString() || '';
+      const res = await axios.get(url, { headers: ApiConstants.HEADERS });
+      console.log("📦 Options data:", res.data);
+      setOptionsData(res.data);
+    } catch (error) {
+      console.error("❌ Error fetching options:", error);
     }
-    return '';
   };
 
-  // Helper function to safely get display label from option
-  const getOptionLabel = (option: any): string => {
-    if (typeof option === 'string') return option;
-    if (option && typeof option === 'object') {
-      if (option.bhk) return `${option.bhk} BHK`;
-      if (option.name) return option.name;
-      return '';
-    }
-    return '';
+  useEffect(() => {
+    fetchOptions();
+  }, []);
+
+  const filterOptions = propFilterOptions?.bhk ? propFilterOptions : optionsData;
+
+  // Helper function to safely get value from option
+  const getOptionValue = (option: any, type: string): string => {
+    if (!option) return '';
+    if (type === 'bhk') return option.bhk?.toString() || '';
+    return option.name || option.bhk?.toString() || '';
+  };
+
+  // Helper function to get display label from option
+  const getOptionLabel = (option: any, type: string): string => {
+    if (!option) return '';
+    if (type === 'bhk') return `${option.bhk} BHK`;
+    return option.name || '';
   };
 
   // Safe array access with fallback
@@ -110,8 +94,8 @@ const PropertyFilters2: React.FC<Props> = ({
             >
               <option value="">BHK</option>
               {bhkOptions.map((option: any, index: number) => (
-                <option key={index} value={getOptionValue(option)}>
-                  {getOptionLabel(option)}
+                <option key={index} value={getOptionValue(option, 'bhk')}>
+                  {getOptionLabel(option, 'bhk')}
                 </option>
               ))}
             </select>
@@ -124,8 +108,8 @@ const PropertyFilters2: React.FC<Props> = ({
             >
               <option value="">Property Type</option>
               {propertyTypeOptions.map((option: any, index: number) => (
-                <option key={index} value={getOptionValue(option)}>
-                  {getOptionLabel(option)}
+                <option key={index} value={getOptionValue(option, 'property')}>
+                  {getOptionLabel(option, 'property')}
                 </option>
               ))}
             </select>
@@ -153,8 +137,8 @@ const PropertyFilters2: React.FC<Props> = ({
             >
               <option value="">Construction Status</option>
               {constructionStatusOptions.map((option: any, index: number) => (
-                <option key={index} value={getOptionValue(option)}>
-                  {getOptionLabel(option)}
+                <option key={index} value={getOptionValue(option, 'status')}>
+                  {getOptionLabel(option, 'status')}
                 </option>
               ))}
             </select>
@@ -188,8 +172,8 @@ const PropertyFilters2: React.FC<Props> = ({
               >
                 <option value="">Construction Type</option>
                 {constructionTypeOptions.map((option: any, index: number) => (
-                  <option key={index} value={getOptionValue(option)}>
-                    {getOptionLabel(option)}
+                  <option key={index} value={getOptionValue(option, 'type')}>
+                    {getOptionLabel(option, 'type')}
                   </option>
                 ))}
               </select>

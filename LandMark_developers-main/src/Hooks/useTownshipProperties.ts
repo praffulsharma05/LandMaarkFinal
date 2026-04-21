@@ -7,7 +7,6 @@ export const useTownshipProperties = (townshipId: number | null) => {
 
   useEffect(() => {
     if (!townshipId) return;
-
     const loadProperties = async () => {
       setLoading(true);
       const data = await fetchTownshipProperties(townshipId);

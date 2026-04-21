@@ -4,13 +4,14 @@ import { ApiEndPoints } from "../constants/ApiEndpoints";
 
 export interface TownshipProperty {
   property_id: number;
-  property_name: string;
+  title: string;
+  property_name?: string;
   image: string;
   description: string;
-  price: string;
-  location: string;
-  bhk: number;
-  area_sqft: number;
+  price?: string;
+  location?: string;
+  bhk?: number;
+  area_sqft?: number;
 }
 
 export const fetchTownshipProperties = async (townshipId: number): Promise<TownshipProperty[]> => {
