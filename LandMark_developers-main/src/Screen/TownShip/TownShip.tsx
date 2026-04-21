@@ -82,8 +82,8 @@ const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
       <aside
         role="dialog"
         aria-modal="true"
-        className={`fixed lg:relative right-0 top-0
-        h-160
+        className={` lg:relative right-0 top-0
+        h-180
         w-full sm:w-[50%] md:w-[50%] lg:w-[65%]
         bg-white shadow-2xl
         transition-transform duration-300
@@ -140,7 +140,7 @@ const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
               <span>View More</span>
             </button>
           </div>
-        )}
+        )} 
       </aside>
     </div>
   );
