@@ -36,16 +36,18 @@ const PropertyFilters2: React.FC<Props> = ({
   const [optionsData, setOptionsData] = useState<FilterOptions>({});
 
   useEffect(() => {
+    let mounted = true;
     const fetchOptions = async () => {
       try {
         const url = `${ApiConstants.API_BASE_URL}${ApiEndPoints.OPTIONS}`;
         const res = await axios.get(url, { headers: ApiConstants.HEADERS });
-        setOptionsData(res.data);
+        if (mounted) setOptionsData(res.data);
       } catch (error) {
         console.error("Error fetching options:", error);
       }
     };
     fetchOptions();
+    return () => { mounted = false; };
   }, []);
 
   const filterOptions = optionsData;

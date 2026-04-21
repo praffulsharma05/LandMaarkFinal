@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapPinIcon, Heart } from "lucide-react";
+import { MapPinIcon, HeartIcon } from "@heroicons/react/24/outline";
 import { Property } from "./types";
 import "./PropertyCards2.css";
-
+import "./HeartIcon.css";
 interface Props {
   properties: Property[];
   totalCount: number;
@@ -20,40 +20,54 @@ const formatBHK = (bhk: number) => bhk === 0 ? "Studio" : `${bhk} BHK`;
 
 const PropertyCards2: React.FC<Props> = ({ properties, totalCount, loading = false }) => {
   const navigate = useNavigate();
-  const [imageErrors] = useState<Set<number>>(new Set());
   const [likedProperties, setLikedProperties] = useState<Set<number>>(new Set());
+  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
 
-  const handleImageError = (propertyId: number) => {
-    imageErrors.add(propertyId);
+  const handleCardClick = (propertyId: number) => {
+    navigate(`/property/${propertyId}`);
   };
 
-  const toggleLike = (propertyId: number) => {
-    setLikedProperties(prev => {
+  const handleImageError = (propertyId: number) => {
+    setImageErrors((prev) => new Set(prev).add(propertyId));
+  };
+
+  const toggleLike = (propertyId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLikedProperties((prev) => {
       const newSet = new Set(prev);
-      newSet.has(propertyId) ? newSet.delete(propertyId) : newSet.add(propertyId);
+      if (newSet.has(propertyId)) {
+        newSet.delete(propertyId);
+      } else {
+        newSet.add(propertyId);
+      }
       return newSet;
     });
   };
 
   return (
     <div className="property-cards-container">
-      {totalCount > 0 && <p className="results-count">{totalCount} Properties found</p>}
+      {totalCount > 0 && <h1 className="results-count">{totalCount} Properties found</h1>}
       
       <div className="property-grid">
         {properties.map((property) => (
-          <div key={property.property_id} className="property-card">
+          <div 
+              key={property.property_id} 
+              className="property-card"
+              onClick={() => handleCardClick(property.property_id)}
+            >
             <div className="card-image-wrapper">
               <img
-                src={property.image || "/placeholder-property.jpg"}
+                src={imageErrors.has(property.property_id) ? "/placeholder-property.jpg" : (property.image || "/placeholder-property.jpg")}
                 alt={property.title}
                 className="card-image"
                 onError={() => handleImageError(property.property_id)}
               />
               <button 
                 className={`like-button ${likedProperties.has(property.property_id) ? 'liked' : ''}`}
-                onClick={() => toggleLike(property.property_id)}
+                onClick={(e) => toggleLike(property.property_id, e)}
+                type="button"
               >
-                <Heart className="like-icon" />
+                <HeartIcon className={`heart-icon ${likedProperties.has(property.property_id) ? 'selected' : ''}`} />
               </button>
               {property.verified === 1 && <span className="verified-badge">Verified</span>}
             </div>
