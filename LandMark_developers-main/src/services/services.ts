@@ -1,6 +1,7 @@
 
 import { ApiConstants } from "../constants/ApiConstants";
 import { ApiEndPoints } from "../constants/ApiEndpoints";
+import { Township } from "../store/TownShip/townshipsData";
 
 export interface CityProperty {
   id: number;

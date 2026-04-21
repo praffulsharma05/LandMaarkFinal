@@ -6,8 +6,7 @@ import {
   Property,
 } from "../../store/TownShip/townshipsData";
 import TownshipCard from "../../Components/TownShip/TownshipCard";
-import { ApiConstants } from "../../constants/ApiConstants";
-import { ApiEndPoints } from "../../constants/ApiEndpoints";
+import { fetchTownships } from "../../services/TownshipService";
 import "./township.css";
  
 const TownShip: React.FC = () => {
@@ -18,24 +17,12 @@ const TownShip: React.FC = () => {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const fetchTownships = async () => {
-      try {
-        const response = await fetch(`${ApiConstants.API_BASE_URL}${ApiEndPoints.TOWNSHIPS}`, {
-          method: 'GET',
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Accept': '*/*',
-          },
-        });
-        const data = await response.json();
-        setTownships(data.data || []);
-      } catch (error) {
-        console.error('Error fetching townships:', error);
-      } finally {
-        setLoading(false);
-      }
+    const loadTownships = async () => {
+      const data = await fetchTownships();
+      setTownships(data);
+      setLoading(false);
     };
-    fetchTownships();
+    loadTownships();
   }, []);
 
   const openCity = (item: Township) => {
@@ -61,20 +48,7 @@ const TownShip: React.FC = () => {
     return () => window.removeEventListener("keydown", handleEscape);
   }, []);
 
-  type DropdownKey = "buyers" | "tenants" | "sellers" | "services" | "news" | null;
-  type TabKey = "BUY" | "RENT" | "COMMERCIAL" | "PG/CO-LIVING" | "PLOTS";
-  const TABS: TabKey[] = ["BUY", "RENT", "COMMERCIAL", "PG/CO-LIVING", "PLOTS"];
- 
-  const [dropdown, setDropdown] = useState<DropdownKey>(null);
-  const [activeTab, setActiveTab] = useState<TabKey>("BUY");
-  const [search, setSearch] = useState("");
-  const navItems = [
-    { key: "buyers", label: "For Buyers" },
-    { key: "tenants", label: "For Tenants" },
-    { key: "sellers", label: "For Sellers" },
-    { key: "services", label: "Services" },
-    { key: "news", label: "News & Guide" },
-  ]; return (
+  return (
      <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen min-h-screen bg-gray-100 -mt-10 flex overflow-x-hidden pb-10">
        {/* LEFT CITY GRID */}
        <div
