@@ -33,7 +33,7 @@ export interface CityProperty {
   latitude?: string;
   longitude?: string;
   construction_status?: string;
-  construcstion_type?: string;
+construction_type?:string;  property_type?: string;
   area_sqft?: number;
   raw_price?: number;
   
@@ -158,7 +158,9 @@ export const fetchProperties = async (townshipId: number = 9): Promise<CityPrope
         latitude: item.latitude,
         longitude: item.longitude,
         construction_status: item.construction_status || '',
+        construction_type: item.construction_type || '',
         construcstion_type: item.construction_type || '',
+        property_type: item.property_type || '',
         area_sqft: areaSqft,
         
         // Include additional fields
