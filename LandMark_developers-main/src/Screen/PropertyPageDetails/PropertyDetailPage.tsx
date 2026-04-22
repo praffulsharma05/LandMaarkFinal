@@ -195,7 +195,8 @@
 import React, { useState, useEffect } from 'react';
 import { Info, Loader } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { fetchPropertyById, CityProperty } from '../../services/services';
+import { CityProperty } from '../../services/services';
+import { ApiConstants } from '../../constants/ApiConstants';
 
 // Components
 import PropertyHeader from '../../Components/property/PropertyHeader';
@@ -206,6 +207,32 @@ import PropertyOverview from '../../Components/property/PropertyOverview';
 import AmenitiesSpecs from '../../Components/property/AmenitiesSpecs';
 import ContactCard from '../../Components/property/ContactCard';
 import QASection from '../../Components/property/QASection';
+
+// Define the API response interface for township property
+interface TownshipProperty {
+  property_id: number;
+  township_id: number;
+  project_id: number;
+  building_id: number;
+  title: string;
+  description: string;
+  location: string;
+  latitude: string;
+  longitude: string;
+  bhk: number;
+  property_type: string;
+  construction_type: string;
+  construction_status: string;
+  price: string;
+  area_sqft: number;
+  verified: number;
+  owner_id: number;
+  image: string | null;
+  created_at: string;
+  amenities?: Array<{ amenity_id: number; name: string }>;
+  specifications?: Array<{ spec_key: string; spec_value: string }>;
+  overview?: any[];
+}
 
 const PropertyDetailPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -221,9 +248,49 @@ const PropertyDetailPage = () => {
       
       try {
         setLoading(true);
-        const data = await fetchPropertyById(parseInt(id));
-        if (data) {
-          setProperty(data);
+        
+        // Get township_id from localStorage or use 9 as default
+        const townshipId = localStorage.getItem('selectedTownshipId') || '9';
+        
+        // Fetch all properties from township API
+        const url = `${ApiConstants.API_BASE_URL}api/townships/${townshipId}/all-properties`;
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch properties: ' + response.status);
+        }
+        
+        const result = await response.json();
+        const properties: TownshipProperty[] = result.data || result;
+        
+        // Find the specific property by ID
+        const propertyData = properties.find((p: TownshipProperty) => String(p.property_id) === id);
+        
+        if (propertyData) {
+          // Transform API data to match CityProperty interface
+          const transformedProperty: CityProperty = {
+            id: propertyData.property_id,
+            title: propertyData.title,
+            description: propertyData.description || '',
+            location: propertyData.location,
+            propertyType: propertyData.property_type,
+            bhk: propertyData.bhk,
+            area_sqft: propertyData.area_sqft,
+            raw_price: parseFloat(propertyData.price) || 0,
+            area: String(propertyData.area_sqft),
+            construction_status: propertyData.construction_status,
+            image: propertyData.image || '',
+            images: propertyData.image ? [propertyData.image] : [],
+            allImages: propertyData.image ? [propertyData.image] : [],
+            amenities: propertyData.amenities?.map(a => ({ amenity_id: a.amenity_id, amenity_name: a.name })) || [],
+            specifications: {},
+            overview: {},
+            verified: true,
+            tag: '',
+          };
+          
+          setProperty(transformedProperty);
           setError(null);
         } else {
           setError('Property not found');
