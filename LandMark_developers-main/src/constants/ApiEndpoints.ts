@@ -1,7 +1,6 @@
 // src/constants/ApiConstants.ts
 
-import Properties from "../Screen/Properties/Properties";
-
+ 
  
 
 export const ApiEndPoints = {
