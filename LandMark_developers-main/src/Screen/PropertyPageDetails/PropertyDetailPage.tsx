@@ -167,7 +167,7 @@ const PropertyDetailPage = () => {
       />
 
       {/* Image Gallery */}
-      <ImageGallery images={[property.image]} propertyId={property.id} />
+      <ImageGallery images={[property.image]} propertyId={property.id} property={property} />
 
       {/* Price Card */}
       <div className="bg-white py-6 px-8 mt-0 shadow-sm mb-6">

@@ -2,15 +2,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, ChevronLeft, ChevronRight, Download, Heart, Share2, Maximize2, Minimize2 } from 'lucide-react';
 
-const ImageGalleryModal = ({ isOpen, onClose, property, initialImageIndex = 0 }) => {
-  const [images, setImages] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(initialImageIndex);
-  const [loading, setLoading] = useState(true);
-  const [isZoomed, setIsZoomed] = useState(false);
-  const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
-  const imageRef = useRef(null);
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
+import { CityProperty } from '../../services/services';
+
+interface ImageGalleryModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  property: CityProperty;
+  initialImageIndex?: number;
+}
+
+const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({ isOpen, onClose, property, initialImageIndex = 0 }) => {
+  const [images, setImages] = useState<string[]>([]);
+  const [currentIndex, setCurrentIndex] = useState<number>(initialImageIndex);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isZoomed, setIsZoomed] = useState<boolean>(false);
+  const [zoomPosition, setZoomPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const imageRef = useRef<HTMLDivElement | null>(null);
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
 
   useEffect(() => {
     if (isOpen && property) {
@@ -25,7 +34,7 @@ const ImageGalleryModal = ({ isOpen, onClose, property, initialImageIndex = 0 })
       console.log('Loading images for property:', property);
       
       // Get images from property object
-      let propertyImages = [];
+      let propertyImages: string[] = [];
       
       // Check if property has allImages array (from our updated API)
       if (property.allImages && property.allImages.length > 0) {
@@ -73,21 +82,20 @@ const ImageGalleryModal = ({ isOpen, onClose, property, initialImageIndex = 0 })
     setIsZoomed(false);
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'ArrowLeft') handlePrevious();
     if (e.key === 'ArrowRight') handleNext();
     if (e.key === 'Escape') onClose();
     if (e.key === 'z' || e.key === 'Z') toggleZoom();
   };
 
-  const handleTouchStart = (e) => {
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     touchStartX.current = e.touches[0].clientX;
   };
 
-  const handleTouchEnd = (e) => {
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
     touchEndX.current = e.changedTouches[0].clientX;
     const swipeDistance = touchEndX.current - touchStartX.current;
-    
     if (Math.abs(swipeDistance) > 50) {
       if (swipeDistance > 0) {
         handlePrevious();
@@ -163,13 +171,13 @@ const ImageGalleryModal = ({ isOpen, onClose, property, initialImageIndex = 0 })
     setZoomPosition({ x: 0, y: 0 });
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isZoomed || !imageRef.current) return;
-    
-    const { left, top, width, height } = imageRef.current.getBoundingClientRect();
+    const img = imageRef.current.querySelector('img');
+    if (!img) return;
+    const { left, top, width, height } = img.getBoundingClientRect();
     const x = ((e.clientX - left) / width) * 100;
     const y = ((e.clientY - top) / height) * 100;
-    
     setZoomPosition({ x: Math.min(Math.max(x, 0), 100), y: Math.min(Math.max(y, 0), 100) });
   };
 
@@ -268,8 +276,9 @@ const ImageGalleryModal = ({ isOpen, onClose, property, initialImageIndex = 0 })
                   }}
                   onError={(e) => {
                     console.error('Image failed to load:', images[currentIndex]);
-                    e.target.onerror = null;
-                    e.target.src = 'https://via.placeholder.com/800x600?text=Image+Load+Error';
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = 'https://via.placeholder.com/800x600?text=Image+Load+Error';
                   }}
                 />
               </div>
@@ -324,8 +333,9 @@ const ImageGalleryModal = ({ isOpen, onClose, property, initialImageIndex = 0 })
                     alt={`Thumbnail ${idx + 1}`}
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = 'https://via.placeholder.com/64x64?text=Error';
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null;
+                      target.src = 'https://via.placeholder.com/64x64?text=Error';
                     }}
                   />
                 </button>

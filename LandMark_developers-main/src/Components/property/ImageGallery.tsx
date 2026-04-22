@@ -1,16 +1,22 @@
 
-import React, { useState, useEffect } from 'react';
+interface ImageGalleryProps {
+  images: string[];
+  propertyId: number;
+  property: CityProperty;
+}
+
+import React, { useState } from 'react';
 import { Heart, Share2Icon } from 'lucide-react';
 import ImageGalleryModal from '../../Components/ImageGalleryModal/ImageGalleryModal';
 import { CityProperty } from '../../services/services';
 
-const ImageGallery = ({ images, propertyId, property: propData }) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalStartIndex, setModalStartIndex] = useState(0);
+const ImageGallery: React.FC<ImageGalleryProps> = ({ images, propertyId, property: propData }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalStartIndex, setModalStartIndex] = useState<number>(0);
   const [property, setProperty] = useState<CityProperty | null>(propData || null);
 
-  const handleImageClick = (index) => {
+  const handleImageClick = (index: number) => {
     setModalStartIndex(index);
     setIsModalOpen(true);
   };
@@ -21,7 +27,7 @@ const ImageGallery = ({ images, propertyId, property: propData }) => {
   };
 
   // Get images for display - use property.allImages if available, otherwise use the passed images prop
-  const displayImages = property?.allImages?.length > 0 ? property.allImages : images;
+  const displayImages = property?.allImages?.length && property.allImages.length > 0 ? property.allImages : images;
 
   return (
     <>
@@ -34,9 +40,7 @@ const ImageGallery = ({ images, propertyId, property: propData }) => {
             className="w-full h-full object-cover"
             onClick={() => handleImageClick(currentImageIndex)}
           />
-          
           <div className="absolute top-0 left-0 h-full w-1/4 backdrop-blur-md bg-white/30"></div>
-          
           <div className="absolute top-0 right-0 h-full w-1/4 backdrop-blur-md bg-white/30">
             <div className="absolute top-4 right-4 flex gap-2">
               <button className="p-2 bg-white rounded-lg text-blue hover:bg-gray-100 shadow-md">
@@ -48,7 +52,6 @@ const ImageGallery = ({ images, propertyId, property: propData }) => {
             </div>
           </div>
         </div>
-
         {/* Sidebar images */}
         <div className="flex flex-col gap-4">
           <img

@@ -109,7 +109,7 @@ const PropertyFilters: React.FC<Props> = ({
               className="px-4 py-2 rounded-full border border-gray-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400 transition cursor-pointer"
             >
               <option value="">BHK</option>
-              {bhkOptions.map((option, index) => (
+              {bhkOptions.map((option: any, index: number) => (
                 <option key={index} value={getOptionValue(option)}>
                   {getOptionLabel(option)}
                 </option>
@@ -123,7 +123,7 @@ const PropertyFilters: React.FC<Props> = ({
               className="px-4 py-2 rounded-full border border-gray-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400 transition cursor-pointer"
             >
               <option value="">Property Type</option>
-              {propertyTypeOptions.map((option, index) => (
+              {propertyTypeOptions.map((option: any, index: number) => (
                 <option key={index} value={getOptionValue(option)}>
                   {getOptionLabel(option)}
                 </option>
@@ -152,7 +152,7 @@ const PropertyFilters: React.FC<Props> = ({
               className="px-4 py-2 rounded-full border border-gray-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400 transition cursor-pointer"
             >
               <option value="">Construction Status</option>
-              {constructionStatusOptions.map((option, index) => (
+              {constructionStatusOptions.map((option: any, index: number) => (
                 <option key={index} value={getOptionValue(option)}>
                   {getOptionLabel(option)}
                 </option>
@@ -187,7 +187,7 @@ const PropertyFilters: React.FC<Props> = ({
                 className="px-4 py-2 rounded-full border border-gray-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400 transition cursor-pointer"
               >
                 <option value="">Construction Type</option>
-                {constructionTypeOptions.map((option, index) => (
+                {constructionTypeOptions.map((option: any, index: number) => (
                   <option key={index} value={getOptionValue(option)}>
                     {getOptionLabel(option)}
                   </option>
