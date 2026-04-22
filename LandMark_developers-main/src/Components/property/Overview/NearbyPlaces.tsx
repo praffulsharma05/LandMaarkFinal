@@ -12,7 +12,7 @@ const NearbyPlaces: React.FC<NearbyPlacesProps> = ({ places }) => {
     <>
       <div className="border-t  border-gray-200 my-6"></div>
       <div className="mt-8">
-        <h3 className="text-xl text-left font-bold border-b w-1/5 mb-8 ">Nearby Places</h3>
+        <h3 className="text-xl text-left font-bold border-b w-1/5 mb-8 "> Places</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {places.slice(0, 4).map((place, index) => (
             <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">

@@ -142,7 +142,7 @@ const AmenitiesSpecs: React.FC<AmenitiesSpecsProps> = ({ property }) => {
                   )}
                 </div>
               )}
-               <ConstructionSpecs />
+               {/* <ConstructionSpecs /> */}
             </div>
           </div>
         </div>

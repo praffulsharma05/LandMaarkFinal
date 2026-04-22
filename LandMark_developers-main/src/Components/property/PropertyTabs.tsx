@@ -135,8 +135,8 @@ const PropertyTabs: React.FC<PropertyTabsProps> = ({
 
             <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <p className="text-2xl font-bold text-gray-800">{property.places?.length || 15}</p>
-                <p className="text-sm text-gray-600">Nearby Places</p>
+                <p className="text-2xl font-bold text-gray-800">{property.places?.length || 0}</p>
+                <p className="text-sm text-gray-600">Places</p>
               </div>
               <div className="text-center p-3 bg-gray-50 rounded-lg">
                 <p className="text-2xl font-bold text-gray-800">5</p>
@@ -165,43 +165,9 @@ const PropertyTabs: React.FC<PropertyTabsProps> = ({
             )}
 
             <div className="space-y-6">
-              <div>
-                <h3 className="font-semibold mb-3 flex items-center">
-                  <Check className="w-5 h-5 text-green-600 mr-2" />
-                  Good Things Here
-                </h3>
-                <ul className="space-y-2">
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">•</span>
-                    <span className="text-gray-700">Well-connected to major roads</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">•</span>
-                    <span className="text-gray-700">Nearby schools and hospitals</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">•</span>
-                    <span className="text-gray-700">Good neighborhood</span>
-                  </li>
-                </ul>
-              </div>
+          
 
-              <div>
-                <h3 className="font-semibold mb-3 flex items-center">
-                  <X className="w-5 h-5 text-red-600 mr-2" />
-                  Things that need improvement
-                </h3>
-                <ul className="space-y-2">
-                  <li className="flex items-start">
-                    <span className="text-red-500 mr-2">•</span>
-                    <span className="text-gray-700">Traffic during peak hours</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-red-500 mr-2">•</span>
-                    <span className="text-gray-700">Limited public transport options</span>
-                  </li>
-                </ul>
-              </div>
+              
             </div>
           </div>
         );

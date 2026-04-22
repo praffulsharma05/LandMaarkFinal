@@ -11,7 +11,7 @@ import TownShip from "./Screen/TownShip/TownShip";
  import PropertySearch from "./Screen/Seaching/PropertySearch";
 import PropertyDetailPage from "./Screen/PropertyPageDetails/PropertyDetailPage";
 import PropertySearch2 from "./Screen/Searching2/PropertySearch2";
-import PropertyListings from "./Screen/Searching2/CardsDetails/PropertyListings";
+import PropertyListings from "./Components/property/CardsDetails/PropertyListings";
     function App() {
   return (
     <>
