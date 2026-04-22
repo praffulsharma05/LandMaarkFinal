@@ -79,28 +79,15 @@ const PropertyDetailPage = () => {
             })) || [],
             specifications: (() => {
               const specs: Record<string, string> = {};
+              const seen: Record<string, boolean> = {};
               if (propertyData.specifications && Array.isArray(propertyData.specifications)) {
                 propertyData.specifications.forEach((item: any) => {
-                  if (item.key && item.value) {
+                  if (item.key && item.value && !seen[item.key]) {
                     specs[item.key] = item.value;
+                    seen[item.key] = true;
                   }
                 });
               }
-              if (propertyData.plot_number) specs['Plot Number'] = propertyData.plot_number;
-              if (propertyData.dimension) specs['Dimension'] = propertyData.dimension;
-              if (propertyData.plc) specs['PLC'] = propertyData.plc;
-              if (propertyData.property_type) specs['Property Type'] = propertyData.property_type;
-              if (propertyData.construction_type) specs['Construction Type'] = propertyData.construction_type;
-              if (propertyData.construction_status) specs['Construction Status'] = propertyData.construction_status;
-              if (propertyData.area_sqft) specs['Area (sqft)'] = `${propertyData.area_sqft} sq.ft`;
-              if (propertyData.built_up_area) specs['Built Up Area'] = `${propertyData.built_up_area} sq.ft`;
-              if (propertyData.project_units) specs['Project Units'] = propertyData.project_units;
-              if (propertyData.project_area) specs['Project Area'] = propertyData.project_area;
-              if (propertyData.size) specs['Size'] = propertyData.size;
-              if (propertyData.launch_date) specs['Launch Date'] = new Date(propertyData.launch_date).toLocaleDateString();
-              if (propertyData.avg_price) specs['Avg Price'] = propertyData.avg_price;
-              if (propertyData.configuration) specs['Configuration'] = propertyData.configuration;
-              if (propertyData.rera_id) specs['RERA ID'] = propertyData.rera_id;
               return specs;
             })(),
             overview: propertyData.overview || {},

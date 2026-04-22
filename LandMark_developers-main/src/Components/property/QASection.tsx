@@ -2,7 +2,7 @@ import React from 'react';
 
 const QASection = () => {
   return (
-    <div className="bg-white rounded-xl p-6  shadow-sm mt-6">
+    <div className="bg-white rounded-xl p-6  hidden shadow-sm mt-6">
 <h2 className="text-xl text-left font-semibold mb-6">
   <span className="border-b-2 border-gray-300 text-left pb-1 inline-block w-2/7">
     Questions & Answer

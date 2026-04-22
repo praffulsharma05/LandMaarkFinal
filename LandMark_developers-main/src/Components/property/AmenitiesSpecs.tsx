@@ -37,32 +37,49 @@ const AmenitiesSpecs: React.FC<AmenitiesSpecsProps> = ({ property }) => {
     return <IconComponent className={className} />;
   }; 
   const getAmenityIcon = (amenityName: string): string => {
+    const name = amenityName.toLowerCase();
     const amenityIconMap: Record<string, string> = {
-      'Gym': 'Dumbbell',
-      'Parking': 'ParkingCircle',
-      'Swimming pool': 'Waves',
-      'Club House': 'Building2',
-      'Security': 'Shield',
-      'Garden': 'Trees',
-      'Children Play Area': 'Trees',
-      'Power Backup': 'Zap',
-      'Lift': 'ArrowUpDown',
+      'gym': 'Dumbbell',
+      'parking': 'ParkingCircle',
+      'swimming pool': 'Waves',
+      'club house': 'Building2',
+      'security': 'Shield',
+      'garden': 'Trees',
+      'children play area': 'Trees',
+      'power backup': 'Zap',
+      'lift': 'ArrowUpDown',
+      '24/7 security and surveillance': 'Shield',
+      "children's play area": 'Trees',
+      'power backup and water supply': 'Zap',
+      'modular kitchen': 'Home',
+      'balcony': 'Home',
+      'bathrooms': 'Waves',
     };
-    return amenityIconMap[amenityName] || 'Building2';
+    for (const key in amenityIconMap) {
+      if (name.includes(key)) return amenityIconMap[key];
+    }
+    return 'Building2';
   };
   // Convert specifications object to array (handle both array and object formats)
   let specificationsArray: Array<{ label: string; value: string }> = [];
+  const seenLabels: Record<string, boolean> = {};
   if (property.specifications) {
     if (Array.isArray(property.specifications)) {
-      specificationsArray = property.specifications.map((item: any) => ({
-        label: item.key || item.label || 'Feature',
-        value: item.value || 'Not specified'
-      }));
+      property.specifications.forEach((item: any) => {
+        const label = item.key || item.label || 'Feature';
+        const value = item.value || 'Not specified';
+        if (!seenLabels[label]) {
+          specificationsArray.push({ label, value });
+          seenLabels[label] = true;
+        }
+      });
     } else if (typeof property.specifications === 'object') {
-      specificationsArray = Object.entries(property.specifications).map(([key, value]) => ({
-        label: key,
-        value: String(value)
-      }));
+      Object.entries(property.specifications).forEach(([key, value]) => {
+        if (!seenLabels[key]) {
+          specificationsArray.push({ label: key, value: String(value) });
+          seenLabels[key] = true;
+        }
+      });
     }
   }
   const toggleSection = (section: string) => {
