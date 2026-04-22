@@ -2,34 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, Share2Icon } from 'lucide-react';
 import ImageGalleryModal from '../../Components/ImageGalleryModal/ImageGalleryModal';
-import { fetchPropertyById } from '../../services/services'; // Import the service
+import { CityProperty } from '../../services/services';
 
-const ImageGallery = ({ images, propertyId }) => {
+const ImageGallery = ({ images, propertyId, property: propData }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStartIndex, setModalStartIndex] = useState(0);
-  const [property, setProperty] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  // Fetch full property data when component mounts
-  useEffect(() => {
-    if (propertyId) {
-      loadPropertyData();
-    }
-  }, [propertyId]);
-
-  const loadPropertyData = async () => {
-    setLoading(true);
-    try {
-      const propertyData = await fetchPropertyById(propertyId);
-      console.log('Fetched property data:', propertyData);
-      setProperty(propertyData);
-    } catch (error) {
-      console.error('Error fetching property:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [property, setProperty] = useState<CityProperty | null>(propData || null);
 
   const handleImageClick = (index) => {
     setModalStartIndex(index);

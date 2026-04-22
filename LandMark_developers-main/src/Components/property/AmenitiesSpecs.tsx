@@ -16,7 +16,7 @@ import {
   Home
 } from 'lucide-react';
 import { CityProperty } from '../../services/services';
-import ConstructionSpecs from '../../Components/Amenities/ConstructionSpecs';
+// import ConstructionSpecs from '../../Components/Amenities/ConstructionSpecs';
 interface AmenitiesSpecsProps {
   property: CityProperty;
 }

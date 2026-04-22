@@ -4,7 +4,7 @@ import { Property } from "./types";
 
 export const fetchProperties = async (townshipId: number, query: string = ""): Promise<Property[]> => {
   try {
-    const url = `${ApiConstants.API_BASE_URL}${ApiEndPoints.TOWNSHIP_ALL_PROPERTIES(townshipId)}${query ? `?${query}` : ""}`;
+    const url = `${ApiConstants.API_BASE_URL}${ApiEndPoints.TOWNSHIP_PROPERTIES_FULL(townshipId)}${query ? `?${query}` : ""}`;
     const res = await fetch(url, { 
       headers: ApiConstants.HEADERS 
     });

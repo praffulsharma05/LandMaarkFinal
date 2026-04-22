@@ -1,8 +1,7 @@
 
 import { ApiConstants } from "../constants/ApiConstants";
 import { ApiEndPoints } from "../constants/ApiEndpoints";
-import { Township } from "../store/TownShip/townshipsData";
-
+ 
 export interface CityProperty {
   id: number;
   title: string;
@@ -62,9 +61,9 @@ export interface PropertyImage {
   created_at?: string;
 }
 
-export const fetchProperties = async (): Promise<CityProperty[]> => {
+export const fetchProperties = async (townshipId: number = 9): Promise<CityProperty[]> => {
   try {
-    const response = await fetch(`${ApiConstants.API_BASE_URL}${ApiEndPoints.PROPERTIES}`, {
+    const response = await fetch(`${ApiConstants.API_BASE_URL}${ApiEndPoints.TOWNSHIP_PROPERTIES_FULL(townshipId)}`, {
       headers: {
         'ngrok-skip-browser-warning': 'true',
         'Content-Type': 'application/json',

@@ -10,6 +10,7 @@ import PropertyTabs from '../../Components/property/PropertyTabs';
 // import FloorPlansPricing from '../../Components/property/FloorPlansPricing';
 import PropertyOverview from '../../Components/property/PropertyOverview';
 import AmenitiesSpecs from '../../Components/property/AmenitiesSpecs';
+import PropertyListings from '../../Components/property/CardsDetails/PropertyListings';
 import ContactCard from '../../Components/property/ContactCard';
 import QASection from '../../Components/property/QASection';
 
@@ -68,7 +69,7 @@ const PropertyDetailPage = () => {
             allImages: propertyData.image ? [propertyData.image] : [],
             amenities: propertyData.amenities?.map((a: any) => ({ 
               amenity_id: a.amenity_id || a.id || 0, 
-              amenity_name: a.name || a.amenity_name || '' 
+              amenity_name: a.amenity_name || a.name || '' 
             })) || [],
             places: propertyData.places?.map((p: any) => ({
               place_id: p.place_id || p.id || 0,
@@ -76,8 +77,33 @@ const PropertyDetailPage = () => {
               place_category: p.place_category || p.category || '',
               distance_meters: String(p.distance_meters || p.distance || 0)
             })) || [],
-            specifications: {},
-            overview: {},
+            specifications: (() => {
+              const specs: Record<string, string> = {};
+              if (propertyData.specifications && Array.isArray(propertyData.specifications)) {
+                propertyData.specifications.forEach((item: any) => {
+                  if (item.key && item.value) {
+                    specs[item.key] = item.value;
+                  }
+                });
+              }
+              if (propertyData.plot_number) specs['Plot Number'] = propertyData.plot_number;
+              if (propertyData.dimension) specs['Dimension'] = propertyData.dimension;
+              if (propertyData.plc) specs['PLC'] = propertyData.plc;
+              if (propertyData.property_type) specs['Property Type'] = propertyData.property_type;
+              if (propertyData.construction_type) specs['Construction Type'] = propertyData.construction_type;
+              if (propertyData.construction_status) specs['Construction Status'] = propertyData.construction_status;
+              if (propertyData.area_sqft) specs['Area (sqft)'] = `${propertyData.area_sqft} sq.ft`;
+              if (propertyData.built_up_area) specs['Built Up Area'] = `${propertyData.built_up_area} sq.ft`;
+              if (propertyData.project_units) specs['Project Units'] = propertyData.project_units;
+              if (propertyData.project_area) specs['Project Area'] = propertyData.project_area;
+              if (propertyData.size) specs['Size'] = propertyData.size;
+              if (propertyData.launch_date) specs['Launch Date'] = new Date(propertyData.launch_date).toLocaleDateString();
+              if (propertyData.avg_price) specs['Avg Price'] = propertyData.avg_price;
+              if (propertyData.configuration) specs['Configuration'] = propertyData.configuration;
+              if (propertyData.rera_id) specs['RERA ID'] = propertyData.rera_id;
+              return specs;
+            })(),
+            overview: propertyData.overview || {},
             verified: true,
             tag: '',
           };
@@ -230,6 +256,9 @@ const PropertyDetailPage = () => {
       <AmenitiesSpecs 
         property={property}
       />
+
+      {/* Property Listings */}
+      <PropertyListings />
     </div>
   );
 };

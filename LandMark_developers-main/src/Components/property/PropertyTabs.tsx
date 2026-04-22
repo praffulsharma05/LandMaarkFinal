@@ -127,10 +127,7 @@ const PropertyTabs: React.FC<PropertyTabsProps> = ({
           <div>
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-xl font-semibold">{property.location} Locality</h2>
-              <div className="flex items-center bg-green-50 px-3 py-1 rounded-full">
-                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                <span className="ml-1 font-semibold">4.2</span>
-              </div>
+           
             </div>
 
             <div className="grid grid-cols-3 gap-4 mb-6">
@@ -138,14 +135,7 @@ const PropertyTabs: React.FC<PropertyTabsProps> = ({
                 <p className="text-2xl font-bold text-gray-800">{property.places?.length || 0}</p>
                 <p className="text-sm text-gray-600">Places</p>
               </div>
-              <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <p className="text-2xl font-bold text-gray-800">5</p>
-                <p className="text-sm text-gray-600">Schools</p>
-              </div>
-              <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <p className="text-2xl font-bold text-gray-800">3</p>
-                <p className="text-sm text-gray-600">Hospitals</p>
-              </div>
+              
             </div>
 
             {property.places && property.places.length > 0 && (

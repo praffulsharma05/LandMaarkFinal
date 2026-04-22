@@ -1,6 +1,6 @@
 // PropertyListings.tsx
 import React, { useState, useEffect } from 'react';
-import './PropertyListings.css';
+import './PropertyListings.css'; // Import the CSS file for styling
 
 interface Property {
   sno: number;
@@ -71,7 +71,7 @@ const PropertyListings: React.FC = () => {
     sortBy: '',
   });
 
-  const API_URL = '/api/townships/id/properties';
+  const API_URL = `https://unimmunized-rosella-hedonistically.ngrok-free.dev/api/townships/${localStorage.getItem('selectedTownshipId') || 9}/properties`;
 
   const extractBhk = (type: string): string => {
     const match = type.match(/(\d+)\s*BHK/i);

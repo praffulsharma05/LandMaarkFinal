@@ -16,7 +16,7 @@ export interface TownshipAllProperty {
 export const fetchTownshipAllProperties = async (townshipId: number): Promise<TownshipAllProperty[]> => {
   try {
     const response = await axios.get(
-      `${ApiConstants.API_BASE_URL}${ApiEndPoints.TOWNSHIP_ALL_PROPERTIES(townshipId)}`,
+      `${ApiConstants.API_BASE_URL}${ApiEndPoints.TOWNSHIP_PROPERTIES_FULL(townshipId)}`,
       { headers: ApiConstants.HEADERS }
     );
     return response.data.data || [];
