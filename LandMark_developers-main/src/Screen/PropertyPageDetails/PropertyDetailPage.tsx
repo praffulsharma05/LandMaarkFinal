@@ -66,12 +66,15 @@ const PropertyDetailPage = () => {
             image: propertyData.image || '',
             images: propertyData.image ? [propertyData.image] : [],
             allImages: propertyData.image ? [propertyData.image] : [],
-            amenities: propertyData.amenities?.map((a: any) => ({ amenity_id: a.amenity_id, amenity_name: a.name })) || [],
+            amenities: propertyData.amenities?.map((a: any) => ({ 
+              amenity_id: a.amenity_id || a.id || 0, 
+              amenity_name: a.name || a.amenity_name || '' 
+            })) || [],
             places: propertyData.places?.map((p: any) => ({
-              place_id: p.place_id,
-              place_name: p.place_name,
-              place_category: p.place_category,
-              distance_meters: String(p.distance_meters)
+              place_id: p.place_id || p.id || 0,
+              place_name: p.place_name || p.name || '',
+              place_category: p.place_category || p.category || '',
+              distance_meters: String(p.distance_meters || p.distance || 0)
             })) || [],
             specifications: {},
             overview: {},
@@ -158,7 +161,7 @@ const PropertyDetailPage = () => {
       />
 
       {/* Image Gallery */}
-      <ImageGallery images={[property.image]} />
+      <ImageGallery images={[property.image]} propertyId={property.id} />
 
       {/* Price Card */}
       <div className="bg-white py-6 px-8 mt-0 shadow-sm mb-6">
@@ -206,11 +209,11 @@ const PropertyDetailPage = () => {
             property={property}
             pricePerSqft={pricePerSqft}
           />
-          <QASection property={property} />
+          <QASection />
         </div>
 
         <div className="lg:col-span-1">
-          <ContactCard property={property} />
+          <ContactCard />
         </div>
       </div>
 
