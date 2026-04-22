@@ -82,19 +82,7 @@ const PropertyDetailPage = () => {
               place_category: p.place_category || p.category || '',
               distance_meters: String(p.distance_meters || p.distance || 0)
             })) || [],
-            specifications: (() => {
-              const specs: Record<string, string> = {};
-              const seen: Record<string, boolean> = {};
-              if (propertyData.specifications && Array.isArray(propertyData.specifications)) {
-                propertyData.specifications.forEach((item: any) => {
-                  if (item.key && item.value && !seen[item.key]) {
-                    specs[item.key] = item.value;
-                    seen[item.key] = true;
-                  }
-                });
-              }
-              return specs;
-            })(),
+            specifications: propertyData.specifications,
             overview: propertyData.overview || {},
             verified: true,
             tag: '',

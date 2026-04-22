@@ -60,26 +60,19 @@ const AmenitiesSpecs: React.FC<AmenitiesSpecsProps> = ({ property }) => {
     }
     return 'Building2';
   };
-  // Convert specifications object to array (handle both array and object formats)
+  // Show specifications as-is from API (no filtering, no deduplication)
   let specificationsArray: Array<{ label: string; value: string }> = [];
-  const seenLabels: Record<string, boolean> = {};
   if (property.specifications) {
     if (Array.isArray(property.specifications)) {
-      property.specifications.forEach((item: any) => {
-        const label = item.key || item.label || 'Feature';
-        const value = item.value || 'Not specified';
-        if (!seenLabels[label]) {
-          specificationsArray.push({ label, value });
-          seenLabels[label] = true;
-        }
-      });
+      specificationsArray = property.specifications.map((item: any) => ({
+        label: item.key || item.label || 'Feature',
+        value: item.value || 'Not specified',
+      }));
     } else if (typeof property.specifications === 'object') {
-      Object.entries(property.specifications).forEach(([key, value]) => {
-        if (!seenLabels[key]) {
-          specificationsArray.push({ label: key, value: String(value) });
-          seenLabels[key] = true;
-        }
-      });
+      specificationsArray = Object.entries(property.specifications).map(([key, value]) => ({
+        label: key,
+        value: String(value),
+      }));
     }
   }
   const toggleSection = (section: string) => {
