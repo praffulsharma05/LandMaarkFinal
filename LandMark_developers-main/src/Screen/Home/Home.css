@@ -4,13 +4,20 @@
   gap: 10px;
   background-color: black;
   color: white;
-  padding: 14px 36px;
-  font-size: 16px;
+  padding: 12px 28px;
+  font-size: 14px;
   font-weight: 500;
   border: none;
   border-radius: 999px;   /* Fully rounded */
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+@media (min-width: 640px) {
+  .rounded-btn {
+    padding: 14px 36px;
+    font-size: 16px;
+  }
 }
 
 .rounded-btn:hover {
@@ -21,16 +28,24 @@
 .download-icon {
   font-size: 18px;
 }
- .minor-btn {
+
+.minor-btn {
   background: black;
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
-  padding: 10px 22px;
+  padding: 8px 18px;
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 999px; /* fully rounded */
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+@media (min-width: 640px) {
+  .minor-btn {
+    font-size: 16px;
+    padding: 10px 22px;
+  }
 }
 
 .minor-btn:hover {

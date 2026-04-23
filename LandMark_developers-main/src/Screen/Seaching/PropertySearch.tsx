@@ -4,6 +4,7 @@ import PropertyFilters from "./PropertyFilters";
 import PropertyCards from "./PropertyCards";
 import { useLocation } from "react-router-dom";
 import { div } from "framer-motion/client";
+import { ApiConstants } from "../../constants/ApiConstants";
 
 interface Filters {
   city: string;
@@ -108,10 +109,10 @@ const PropertySearch = () => {
         title: item.title || "No Title",
         image: item.image || "",
         price: parseFloat(item.price || 0),
-        location: item.location || "Unknown",
-        bhk: parseInt(item.bhk) || 1,
-        property_type: item.property_type || "Apartment",
-        construction_status: item.construction_status || "Ready",
+        location: item.location || ApiConstants.UNKNOWN,
+        bhk: parseInt(item.bhk) || ApiConstants.UNKNOWN,
+        property_type: item.property_type || ApiConstants.UNKNOWN,
+        construction_status: item.construction_status ||  ApiConstants.UNKNOWN,
         construction_type: item.construction_type || "",
         area_sqft: parseFloat(item.area_sqft || 0),
         description: item.description || "",
@@ -123,7 +124,7 @@ const PropertySearch = () => {
       setProperties(formattedProperties);
       setTotalCount(formattedProperties.length);
     } catch (error) {
-      console.error("❌ Error fetching properties:", error);
+      console.error("❌ Error fetching properties prafful:", error);
       setProperties([]);
       setTotalCount(0);
     } finally {

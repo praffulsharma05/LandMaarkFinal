@@ -16,7 +16,7 @@ import {
   Home
 } from 'lucide-react';
 import { CityProperty } from '../../services/services';
-import ConstructionSpecs from '../../Components/Amenities/ConstructionSpecs';
+// import ConstructionSpecs from '../../Components/Amenities/ConstructionSpecs';
 interface AmenitiesSpecsProps {
   property: CityProperty;
 }
@@ -37,31 +37,41 @@ const AmenitiesSpecs: React.FC<AmenitiesSpecsProps> = ({ property }) => {
     return <IconComponent className={className} />;
   }; 
   const getAmenityIcon = (amenityName: string): string => {
+    const name = amenityName.toLowerCase();
     const amenityIconMap: Record<string, string> = {
-      'Gym': 'Dumbbell',
-      'Parking': 'ParkingCircle',
-      'Swimming pool': 'Waves',
-      'Club House': 'Building2',
-      'Security': 'Shield',
-      'Garden': 'Trees',
-      'Children Play Area': 'Trees',
-      'Power Backup': 'Zap',
-      'Lift': 'ArrowUpDown',
+      'gym': 'Dumbbell',
+      'parking': 'ParkingCircle',
+      'swimming pool': 'Waves',
+      'club house': 'Building2',
+      'security': 'Shield',
+      'garden': 'Trees',
+      'children play area': 'Trees',
+      'power backup': 'Zap',
+      'lift': 'ArrowUpDown',
+      '24/7 security and surveillance': 'Shield',
+      "children's play area": 'Trees',
+      'power backup and water supply': 'Zap',
+      'modular kitchen': 'Home',
+      'balcony': 'Home',
+      'bathrooms': 'Waves',
     };
-    return amenityIconMap[amenityName] || 'Building2';
+    for (const key in amenityIconMap) {
+      if (name.includes(key)) return amenityIconMap[key];
+    }
+    return 'Building2';
   };
-  // Convert specifications object to array (handle both array and object formats)
+  // Show specifications as-is from API (no filtering, no deduplication)
   let specificationsArray: Array<{ label: string; value: string }> = [];
   if (property.specifications) {
     if (Array.isArray(property.specifications)) {
       specificationsArray = property.specifications.map((item: any) => ({
         label: item.key || item.label || 'Feature',
-        value: item.value || 'Not specified'
+        value: item.value || 'Not specified',
       }));
     } else if (typeof property.specifications === 'object') {
       specificationsArray = Object.entries(property.specifications).map(([key, value]) => ({
         label: key,
-        value: String(value)
+        value: String(value),
       }));
     }
   }
@@ -142,7 +152,7 @@ const AmenitiesSpecs: React.FC<AmenitiesSpecsProps> = ({ property }) => {
                   )}
                 </div>
               )}
-               <ConstructionSpecs />
+               {/* <ConstructionSpecs /> */}
             </div>
           </div>
         </div>

@@ -10,6 +10,8 @@ import Wishlist from "./Screen/Wishlist/Wishlist";
 import TownShip from "./Screen/TownShip/TownShip";
  import PropertySearch from "./Screen/Seaching/PropertySearch";
 import PropertyDetailPage from "./Screen/PropertyPageDetails/PropertyDetailPage";
+import PropertySearch2 from "./Screen/Searching2/PropertySearch2";
+import PropertyListings from "./Components/property/CardsDetails/PropertyListings";
     function App() {
   return (
     <>
@@ -22,8 +24,10 @@ import PropertyDetailPage from "./Screen/PropertyPageDetails/PropertyDetailPage"
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/townShip" element={<TownShip />} />
          <Route path="/search" element={<PropertySearch />} />
+         <Route path="/search2/:id" element={<PropertySearch2 />} />
      <Route path="/property/:id" element={<PropertyDetailPage />} />
-      
+ <Route path="/property-listings" element={<PropertyListings />} />
+
      </Routes>
       <Footer />
     </>

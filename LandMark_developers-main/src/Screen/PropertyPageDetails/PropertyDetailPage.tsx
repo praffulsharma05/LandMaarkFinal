@@ -1,145 +1,16 @@
-
-//  import React, { useState } from 'react';
-//  import { Info } from "lucide-react";
-
-// import {
-//   propertyData,
-//   tabs,
-//   pricingCards,
-//   floorPlans,
-//   overviewData,
-//   amenitiesList,
-//   fittingData ,
-// wallData, 
-// floorData
-// } from '../../store/data/propertyData';
-// import PropertyHeader from '../../Components/property/PropertyHeader';
-// import ImageGallery from '../../Components/property/ImageGallery';
-// import PropertyTabs from '../../Components/property/PropertyTabs';
-// import FloorPlansPricing from '../../Components/property/FloorPlansPricing';
-// import PropertyOverview from '../../Components/property/PropertyOverview';
-// import AmenitiesSpecs from '../../Components/property/AmenitiesSpecs';
-// import ContactCard from '../../Components/property/ContactCard';
-// import QASection from '../../Components/property/QASection';
-// import { useParams } from "react-router-dom";
-
-
-// const PropertyDetailPage = () => {
-//   const [activeTab, setActiveTab] = useState('overview');
-
-  
- 
-//  const { id } = useParams();
-// console.log(id);
-
-//   return (
-//     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gray-50 mt-18">
-//       {/* Header */}
-//       <PropertyHeader property={propertyData.mainProperty} />
-
-//       {/* Image Gallery */}
-//       <ImageGallery images={propertyData.images} />
-
-//       {/* Price Card */}
-//        <div className="bg-white py-6 px-8 mt-0 shadow-sm mb-6">
-//   <div className="grid grid-cols-4 text-center divide-x divide-gray-200">
-
-//     {/* Configuration */}
-//     <div>
-//       <p className="text-lg font-semibold text-gray-900">
-//         {propertyData.mainProperty.rating} BHK Apartment
-//       </p>
-//       <p className="text-gray-500 text-sm mt-1">Configuration</p>
-//     </div>
-
-//     {/* Possession */}
-//     <div>
-//       <p className="text-lg font-semibold text-gray-900">
-//         {propertyData.mainProperty.possession}
-//       </p>
-//       <p className="text-gray-500 text-sm mt-1">Possession Starts</p>
-//     </div>
-
-//     {/* Avg Price */}
-//     <div>
-//       <p className="text-lg font-semibold text-gray-900">
-//         ₹{propertyData.mainProperty.price.perSqft}/sq.ft
-//       </p>
-//       <p className="text-gray-500 text-sm mt-1">Avg. Price</p>
-//     </div>
-
-//     {/* Sizes */}
-//     <div>
-//       <p className="text-lg font-semibold text-gray-900">
-//         {propertyData.mainProperty.price.max} - {propertyData.mainProperty.price.min} sq.ft
-//       </p>
-//     <p className="text-gray-500 text-sm mt-1 flex items-center justify-center gap-1">
-//   <span>(Super Built-up Area</span>
-//   <Info size={14} className="text-blue-600" />
-//   <span>)</span>
-// </p>
-      
-//     </div>
-
-//   </div>
-// </div>
-
-//       {/* Main Content Grid */}
-//       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-//         {/* Left Column - Main Content */}
-//         <div className="lg:col-span-2">
-//           {/* Tabs Section */}
-//           <PropertyTabs 
-//             activeTab={activeTab}
-//             setActiveTab={setActiveTab}
-//             tabs={tabs}
-//             propertyData={propertyData}
-//           />
-
-//           {/* Q&A Section */}
-//           <QASection />
-//         </div>
-
-//         {/* Right Column - Contact Form & Quick Info */}
-//         <div className="lg:col-span-1">
-//           <ContactCard />
-//         </div>
-//       </div>
-
-//       {/* Floor Plans and Pricing Section */}
-//       <FloorPlansPricing 
-//         pricingCards={pricingCards}
-//         floorPlans={floorPlans}
-//       />
-
-//       {/* Property Overview Section */}
-//       <PropertyOverview data={overviewData}
-//            />
-
-//       {/* Amenities and Specifications */}
-//       <AmenitiesSpecs 
-//         amenities={amenitiesList}
-//         floorData={floorData}
-//         fittingData={fittingData}
-//         wallData={wallData} 
-//       />
-//     </div>
-//   );
-// };
-
-// export default PropertyDetailPage;
 import React, { useState, useEffect } from 'react';
 import { Info, Loader } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { fetchPropertyById, CityProperty } from '../../services/services';
-
-// Components
+import { CityProperty } from '../../services/services';
+import { ApiConstants } from '../../constants/ApiConstants';
+import { ApiEndPoints } from '../../constants/ApiEndpoints';
 import PropertyHeader from '../../Components/property/PropertyHeader';
 import ImageGallery from '../../Components/property/ImageGallery';
 import PropertyTabs from '../../Components/property/PropertyTabs';
-import FloorPlansPricing from '../../Components/property/FloorPlansPricing';
+// import FloorPlansPricing from '../../Components/property/FloorPlansPricing';
 import PropertyOverview from '../../Components/property/PropertyOverview';
 import AmenitiesSpecs from '../../Components/property/AmenitiesSpecs';
+import PropertyListings from '../../Components/property/CardsDetails/PropertyListings';
 import ContactCard from '../../Components/property/ContactCard';
 import QASection from '../../Components/property/QASection';
 
@@ -157,9 +28,67 @@ const PropertyDetailPage = () => {
       
       try {
         setLoading(true);
-        const data = await fetchPropertyById(parseInt(id));
-        if (data) {
-          setProperty(data);
+        
+        // Get township_id from localStorage or use 9 as default
+        const townshipId = localStorage.getItem('selectedTownshipId') || '9';
+        
+        // Fetch all properties from township API
+        const url = `${ApiConstants.API_BASE_URL}${ApiEndPoints.TOWNSHIP_PROPERTIES_FULL(9)}`;
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch properties: ' + response.status);
+        }
+        
+        const result = await response.json();
+        const properties: any[] = result.data || result;
+        
+        // Find the specific property by ID
+        const propertyData = properties.find((p: any) => String(p.property_id) === id);
+        
+        if (propertyData) {
+          // Transform API data to match CityProperty interface
+          const transformedProperty: CityProperty = {
+            id: propertyData.property_id,
+            title: propertyData.title,
+            price: propertyData.price || '0',
+            image_url: propertyData.image || '',
+            description: propertyData.description || '',
+            location: propertyData.location,
+            propertyType: propertyData.property_type,
+            bhk: propertyData.bhk,
+            area_sqft: propertyData.area_sqft,
+            raw_price: parseFloat(propertyData.price) || 0,
+            area: String(propertyData.area_sqft),
+            size: propertyData.size,
+            project_size: propertyData.project_size,
+            launch_date: propertyData.launch_date,
+            rera_id: propertyData.rera_id,
+            construction_type: propertyData.construction_type,
+            construction_status: propertyData.construction_status,
+            latitude: propertyData.latitude,
+            longitude: propertyData.longitude,
+            image: propertyData.image || '',
+            images: propertyData.image ? [propertyData.image] : [],
+            allImages: propertyData.image ? [propertyData.image] : [],
+            amenities: propertyData.amenities?.map((a: any) => ({ 
+              amenity_id: a.amenity_id || a.id || 0, 
+              amenity_name: a.amenity_name || a.name || '' 
+            })) || [],
+            places: propertyData.places?.map((p: any) => ({
+              place_id: p.place_id || p.id || 0,
+              place_name: p.place_name || p.name || '',
+              place_category: p.place_category || p.category || '',
+              distance_meters: String(p.distance_meters || p.distance || 0)
+            })) || [],
+            specifications: propertyData.specifications,
+            overview: propertyData.overview || {},
+            verified: true,
+            tag: '',
+          };
+          
+          setProperty(transformedProperty);
           setError(null);
         } else {
           setError('Property not found');
@@ -193,7 +122,7 @@ const PropertyDetailPage = () => {
           <p className="text-red-600 mb-4">{error || 'Property not found'}</p>
           <button
             onClick={() => window.history.back()}
-            className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition"
+            className="bg-primary text-black px-4 py-2 rounded-lg hover:bg-primary-dark transition"
           >
             Go Back
           </button>
@@ -238,13 +167,13 @@ const PropertyDetailPage = () => {
       />
 
       {/* Image Gallery */}
-      <ImageGallery images={[property.image]} />
+      <ImageGallery images={[property.image]} propertyId={property.id} property={property} />
 
       {/* Price Card */}
       <div className="bg-white py-6 px-8 mt-0 shadow-sm mb-6">
         <div className="grid grid-cols-4 text-center divide-x divide-gray-200">
           <div>
-            <p className="text-lg font-semibold text-gray-900">
+            <p className="text-lg font-semibold   text-gray-900">
               {property.bhk} BHK {property.propertyType}
             </p>
             <p className="text-gray-500 text-sm mt-1">Configuration</p>
@@ -276,8 +205,7 @@ const PropertyDetailPage = () => {
           </div>
         </div>
       </div>
-
-      {/* Main Content Grid */}
+       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <PropertyTabs 
@@ -287,17 +215,17 @@ const PropertyDetailPage = () => {
             property={property}
             pricePerSqft={pricePerSqft}
           />
-          <QASection property={property} />
+          <QASection />
         </div>
 
         <div className="lg:col-span-1">
-          <ContactCard property={property} />
+          <ContactCard />
         </div>
       </div>
 
       {/* Floor Plans and Pricing Section */}
-      <FloorPlansPricing property={property} />
-
+      {/* <FloorPlansPricing property={property} /> */}
+ 
       {/* Property Overview Section */}
       <PropertyOverview 
         property={property}
@@ -308,6 +236,9 @@ const PropertyDetailPage = () => {
       <AmenitiesSpecs 
         property={property}
       />
+
+      {/* Property Listings */}
+      <PropertyListings />
     </div>
   );
 };

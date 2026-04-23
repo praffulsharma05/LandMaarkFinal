@@ -1,62 +1,50 @@
  
  
 import React from "react";
+import Navbar from "../Navbar/Navbar";
 
  const ContactUs: React.FC = () => {
-  const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.3572654485392!2d75.83077757543877!3d26.892154476659382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db73f355671c9%3A0x9f2324b9a7d96309!2sAlvion%20Technologies!5e0!3m2!1sen!2sin!4v1774440608643!5m2!1sen!2sin`;
+  const mapUrl = `https://www.google.com/maps?q=26.5395603,74.662056&output=embed`;
   return (
-    <div
-      className="relative left-1/2 -m-8 right-1/2 -ml-[50vw] -mr-[50vw] w-screen min-h-screen
-      bg-[radial-gradient(circle_at_top,_#1e293b,_#0f172a_40%,_#020617_100%)]
-      text-white overflow-hidden"
-    >
-      {/* Ambient Glow */}
-      <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-amber-500/20 rounded-full blur-3xl" />
-      <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-amber-400/10 rounded-full blur-3xl" />
+    <>
+      <Navbar />
+      <div
+        className="relative md:left-1/2 -m-0 md:-m-8 md:right-1/2 md:-ml-[50vw] md:-mr-[50vw] w-full md:w-screen min-h-screen pt-20 sm:pt-24 md:pt-32 lg:pt-40
+        bg-[radial-gradient(circle_at_top,_#1e293b,_#0f172a_40%,_#020617_100%)]
+        text-white overflow-hidden"
+      >
+        {/* Ambient Glow */}
+        <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-amber-500/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-amber-400/10 rounded-full blur-3xl" />
 
-      {/* HEADER */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/40 border-b border-white/10">
-        <div className="w-full px-6 lg:px-16 py-4 flex items-center justify-center">
-          <h1 className="text-sm md:text-base mt-30 font-semibold tracking-[0.4em] uppercase text-white/80">
-            LANDMAARK DEVELOPERS
-          </h1>
-        </div>
-        
-      </header>
+        {/* MAP SECTION */}
+        <div className="relative w-full md:w-screen h-56 sm:h-72 md:h-[450px] right-0 md:right-10 overflow-hidden rounded-2xl md:rounded-2xl">
+        <iframe
+          title="Google Map of Location"
+          src={mapUrl}
+          className="absolute top-0 left-0 md:left-[20%] w-full md:w-250 h-full"
+          style={{ border: 0 }}
+          allowFullScreen={true}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+      </div>
 
-      {/* MAP SECTION */}
-      <div className="relative w-full h-[450px] right-10  md:h-[450px] lg:h-[450px] mt-30 overflow-hidden rounded-2xl">
-      <iframe
-        title="Google Map of Location"
-        src={mapUrl}
-        className="absolute  left-[20%] w-250 h-full"
-        style={{ border: 0 }}
-        allowFullScreen={true}
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-      />
-    </div>
-
-      {/* MAIN CONTENT */}
-      <main className="w-full px-6 md:px-16 lg:px-32 py-20 grid lg:grid-cols-2 gap-20 items-start">
+        {/* MAIN CONTENT */}
+        <main className="w-full px-4 sm:px-6 md:px-6 md:px-16 lg:px-32 py-12 sm:py-16 md:py-20 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-20 items-start">
 
         {/* LEFT TEXT */}
         <div>
-          
-          <div className="  h-[400px] w-full">
-      {/* Other Contact Content */}
-
-     </div>
-          <h2 className="text-5xl lg:text-6xl font-light leading-tight">
-            Let’s Build Your
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-tight">
+            Let's Build Your
             <span className="block font-semibold text-amber-400">
               Luxury Future
             </span>
           </h2>
 
-          <div className="mt-8 h-[2px] w-24 bg-gradient-to-r from-amber-400 to-transparent" />
+          <div className="mt-6 sm:mt-7 md:mt-8 h-[2px] w-20 sm:w-22 md:w-24 bg-gradient-to-r from-amber-400 to-transparent" />
 
-          <p className="text-white/60 text-lg mt-8 leading-relaxed max-w-xl">
+          <p className="text-white/60 text-sm sm:text-base md:text-lg mt-6 sm:mt-7 md:mt-8 leading-relaxed max-w-xl">
             Speak with our private advisors and gain exclusive access to Dubai’s
             most prestigious real estate developments and off-market
             opportunities.
@@ -64,8 +52,8 @@ import React from "react";
         </div>
 
         {/* CONTACT FORM */}
-        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)]">
-          <form className="space-y-8">
+        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-5 sm:p-7 md:p-10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)]">
+          <form className="space-y-6 sm:space-y-7 md:space-y-8">
 
             {[
               {
@@ -92,7 +80,7 @@ import React from "react";
                 <input
                   type={field.type}
                   placeholder={field.placeholder}
-                  className="w-full bg-black/40 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all duration-300 placeholder:text-white/40"
+                  className="w-full text-xs sm:text-sm md:text-base bg-black/40 border border-white/10 rounded-2xl px-4 sm:px-4 md:px-5 py-3 sm:py-3 md:py-4 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all duration-300 placeholder:text-white/40"
                 />
               </div>
             ))}
@@ -104,7 +92,7 @@ import React from "react";
 
 
 
-              <select className="w-full bg-black/40 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all duration-300">
+              <select className="w-full text-xs sm:text-sm md:text-base bg-black/40 border border-white/10 rounded-2xl px-4 sm:px-4 md:px-5 py-3 sm:py-3 md:py-4 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all duration-300">
                 <option>PanchSheel</option>
                 <option>Gulab Bari</option>
                 <option>Gandhi Nagar</option>
@@ -114,7 +102,7 @@ import React from "react";
 
             <button
               type="submit"
-              className="w-full mt-6 bg-gradient-to-r from-amber-400 to-amber-500 text-black font-semibold py-5 rounded-2xl tracking-[0.35em] uppercase text-xs shadow-[0_25px_60px_-10px_rgba(251,191,36,0.7)] hover:scale-[1.03] active:scale-[0.97] transition-all duration-300"
+              className="w-full mt-6 bg-gradient-to-r from-amber-400 to-amber-500 text-black font-semibold py-2 sm:py-3 md:py-5 rounded-2xl tracking-[0.35em] uppercase text-xs md:text-xs shadow-[0_25px_60px_-10px_rgba(251,191,36,0.7)] hover:scale-[1.03] active:scale-[0.97] transition-all duration-300"
             >
               Request Private Call
             </button>
@@ -123,7 +111,8 @@ import React from "react";
         </div>
 
       </main>
-    </div>
+      </div>
+    </>
   );
 };
 

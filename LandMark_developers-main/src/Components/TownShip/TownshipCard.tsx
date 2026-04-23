@@ -7,29 +7,34 @@ interface TownshipCardProps {
 }
 
 const TownshipCard: React.FC<TownshipCardProps> = ({ item, onSelect }) => {
-  return (
+  const cityName =  item.name || 'Unknown';
+  const propertiesCount = item.properties?.length || 0;
+  const description = item.description ||  '';
+   return (
     <div
       onClick={() => onSelect(item)}
-      className="group bg-white rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition duration-300"
+      className="header group bg-white mb-20 mt-20 rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition duration-300"
     >
       {/* City Image */}
-      <div className="overflow-hidden">
+      <div className=" h-70 overflow-hidden">
         <img
-          src={item.image}
-          alt={item.city}
+          src={item.image || "https://images.unsplash.com/photo-1568605114967-8130f3a36994"}
+          alt={cityName}
           className="w-full aspect-square object-cover group-hover:scale-110 transition duration-300"
         />
       </div>
 
       {/* City Info */}
-      <div className="p-7">
-        <h3 className="font-semibold text-lg text-gray-800">{item.city}</h3>
+      <div className="p-7 flex justify-between items-center">
+        <h3 className="font-semibold text-lg text-gray-800">{cityName}</h3>
 
-        <p className="text-sm text-gray-500 mt-1">
-          {item.properties.length} Properties
+
+        <p className="text-sm text-gray-500">
+          {propertiesCount} Properties
         </p>
-        <p>{item.description}</p> 
       </div>
+
+      <p className="px-7 pb-7 text-left text-gray-600">{description}</p> 
     </div>
   );
 };
