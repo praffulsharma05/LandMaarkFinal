@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { CurrencyRupeeIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { ApiConstants } from "../../constants/ApiConstants";
 import { ApiEndPoints } from "../../constants/ApiEndpoints";
 import { Filters, FilterOptions } from "./types";
+import { useTranslation } from "../../hooks/useTranslation";
 import "./PropertySearch2.css";
+
+type FilterOption = Record<string, unknown>;
 
 interface Props {
   filters: Filters;
@@ -14,16 +17,16 @@ interface Props {
   resetFilters: () => void;
 }
 
-const getOptionValue = (option: any, type: string): string => {
+const getOptionValue = (option: FilterOption | null | undefined, type: string): string => {
   if (!option) return '';
-  if (type === 'bhk') return option.bhk?.toString() || '';
-  return option.name || '';
+  if (type === 'bhk') return String(option.bhk ?? '');
+  return String(option.name ?? '');
 };
 
-const getOptionLabel = (option: any, type: string): string => {
+const getOptionLabel = (option: FilterOption | null | undefined, type: string): string => {
   if (!option) return '';
-  if (type === 'bhk') return `${option.bhk} BHK`;
-  return option.name || '';
+  if (type === 'bhk' && option.bhk) return `${option.bhk} BHK`;
+  return String(option.name ?? '');
 };
 
 const PropertyFilters2: React.FC<Props> = ({
@@ -33,6 +36,7 @@ const PropertyFilters2: React.FC<Props> = ({
   handleSubmit,
   resetFilters
 }) => {
+  const { t } = useTranslation();
   const [optionsData, setOptionsData] = useState<FilterOptions>({});
 
   useEffect(() => {
@@ -56,18 +60,29 @@ const PropertyFilters2: React.FC<Props> = ({
   const constructionStatusOptions = filterOptions?.construction_status || [];
   const constructionTypeOptions = filterOptions?.construction_type || [];
 
+  const onSelectChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    const field = (e.currentTarget as HTMLSelectElement).dataset.field;
+    if (field) handleFilterChange(field, e.target.value);
+  }, [handleFilterChange]);
+
+  const onPriceChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const field = (e.currentTarget as HTMLInputElement).dataset.field;
+    if (field) handleFilterChange(field, e.target.value);
+  }, [handleFilterChange]);
+
   return (
     <div className="filter-container">
       <form onSubmit={handleSubmit} className="filter-form">
         <div className="filter-group">
           <div className="filter-field">
-            <label className="filter-label">BHK</label>
+            <label className="filter-label">{t('propertySearch.bhk')}</label>
             <select
               value={filters.bhk}
-              onChange={(e) => handleFilterChange("bhk", e.target.value)}
+              data-field="bhk"
+              onChange={onSelectChange}
               className="filter-select"
             >
-              <option value="">All BHK</option>
+              <option value="">{t('propertySearch.allBhk')}</option>
               {bhkOptions.map((opt, i) => (
                 <option key={i} value={getOptionValue(opt, 'bhk')}>
                   {getOptionLabel(opt, 'bhk')}
@@ -77,13 +92,14 @@ const PropertyFilters2: React.FC<Props> = ({
           </div>
 
           <div className="filter-field">
-            <label className="filter-label">PROPERTY TYPE</label>
+            <label className="filter-label">{t('propertySearch.propertyType')}</label>
             <select
               value={filters.property_type}
-              onChange={(e) => handleFilterChange("property_type", e.target.value)}
+              data-field="property_type"
+              onChange={onSelectChange}
               className="filter-select"
             >
-              <option value="">All Property Types</option>
+              <option value="">{t('propertySearch.allPropertyTypes')}</option>
               {propertyTypeOptions.map((opt, i) => (
                 <option key={i} value={getOptionValue(opt, 'property')}>
                   {getOptionLabel(opt, 'property')}
@@ -93,13 +109,14 @@ const PropertyFilters2: React.FC<Props> = ({
           </div>
 
           <div className="filter-field">
-            <label className="filter-label">STATUS</label>
+            <label className="filter-label">{t('propertySearch.constructionStatus')}</label>
             <select
               value={filters.construction_status}
-              onChange={(e) => handleFilterChange("construction_status", e.target.value)}
+              data-field="construction_status"
+              onChange={onSelectChange}
               className="filter-select"
             >
-              <option value="">All Statuses</option>
+              <option value="">{t('propertySearch.allStatuses')}</option>
               {constructionStatusOptions.map((opt, i) => (
                 <option key={i} value={getOptionValue(opt, 'status')}>
                   {getOptionLabel(opt, 'status')}
@@ -109,22 +126,24 @@ const PropertyFilters2: React.FC<Props> = ({
           </div>
 
           <div className="filter-field">
-            <label className="filter-label">PRICE RANGE</label>
+            <label className="filter-label">{t('propertySearch.priceRange')}</label>
             <div className="price-input-group">
               <CurrencyRupeeIcon className="price-icon" />
               <input
                 type="number"
-                placeholder="Min"
+                placeholder={t('propertySearch.min')}
                 value={filters.minPrice}
-                onChange={(e) => handleFilterChange("minPrice", e.target.value)}
+                data-field="minPrice"
+                onChange={onPriceChange}
                 className="price-input"
               />
               <span className="price-separator">-</span>
               <input
                 type="number"
-                placeholder="Max"
+                placeholder={t('propertySearch.max')}
                 value={filters.maxPrice}
-                onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
+                data-field="maxPrice"
+                onChange={onPriceChange}
                 className="price-input"
               />
             </div>
@@ -132,13 +151,14 @@ const PropertyFilters2: React.FC<Props> = ({
 
           {constructionTypeOptions.length > 0 && (
             <div className="filter-field">
-              <label className="filter-label">CONSTRUCTION TYPE</label>
+              <label className="filter-label">{t('propertySearch.constructionType')}</label>
               <select
                 value={filters.construction_type}
-                onChange={(e) => handleFilterChange("construction_type", e.target.value)}
+                data-field="construction_type"
+                onChange={onSelectChange}
                 className="filter-select"
               >
-                <option value="">All Types</option>
+                <option value="">{t('propertySearch.allTypes')}</option>
                 {constructionTypeOptions.map((opt, i) => (
                   <option key={i} value={getOptionValue(opt, 'type')}>
                     {getOptionLabel(opt, 'type')}
@@ -150,8 +170,8 @@ const PropertyFilters2: React.FC<Props> = ({
         </div>
 
         <div className="filter-actions">
-          <button type="button" onClick={resetFilters} className="btn-reset">Reset</button>
-          <button type="submit" className="btn-apply">Apply</button>
+          <button type="button" onClick={resetFilters} className="btn-reset">{t('propertySearch.reset')}</button>
+          <button type="submit" className="btn-apply">{t('propertySearch.applyFilters')}</button>
         </div>
       </form>
       {priceError && <p className="price-error">{priceError}</p>}

@@ -86,9 +86,10 @@
 // };
 
 // export default WishlistCard;
-import React from "react";
+import React, { useCallback } from "react";
 import { MapPin, IndianRupee, X, Heart } from "lucide-react";
 import { CityProperty } from "../../services/services";
+import { useTranslation } from "../../hooks/useTranslation";
 
 interface Props {
   property: CityProperty;
@@ -111,9 +112,23 @@ const WishlistCard = ({
   onRemove,
   onClick,
 }: Props) => {
+  const { t } = useTranslation();
   const formatPrice = (price: string) => {
     return price.replace("FROM INR", "").trim();
   };
+
+  const handleCheckboxClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+  }, []);
+
+  const handleRemoveClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    onRemove();
+  }, [onRemove]);
+
+  const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300x200?text=Property+Image';
+  }, []);
 
   return (
     <div
@@ -125,7 +140,7 @@ const WishlistCard = ({
       {/* Checkbox */}
       <div 
         className="absolute top-3 left-3 z-10"
-        onClick={(e) => e.stopPropagation()}
+        onClick={handleCheckboxClick}
       >
         <input
           type="checkbox"
@@ -137,24 +152,21 @@ const WishlistCard = ({
 
       {/* Remove Button */}
       <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onRemove();
-        }}
+        onClick={handleRemoveClick}
         className="absolute top-3 right-3 z-10 p-2 bg-white rounded-full shadow-md hover:bg-rose-50 transition"
+        aria-label={t('wishlist.remove')}
       >
         <X className="w-4 h-4 text-rose-500" />
       </button>
 
       {/* Image */}
-      <div className="relative h-56 overflow-hidden">
+      <div className="relative h-16 overflow-hidden">
         <img
           src={property.image}
           alt={property.title}
           className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300x200?text=Property+Image';
-          }}
+          loading="lazy"
+          onError={handleImageError}
         />
 
         <div className="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
@@ -174,9 +186,9 @@ const WishlistCard = ({
 
       {/* Content */}
       <div className="p-4">
-        <h3 className="font-semibold text-amber-900 text-lg line-clamp-1">
+        <h1 className="font-semibold text-amber-900 text-lg line-clamp-1">
           {property.title}
-        </h3>
+        </h1>
 
         <div className="flex items-center gap-1 mt-2 text-amber-600">
           <MapPin className="w-4 h-4 flex-shrink-0" />
@@ -185,14 +197,14 @@ const WishlistCard = ({
 
         <div className="flex items-center gap-2 mt-3 pt-3 border-t border-amber-100">
           <span className="text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded">
-            {property.bhk} BHK
+            {property.bhk} {t('property.bhkSuffix')}
           </span>
           <span className="text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded">
             {property.propertyType}
           </span>
           {property.verified && (
             <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded">
-              Verified
+              {t('property.verifiedSimple')}
             </span>
           )}
         </div>

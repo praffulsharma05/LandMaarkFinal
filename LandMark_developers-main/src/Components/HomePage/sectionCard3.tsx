@@ -10,9 +10,9 @@ const SectionCard: React.FC<SectionCardProps> = ({ title, description }) => {
   return (
     <div className="sec3-card">
       {/* Title */}
-      <h3 className="sec3-card-title">
+      <h1 className="sec3-card-title">
         {title}
-      </h3>
+      </h1>
 
       {/* Description */}
       <p className="sec3-card-desc">{description}</p>

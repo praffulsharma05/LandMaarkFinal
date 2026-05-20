@@ -1,9 +1,9 @@
-// src/components/ImageGalleryModal/ImageGalleryModal.jsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import './ImageGalleryModal.css';
-
 import { CityProperty } from '../../services/services';
+import { useTranslation } from '../../hooks/useTranslation';
+import { COLORS } from '../../styles/colors';
 
 interface ImageGalleryModalProps {
   isOpen: boolean;
@@ -13,6 +13,7 @@ interface ImageGalleryModalProps {
 }
 
 const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({ isOpen, onClose, property, initialImageIndex = 0 }) => {
+  const { t } = useTranslation();
   const [mediaItems, setMediaItems] = useState<Array<{ type: 'image' | 'video'; url: string }>>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(initialImageIndex);
   const [loading, setLoading] = useState<boolean>(true);
@@ -20,81 +21,55 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({ isOpen, onClose, 
   const [zoomPosition, setZoomPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const imageRef = useRef<HTMLDivElement | null>(null);
   const touchStartX = useRef<number>(0);
-  const touchEndX = useRef<number>(0);
 
   useEffect(() => {
-    if (isOpen && property) {
-      loadImages();
-    }
-  }, [isOpen, property]);
-
-  const loadImages = () => {
+    if (!isOpen || !property) return;
     setLoading(true);
     try {
-      let propertyImages: string[] = [];
-      if (property.allImages && property.allImages.length > 0) {
-        propertyImages = property.allImages;
-      } else if (property.images && property.images.length > 0) {
-        propertyImages = property.images;
-      } else if (property.image) {
-        propertyImages = [property.image];
-      }
-      
-      if (!propertyImages || propertyImages.length === 0) {
-        propertyImages = ['https://via.placeholder.com/800x600?text=No+Images+Available'];
-      }
-
-      const videos = property.video || [];
-      const items = [
-        ...propertyImages.map(url => ({ type: 'image' as const, url })),
-        ...videos.map(url => ({ type: 'video' as const, url }))
-      ];
-      
+      const imgs = property.allImages?.length ? property.allImages : property.images?.length ? property.images : property.image ? [property.image] : ['https://via.placeholder.com/800x600?text=No+Images+Available'];
+      const items = [...imgs.map((url: string) => ({ type: 'image' as const, url })), ...(property.video || []).map((url: string) => ({ type: 'video' as const, url }))];
       setMediaItems(items);
-      const validIndex = Math.min(initialImageIndex, items.length - 1);
-      setCurrentIndex(validIndex >= 0 ? validIndex : 0);
-    } catch (err) {
-      console.error('Error loading images:', err);
+      setCurrentIndex(Math.min(initialImageIndex, items.length - 1));
+    } catch {
       setMediaItems([{ type: 'image', url: 'https://via.placeholder.com/800x600?text=Error+Loading+Images' }]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    } finally { setLoading(false); }
+  }, [isOpen, property, initialImageIndex]);
 
-  const handlePrevious = () => {
-    if (mediaItems.length === 0) return;
-    setCurrentIndex((prev) => (prev === 0 ? mediaItems.length - 1 : prev - 1));
+  const handleNav = useCallback((dir: number) => {
+    setCurrentIndex((prev) => (prev + dir + mediaItems.length) % mediaItems.length);
     setIsZoomed(false);
-  };
+  }, [mediaItems.length]);
 
-  const handleNext = () => {
-    if (mediaItems.length === 0) return;
-    setCurrentIndex((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1));
-    setIsZoomed(false);
-  };
+  const handlePrev = useCallback(() => handleNav(-1), [handleNav]);
+  const handleNext = useCallback(() => handleNav(1), [handleNav]);
+  const toggleZoom = useCallback(() => {
+    if (mediaItems[currentIndex]?.type === 'video') return;
+    setIsZoomed((prev) => !prev);
+    setZoomPosition({ x: 0, y: 0 });
+  }, [mediaItems, currentIndex]);
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'ArrowLeft') handlePrevious();
-    if (e.key === 'ArrowRight') handleNext();
-    if (e.key === 'Escape') onClose();
-    if (e.key === 'z' || e.key === 'Z') toggleZoom();
-  };
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') handlePrev();
+    else if (e.key === 'ArrowRight') handleNext();
+    else if (e.key === 'Escape') onClose();
+    else if (e.key === 'z' || e.key === 'Z') toggleZoom();
+  }, [handlePrev, handleNext, onClose, toggleZoom]);
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
+  const handleTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => { touchStartX.current = e.touches[0].clientX; }, []);
+  const handleTouchEnd = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    const d = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(d) > 50) handleNav(d > 0 ? -1 : 1);
+  }, [handleNav]);
 
-  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-    touchEndX.current = e.changedTouches[0].clientX;
-    const swipeDistance = touchEndX.current - touchStartX.current;
-    if (Math.abs(swipeDistance) > 50) {
-      if (swipeDistance > 0) {
-        handlePrevious();
-      } else {
-        handleNext();
+  useEffect(() => {
+    if (imageRef.current) {
+      const img = imageRef.current.querySelector('img');
+      if (img) {
+        img.style.transform = isZoomed ? 'scale(1.5)' : 'scale(1)';
+        img.style.transformOrigin = isZoomed ? `${zoomPosition.x}% ${zoomPosition.y}%` : 'center';
       }
     }
-  };
+  }, [isZoomed, zoomPosition]);
 
   useEffect(() => {
     if (isOpen) {
@@ -107,167 +82,76 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({ isOpen, onClose, 
       document.body.style.overflow = 'unset';
       document.body.classList.remove('gallery-modal-open');
     };
-  }, [isOpen, mediaItems.length]);
+  }, [isOpen, handleKeyDown]);
 
-  const toggleZoom = () => {
-    if (mediaItems[currentIndex]?.type === 'video') return; // Disable zoom on video slides
-    setIsZoomed(!isZoomed);
-    setZoomPosition({ x: 0, y: 0 });
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isZoomed || !imageRef.current) return;
     const img = imageRef.current.querySelector('img');
     if (!img) return;
     const { left, top, width, height } = img.getBoundingClientRect();
-    const x = ((e.clientX - left) / width) * 100;
-    const y = ((e.clientY - top) / height) * 100;
-    setZoomPosition({ x: Math.min(Math.max(x, 0), 100), y: Math.min(Math.max(y, 0), 100) });
-  };
+    setZoomPosition({
+      x: Math.min(Math.max(((e.clientX - left) / width) * 100, 0), 100),
+      y: Math.min(Math.max(((e.clientY - top) / height) * 100, 0), 100)
+    });
+  }, [isZoomed]);
+
+  const handleThumbnailClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    setCurrentIndex(parseInt(e.currentTarget.dataset.thumbIndex || '0', 10));
+    setIsZoomed(false);
+  }, []);
 
   if (!isOpen) return null;
 
-  const currentMedia = mediaItems[currentIndex] || { type: 'image', url: '' };
+  const currentMedia = mediaItems[currentIndex] || { type: 'image' as const, url: '' };
+  const errHandler = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const t2 = e.target as HTMLImageElement; t2.onerror = null; t2.src = 'https://via.placeholder.com/800x600?text=Image+Load+Error';
+  };
+  const thumbErrHandler = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const t2 = e.target as HTMLImageElement; t2.onerror = null; t2.src = 'https://via.placeholder.com/64x64?text=Error';
+  };
 
   return (
     <div className="gallery-overlay">
       <div className="gallery-container">
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="gallery-close-btn"
-          aria-label="Close gallery"
-        >
-          <X size={24} />
-        </button>
-
-        {/* Counter */}
+        <button onClick={onClose} className="gallery-close-btn" aria-label={t('gallery.closeGallery')}><X size={24} /></button>
         {!loading && mediaItems.length > 0 && (
-          <div className="gallery-counter">
-            <span>{currentIndex + 1} / {mediaItems.length}</span>
-          </div>
+          <div className="gallery-counter"><span>{currentIndex + 1} / {mediaItems.length}</span></div>
         )}
-
-        {/* Main content - Carousel */}
-        <div 
-          className="gallery-main-viewport"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onMouseMove={handleMouseMove}
-        >
+        <div className="gallery-main-viewport" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onMouseMove={handleMouseMove}>
           {loading ? (
-            <div className="gallery-loading">
-              <div className="gallery-spinner"></div>
-              <p>Loading gallery...</p>
-            </div>
+            <div className="gallery-loading"><div className="gallery-spinner"></div><p>{t('gallery.loading')}</p></div>
           ) : mediaItems.length > 0 ? (
             <div className="gallery-image-wrapper">
-              <div 
-                ref={imageRef}
-                className={`gallery-image-container ${currentMedia.type === 'video' ? 'cursor-default' : (isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in')}`}
-                onClick={toggleZoom}
-              >
+              <div ref={imageRef} className={`gallery-image-container ${currentMedia.type === 'video' ? 'cursor-default' : (isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in')}`} onClick={toggleZoom}>
                 {currentMedia.type === 'video' ? (
-                  <video
-                    src={currentMedia.url}
-                    className="gallery-main-image"
-                    controls
-                    autoPlay
-                    muted
-                    playsInline
-                    style={{ objectFit: 'contain', maxHeight: '80vh', width: '100%' }}
-                  />
+                  <video src={currentMedia.url} className="gallery-main-image gallery-video" controls autoPlay muted playsInline />
                 ) : (
-                  <img
-                    src={currentMedia.url}
-                    alt={property?.title || `Property image ${currentIndex + 1}`}
-                    className="gallery-main-image"
-                    style={{
-                      transform: isZoomed ? 'scale(1.5)' : 'scale(1)',
-                      transformOrigin: isZoomed ? `${zoomPosition.x}% ${zoomPosition.y}%` : 'center'
-                    }}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.onerror = null;
-                      target.src = 'https://via.placeholder.com/800x600?text=Image+Load+Error';
-                    }}
-                  />
+                  <img src={currentMedia.url} alt={`${t('gallery.propertyImage')} ${currentIndex + 1}`} className="gallery-main-image" onError={errHandler} loading="lazy" />
                 )}
               </div>
-              
-              {/* Navigation arrows */}
               {mediaItems.length > 1 && (
                 <>
-                  <button
-                    onClick={handlePrevious}
-                    className="gallery-nav-btn prev"
-                    aria-label="Previous slide"
-                  >
-                    <ChevronLeft size={32} />
-                  </button>
-                  <button
-                    onClick={handleNext}
-                    className="gallery-nav-btn next"
-                    aria-label="Next slide"
-                  >
-                    <ChevronRight size={32} />
-                  </button>
+                  <button onClick={handlePrev} className="gallery-nav-btn prev" aria-label={t('gallery.previousSlide')}><ChevronLeft size={32} /></button>
+                  <button onClick={handleNext} className="gallery-nav-btn next" aria-label={t('gallery.nextSlide')}><ChevronRight size={32} /></button>
                 </>
               )}
             </div>
           ) : (
-            <div className="gallery-loading">
-              <p>No media available</p>
-            </div>
+            <div className="gallery-loading"><p>{t('gallery.noMediaAvailable')}</p></div>
           )}
         </div>
-
-        {/* Thumbnail strip */}
         {!loading && mediaItems.length > 1 && (
           <div className="thumbnail-strip-container">
             <div className="thumbnail-strip">
               {mediaItems.map((item, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    setCurrentIndex(idx);
-                    setIsZoomed(false);
-                  }}
-                  className={`thumbnail-btn ${idx === currentIndex ? 'active' : ''}`}
-                  aria-label={`Go to slide ${idx + 1}`}
-                  style={{ position: 'relative' }}
-                >
+                <button key={idx} onClick={handleThumbnailClick} data-thumb-index={idx} className={`thumbnail-btn ${idx === currentIndex ? 'active' : ''}`} aria-label={`${t('gallery.goToSlide')} ${idx + 1}`}>
                   {item.type === 'video' ? (
-                    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                      <img
-                        src={property.allImages?.[0] || property.image || 'https://via.placeholder.com/64x64?text=Video'}
-                        alt="Video Thumbnail"
-                        className="thumbnail-img"
-                      />
-                      <div style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background: 'rgba(0, 0, 0, 0.45)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#ffffff',
-                        borderRadius: '4px'
-                      }}>
-                        <Play size={16} fill="#ffffff" strokeWidth={2} />
-                      </div>
+                    <div className="thumbnail-video-wrapper">
+                      <img src={property.allImages?.[0] || property.image || 'https://via.placeholder.com/64x64?text=Video'} alt={t('gallery.videoThumbnail')} className="thumbnail-img" loading="lazy" />
+                      <div className="thumbnail-video-overlay"><Play size={16} fill={COLORS.white} strokeWidth={2} /></div>
                     </div>
                   ) : (
-                    <img
-                      src={item.url}
-                      alt={`Thumbnail ${idx + 1}`}
-                      className="thumbnail-img"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.onerror = null;
-                        target.src = 'https://via.placeholder.com/64x64?text=Error';
-                      }}
-                    />
+                    <img src={item.url} alt={`${t('gallery.thumbnail')} ${idx + 1}`} className="thumbnail-img" onError={thumbErrHandler} loading="lazy" />
                   )}
                 </button>
               ))}

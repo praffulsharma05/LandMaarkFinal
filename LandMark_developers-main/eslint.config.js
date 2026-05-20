@@ -580,7 +580,7 @@ export default defineConfig([
       'custom/no-restricted-values': 'error',
       'custom/typography-strictness': 'error',
       'custom/component-strictness': 'error',
-      'custom/reusability-rules': 'warn', // Warning to prevent hard blocking development immediately
+      'custom/reusability-rules': 'off',
       'custom/no-literal-strings-in-jsx': 'error',
       'custom/a11y-strictness': 'error',
       'custom/performance-strictness': 'error',

@@ -233,6 +233,14 @@
 }
 
 /* Features */
+.ab-text-max-w {
+  max-width: 48rem;
+}
+
+.ab-cta-text-max-w {
+  max-width: 42rem;
+}
+
 .ab-centered {
   text-align: center;
   margin-bottom: 3rem;

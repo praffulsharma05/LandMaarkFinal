@@ -17,6 +17,7 @@ const Section6Card: React.FC<Props> = ({ item, isActive }) => {
           src={item.image}
           alt={item.title}
           className="sec6-card-img"
+          loading="lazy"
         />
 
         {/* Dark Overlay */}
@@ -24,9 +25,9 @@ const Section6Card: React.FC<Props> = ({ item, isActive }) => {
 
         {/* Text Content */}
         <div className="sec6-text-container">
-          <h3 className="sec6-card-title">
+          <h1 className="sec6-card-title">
             {item.title}
-          </h3>
+          </h1>
 
           <p className="sec6-card-subtitle">
             {item.subtitle}

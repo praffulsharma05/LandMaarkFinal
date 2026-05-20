@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { AlignRight, X, ArrowLeft } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { X, ArrowLeft } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
+import { useTranslation } from "../../hooks/useTranslation";
+
+const navLinks = [
+  { key: "homeLink", path: "/" },
+  { key: "townshipLink", path: "/Township" },
+  { key: "aboutLink", path: "/About" },
+  { key: "contactLink", path: "/contactUs" },
+];
 
 const Navbar: React.FC = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location.pathname]);
-
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -35,69 +36,72 @@ const Navbar: React.FC = () => {
     };
   }, [isOpen]);
 
-  const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Township", path: "/Township" },
-    { name: "About", path: "/About" },
-    { name: "Contact", path: "/contactUs" },
-  ];
+  const pageTitle = useCallback(() => {
+    const p = location.pathname.toLowerCase();
+    if (p === "/township") return t("navbar.ourTownships");
+    if (p === "/about") return t("navbar.aboutUsLabel");
+    if (p === "/contactus") return t("navbar.contactUsLabel");
+    if (p.startsWith("/property/")) return t("navbar.townshipDetail");
+    return t("navbar.brandFallback");
+  }, [location.pathname, t]);
+
+  const handleMobileToggle = useCallback(() => {
+    setIsOpen((prev) => !prev);
+  }, []);
+
+  const handleCloseMobile = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const handleGoBack = useCallback(() => {
+    window.history.back();
+  }, []);
 
   return (
     <>
-      {/* Navbar */}
       <header className={`navbar-header ${scrolled ? "scrolled" : "not-scrolled"}`}>
         <div className="navbar-container">
           <div className="navbar-flex">
-            {/* Left Slot: Back navigation button or Home brand link */}
             <div className="nav-left-slot">
               {location.pathname !== "/" ? (
                 <button
-                  onClick={() => window.history.back()}
+                  onClick={handleGoBack}
                   className="nav-back-btn"
-                  aria-label="Go Back"
+                  aria-label={t("navbar.goBack")}
                 >
                   <ArrowLeft size={16} strokeWidth={1.5} className="back-icon-svg" />
                 </button>
               ) : (
                 <Link to="/" className="logo-text-link">
-                  Home
+                  {t("navbar.homeLink")}
                 </Link>
               )}
             </div>
 
-            {/* Center Slot: Brand / Page Title */}
             <div className="nav-center-slot">
               {location.pathname !== "/" && (
-                <span className="page-title">
-                  {location.pathname.toLowerCase() === "/township" && "Our Townships"}
-                  {location.pathname.toLowerCase() === "/about" && "About Us"}
-                  {location.pathname.toLowerCase() === "/contactus" && "Contact Us"}
-                  {!["/township", "/about", "/contactus"].includes(location.pathname.toLowerCase()) && "LandMaarkdeveloper"}
-                </span>
+                <span className="page-title">{pageTitle()}</span>
               )}
             </div>
 
-            {/* Right Slot: Desktop Nav & Mobile Hamburger Toggle */}
             <div className="nav-right-slot">
-              {/* Desktop Menu */}
               <nav className="desktop-nav">
                 {navLinks.map((link) => (
                   <Link
-                    key={link.name}
+                    key={link.key}
                     to={link.path}
                     className={`nav-link ${location.pathname === link.path ? "active" : ""}`}
                   >
-                    {link.name}
+                    {t(`navbar.${link.key}`)}
                     <span className="nav-underline" />
                   </Link>
                 ))}
               </nav>
 
-              {/* Mobile Menu Button */}
               <button
                 className="mobile-menu-btn"
-                onClick={() => setIsOpen(!isOpen)}
-                aria-label={isOpen ? "Close menu" : "Open menu"}
+                onClick={handleMobileToggle}
+                aria-label={isOpen ? t("navbar.closeMenu") : t("navbar.openMenu")}
                 aria-expanded={isOpen}
               >
                 <div className={`hamburger-pill-icon ${isOpen ? 'open' : ''}`}>
@@ -111,39 +115,34 @@ const Navbar: React.FC = () => {
         </div>
       </header>
 
-      {/* Mobile Menu Overlay + Panel */}
       {isOpen && (
         <>
           <div
             className="mobile-overlay"
-            onClick={() => setIsOpen(false)}
+            onClick={handleCloseMobile}
             aria-hidden="true"
           />
-
           <div className="mobile-drawer">
-            {/* Mobile Menu Header */}
             <div className="drawer-header">
-              <span className="drawer-title">Menu</span>
+              <span className="drawer-title">{t("navbar.menu")}</span>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={handleCloseMobile}
                 className="drawer-close-btn"
-                aria-label="Close menu"
+                aria-label={t("navbar.closeMenu")}
               >
                 <X size={24} />
               </button>
             </div>
 
-            {/* Mobile Navigation Links */}
             <nav className="drawer-nav">
               {navLinks.map((link, index) => (
                 <Link
-                  key={link.name}
+                  key={link.key}
                   to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`drawer-link drawer-link-animated ${location.pathname === link.path ? "active" : ""}`}
-                  style={{ animationDelay: `${index * 0.07}s` }}
+                  onClick={handleCloseMobile}
+                  className={`drawer-link drawer-link-animated drawer-link-${index} ${location.pathname === link.path ? "active" : ""}`}
                 >
-                  {link.name}
+                  {t(`navbar.${link.key}`)}
                   <span className="drawer-underline" />
                 </Link>
               ))}

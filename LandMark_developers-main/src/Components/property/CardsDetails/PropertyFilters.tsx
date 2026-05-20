@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { SlidersHorizontal, X } from 'lucide-react';
+import { useTranslation } from '../../../hooks/useTranslation';
+
+interface KeyValue {
+  key: string;
+  value: unknown;
+}
 
 interface Property {
   bhk: string;
-  rawKeyValues: { key: string; value: any }[];
+  rawKeyValues: KeyValue[];
 }
 
 interface PropertyFiltersProps {
@@ -15,9 +21,18 @@ interface PropertyFiltersProps {
     sortBy: string;
   };
   plotData: Property[];
-  onFilterChange: (key: any, value: string) => void;
+  onFilterChange: (key: string, value: string) => void;
   isMobileOpen: boolean;
   setIsMobileOpen: (open: boolean) => void;
+}
+
+function reduceKeyValues(acc: Record<string, unknown>, item: KeyValue): Record<string, unknown> {
+  acc[item.key] = item.value;
+  return acc;
+}
+
+function mapToFilterValues(items: string[]) {
+  return items.map(st => <option key={st} value={st}>{st}</option>);
 }
 
 const PropertyFilters: React.FC<PropertyFiltersProps> = ({
@@ -27,62 +42,67 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
   isMobileOpen,
   setIsMobileOpen,
 }) => {
+  const { t } = useTranslation();
+
   const uniqueSubTownships = [...new Set(plotData.map(p => {
-    const kv = p.rawKeyValues?.reduce((acc: any, item: any) => { acc[item.key] = item.value; return acc; }, {}) || {};
-    return kv['Sub Township'];
-  }).filter(Boolean))].sort();
+    const kv = p.rawKeyValues?.reduce(reduceKeyValues, {} as Record<string, unknown>) || {};
+    return kv['Sub Township'] as string | undefined;
+  }).filter(Boolean))].sort() as string[];
 
   const uniqueProjectAreas = [...new Set(plotData.map(p => {
-    const kv = p.rawKeyValues?.reduce((acc: any, item: any) => { acc[item.key] = item.value; return acc; }, {}) || {};
-    return kv['Project Area'];
-  }).filter(Boolean))].sort();
+    const kv = p.rawKeyValues?.reduce(reduceKeyValues, {} as Record<string, unknown>) || {};
+    return kv['Project Area'] as string | undefined;
+  }).filter(Boolean))].sort() as string[];
 
   const uniqueConfigurations = [...new Set(plotData.map(p => {
-    const kv = p.rawKeyValues?.reduce((acc: any, item: any) => { acc[item.key] = item.value; return acc; }, {}) || {};
-    return kv['Configuration'];
-  }).filter(Boolean))].sort();
+    const kv = p.rawKeyValues?.reduce(reduceKeyValues, {} as Record<string, unknown>) || {};
+    return kv['Configuration'] as string | undefined;
+  }).filter(Boolean))].sort() as string[];
 
   const uniqueStatus = [...new Set(plotData.map(p => {
-    const kv = p.rawKeyValues?.reduce((acc: any, item: any) => { acc[item.key] = item.value; return acc; }, {}) || {};
-    return kv['Construction Status'];
-  }).filter(Boolean))].sort();
+    const kv = p.rawKeyValues?.reduce(reduceKeyValues, {} as Record<string, unknown>) || {};
+    return kv['Construction Status'] as string | undefined;
+  }).filter(Boolean))].sort() as string[];
+
+  const handleOpenMobile = useCallback(() => setIsMobileOpen(true), [setIsMobileOpen]);
+  const handleCloseMobile = useCallback(() => setIsMobileOpen(false), [setIsMobileOpen]);
+  const handleOverlayClick = useCallback(() => setIsMobileOpen(false), [setIsMobileOpen]);
+  const handleSheetClick = useCallback((e: React.MouseEvent) => e.stopPropagation(), []);
+
+  const makeOnChange = useCallback((key: string) => {
+    return (e: React.ChangeEvent<HTMLSelectElement>) => onFilterChange(key, e.target.value);
+  }, [onFilterChange]);
 
   const filterContent = (isMobile: boolean) => (
     <div className={isMobile ? "mobile-filters-grid" : "filters"}>
       <div className={isMobile ? "filter-group" : ""}>
-        {isMobile && <label>Sub Township</label>}
-        <select value={filters.subTownship} onChange={(e) => onFilterChange('subTownship', e.target.value)}>
-          <option value="">All Sub Townships</option>
-          {uniqueSubTownships.map(st => (
-            <option key={st} value={st}>{st}</option>
-          ))}
+        {isMobile && <label>{t('property.filters.subTownship')}</label>}
+        <select value={filters.subTownship} onChange={makeOnChange('subTownship')}>
+          <option value="">{t('property.filters.allSubTownships')}</option>
+          {mapToFilterValues(uniqueSubTownships)}
         </select>
       </div>
 
       <div className={isMobile ? "filter-group" : ""}>
-        {isMobile && <label>Project Area</label>}
-        <select value={filters.projectArea} onChange={(e) => onFilterChange('projectArea', e.target.value)}>
-          <option value="">All Project Areas</option>
-          {uniqueProjectAreas.map(pa => (
-            <option key={pa} value={pa}>{pa}</option>
-          ))}
+        {isMobile && <label>{t('property.filters.projectArea')}</label>}
+        <select value={filters.projectArea} onChange={makeOnChange('projectArea')}>
+          <option value="">{t('property.filters.allProjectAreas')}</option>
+          {mapToFilterValues(uniqueProjectAreas)}
         </select>
       </div>
 
       <div className={isMobile ? "filter-group" : ""}>
-        {isMobile && <label>Configuration</label>}
-        <select value={filters.configuration} onChange={(e) => onFilterChange('configuration', e.target.value)}>
-          <option value="">All Configurations</option>
-          {uniqueConfigurations.map(c => (
-            <option key={c} value={c}>{c}</option>
-          ))}
+        {isMobile && <label>{t('property.filters.configuration')}</label>}
+        <select value={filters.configuration} onChange={makeOnChange('configuration')}>
+          <option value="">{t('property.filters.allConfigurations')}</option>
+          {mapToFilterValues(uniqueConfigurations)}
         </select>
       </div>
 
       <div className={isMobile ? "filter-group" : ""}>
-        {isMobile && <label>Status</label>}
-        <select value={filters.status} onChange={(e) => onFilterChange('status', e.target.value)}>
-          <option value="">All Status</option>
+        {isMobile && <label>{t('property.filters.status')}</label>}
+        <select value={filters.status} onChange={makeOnChange('status')}>
+          <option value="">{t('property.filters.allStatus')}</option>
           {uniqueStatus.map(status => (
             <option key={status} value={status}>{status}</option>
           ))}
@@ -90,11 +110,11 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
       </div>
 
       <div className={isMobile ? "filter-group" : ""}>
-        {isMobile && <label>Sort By</label>}
-        <select value={filters.sortBy} onChange={(e) => onFilterChange('sortBy', e.target.value)}>
-          <option value="">Sort By Size</option>
-          <option value="size-asc">Size: Low to High</option>
-          <option value="size-desc">Size: High to Low</option>
+        {isMobile && <label>{t('property.filters.sortBy')}</label>}
+        <select value={filters.sortBy} onChange={makeOnChange('sortBy')}>
+          <option value="">{t('property.filters.sortBySize')}</option>
+          <option value="size-asc">{t('property.filters.sizeLowToHigh')}</option>
+          <option value="size-desc">{t('property.filters.sizeHighToLow')}</option>
         </select>
       </div>
     </div>
@@ -102,25 +122,24 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
 
   return (
     <>
-      {/* Filter Trigger Button */}
-      <button className="filter-trigger-btn" onClick={() => setIsMobileOpen(true)}>
+      <button className="filter-trigger-btn" onClick={handleOpenMobile} aria-label={t('property.filters.filters')}>
         <SlidersHorizontal size={18} />
       </button>
 
-      {/* Filter Bottom Sheet */}
       {isMobileOpen && (
-        <div className="bottom-sheet-overlay" onClick={() => setIsMobileOpen(false)}>
-          <div className="bottom-sheet" onClick={(e) => e.stopPropagation()}>
+        <div className="bottom-sheet-overlay" onClick={handleOverlayClick}>
+          <div className="bottom-sheet" onClick={handleSheetClick}>
             <div className="bottom-sheet-header">
-              <h3>Filters</h3>
-              <button className="close-btn" onClick={() => setIsMobileOpen(false)}>
+              <h1 className="sr-only">{t('property.filters.filters')}</h1>
+              <span className="bottom-sheet-title">{t('property.filters.filters')}</span>
+              <button className="close-btn" onClick={handleCloseMobile} aria-label={t('common.cancel')}>
                 <X size={24} />
               </button>
             </div>
             <div className="bottom-sheet-content">
               {filterContent(true)}
-              <button className="apply-btn" onClick={() => setIsMobileOpen(false)}>
-                Apply Filters
+              <button className="apply-btn" onClick={handleCloseMobile}>
+                {t('property.filters.applyFilters')}
               </button>
             </div>
           </div>

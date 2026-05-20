@@ -44,7 +44,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.4rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.03);
   min-height: 48px;
   background-color: #f2f3f8;
@@ -75,7 +75,7 @@
 }
 
 .place-card-body {
-  padding: 0.5rem;
+  padding: 0.2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -87,14 +87,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.1rem;
   width: 100%;
 }
 
 .place-name-new {
   font-size: 0.75rem;
   color: #475569;
-  margin: 0;
+  padding-left: 0.5rem;
   font-weight: 600;
   word-break: break-word;
   flex-grow: 1;

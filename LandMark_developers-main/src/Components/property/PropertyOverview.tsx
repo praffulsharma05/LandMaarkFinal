@@ -4,26 +4,25 @@ import { MapPin, Calendar, Building2, Grid, Hash, Ruler, TrendingUp, Layers, Hom
 import { CityProperty } from '../../services/services';
 import OverviewItem from './Overview/OverviewItem';
 import ActionButtons from './Overview/ActionButtons';
-import NearbyPlaces from './Overview/NearbyPlaces';
-import DescriptionSection from './Overview/DescriptionSection';
+import { useTranslation } from '../../hooks/useTranslation';
 import './PropertyOverview.css';
 
 interface PropertyOverviewProps {
   property: CityProperty;
   pricePerSqft: number;
   townshipName?: string;
-  townshipData?: any;
+  townshipData?: Record<string, unknown>;
 }
 
 const PropertyOverview: React.FC<PropertyOverviewProps> = ({ property, pricePerSqft, townshipName, townshipData }) => {
-  // Use township-level data for the overview items
+  const { t } = useTranslation();
   const td = townshipData || {};
 
   const overviewItems = [
     { label: 'Area Unit', value: td.area_unit || property.area_unit || 'N/A', icon: Ruler },
     { label: 'Avg. Price', value: td.avg_price || property.avg_price || (pricePerSqft > 0 ? `₹${pricePerSqft.toLocaleString()}/sq.ft` : 'N/A'), icon: TrendingUp },
     { label: 'Configurations', value: td.configurations || property.configurations || property.propertyType || 'N/A', icon: Home },
-    { label: 'Launch Date', value: td.launch_date ? new Date(td.launch_date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : (property.launch_date ? new Date(property.launch_date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'N/A'), icon: Calendar },
+    { label: 'Launch Date', value: td.launch_date ? new Date(td.launch_date as string).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : (property.launch_date ? new Date(property.launch_date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'N/A'), icon: Calendar },
     { label: 'Possession Starts', value: td.possession_starts || property.possession_starts || property.construction_status || 'N/A', icon: Building2 },
     { label: 'Project Area', value: td.project_area || property.project_area || property.project_size || 'N/A', icon: Grid },
     { label: 'Land Area', value: td.land_area || property.land_area || 'N/A', icon: Ruler },
@@ -34,21 +33,20 @@ const PropertyOverview: React.FC<PropertyOverviewProps> = ({ property, pricePerS
     { label: 'City', value: td.city || property.location?.split(',').pop()?.trim() || 'N/A', icon: MapPin },
   ];
 
-  const handleShare = () => console.log('Share clicked');
-  const handleSave = () => console.log('Save clicked');
-  const handleAskDetails = () => console.log('Ask for details clicked');
+  const handleShare = () => console.warn('Share clicked');
+  const handleSave = () => console.warn('Save clicked');
+  const handleAskDetails = () => console.warn('Ask for details clicked');
 
   const displayName = townshipName || property.title || 'Township';
 
   return (
     <div className="tab-content-card">
-      <h2 className="section-title">
+      <div className="section-title">
         <span className="title-underline">
-          {displayName} Overview
+          {displayName} {t('property.overview.overview')}
         </span>
-      </h2>
+      </div>
 
-      {/* Overview Items Grid */}
       <div className="mb-4">
         {overviewItems && overviewItems.filter(item => item.value && item.value !== 'N/A' && item.value !== 'undefined').length > 0 ? (
           <div className="items-grid">
@@ -64,11 +62,10 @@ const PropertyOverview: React.FC<PropertyOverviewProps> = ({ property, pricePerS
               ))}
           </div>
         ) : (
-          <p className="text-gray-500">No overview information available</p>
+          <p className="text-gray-500">{t('property.overview.noOverview')}</p>
         )}
       </div>
 
-      {/* Action Buttons */}
       <ActionButtons
         onShare={handleShare}
         onSave={handleSave}

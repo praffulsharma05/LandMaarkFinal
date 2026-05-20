@@ -34,7 +34,7 @@ export const PerfectHomeSection: React.FC<PerfectHomeSectionProps> = ({
       </div>
 
       <div className="section-2-btn-wrapper">
-        <button className="rounded-btn section-2-btn">
+        <button className="rounded-btn section-2-btn section-2-btn-hidden">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"

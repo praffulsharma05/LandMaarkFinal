@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { HeroSlide } from "../../../services/HomeService";
 import useCarousel from "../../../hooks/useCarousel";
 import AIPrompt from "../../AIPrompt/AIPrompt";
@@ -15,12 +15,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ hero }) => {
   const { t } = useTranslation();
   const slides = hero.slides || [];
   const heroIndex = useCarousel(slides.length, 6000);
-
-  const handleEnquireScroll = useCallback(() => {
-    document
-      .getElementById("enquiry-form")
-      ?.scrollIntoView({ behavior: "smooth" });
-  }, []);
 
   return (
     <section className="hero-desktop">
@@ -53,11 +47,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ hero }) => {
             {slides[heroIndex]?.subtitle || t("home.defaultHeroSubtitle")}
           </p>
 
-          <div className="hero-btn-container">
-            <button onClick={handleEnquireScroll} className="rounded-btn">
-              {t("home.enquireNow")}
-            </button>
-          </div>
+
         </div>
 
         <AIPrompt />

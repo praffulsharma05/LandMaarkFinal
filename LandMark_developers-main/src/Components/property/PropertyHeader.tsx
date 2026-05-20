@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { 
   Phone,
   Check
 } from 'lucide-react';
-import useIsMobile from '../../hooks/useIsMobile';
+import { useTranslation } from '../../hooks/useTranslation';
 import './PropertyHeader.css';
 
 interface PropertyHeaderProps {
@@ -27,18 +27,16 @@ interface PropertyHeaderProps {
   };
 }
 
-const PropertyHeader: React.FC<PropertyHeaderProps> = ({ property }) => {  
-  const propertyName = property?.name || 'Property';
+const PropertyHeader: React.FC<PropertyHeaderProps> = ({ property }) => {
+  const { t } = useTranslation();
+  const propertyName = property?.name || t('property.header.property');
   const builder = property?.builder || '';
-  const location = property?.location || 'Location not specified';
-  const propertyType = property?.type || '';
+  const location = property?.location || t('property.header.locationNotSpecified');
   const reraId = property?.rera_id || '';
   
   const priceMin = property?.price?.min || 0;
   const priceMax = property?.price?.max || 0;
-  const pricePerSqft = property?.price?.perSqft || 0;
   const emi = property?.price?.emi || 0;
-  const isMobile = useIsMobile();
 
   const formatPrice = (price: number) => {
     if (price === 0) return '';
@@ -55,48 +53,50 @@ const PropertyHeader: React.FC<PropertyHeaderProps> = ({ property }) => {
 
   const priceDisplay = () => {
     if (property?.price?.display) return property.price.display;
-    if (priceMin === 0 && priceMax === 0) return 'Contact for Price';
+    if (priceMin === 0 && priceMax === 0) return t('property.header.contactForPrice');
     if (priceMin === priceMax || priceMax === 0) return formatPrice(priceMin);
     return `${formatPrice(priceMin)} - ${formatPrice(priceMax)}`;
   };
 
+  const handleContactClick = useCallback(() => {
+    console.warn('Contact button clicked');
+  }, []);
+
   return (
     <div className="ph-container">
-      {/* Left Section */}
       <div className="ph-left">
         <div className="ph-title-row">
           <h1 className="ph-title">{propertyName}</h1>
           {reraId && (
             <span className="ph-rera-inline">
               <Check size={12} strokeWidth={3} className="ph-rera-check" />
-              RERA
+              {t('property.header.rera')}
             </span>
           )}
         </div>
 
         {builder && builder.toLowerCase() !== 'developer' && (
-          <p className="ph-builder">By <span className="ph-builder-link">{builder.toUpperCase()}</span></p>
+          <p className="ph-builder">{t('property.header.by')} <span className="ph-builder-link">{builder.toUpperCase()}</span></p>
         )}
 
         <p className="ph-location">{location}</p>
       </div>
 
-      {/* Right Section */}
       <div className="ph-right">
         <p className="ph-price">{priceDisplay()}</p>
         
         {emi > 0 && (
-          <p className="ph-emi">EMI starts at ₹{emi.toLocaleString()} K</p>
+          <p className="ph-emi">{t('property.header.emiStartsAt')} ₹{emi.toLocaleString()} {t('property.header.emiUnit')}</p>
         )}
 
-        <p className="ph-price-type">Basic Price</p>
+        <p className="ph-price-type">{t('property.header.basicPrice')}</p>
 
         <button
           className="ph-contact-btn"
-          onClick={() => console.log("Contact clicked")}
+          onClick={handleContactClick}
         >
           <Phone size={16} />
-          Contact Developer
+          {t('property.header.contactDeveloper')}
         </button>
       </div>
     </div>

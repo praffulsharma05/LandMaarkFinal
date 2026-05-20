@@ -10,7 +10,7 @@ export const fetchProperties = async (townshipId: number, query: string = ""): P
       headers: ApiConstants.HEADERS 
     });
     const data = await res.json();
-    return (data.data?.properties || []).map((item: any) => ({
+    return (data.data?.properties || []).map((item: Record<string, unknown>) => ({
       property_id: item.property_id,
       title: item.title || "",
       image: item.image || "",
@@ -31,7 +31,7 @@ export const fetchProperties = async (townshipId: number, query: string = ""): P
   }
 };
 
-export const buildQueryString = (filters: any): string => {
+export const buildQueryString = (filters: Record<string, string>): string => {
   const params = new URLSearchParams();
   Object.entries(filters).forEach(([key, value]) => {
     if (value) params.append(key, value as string);

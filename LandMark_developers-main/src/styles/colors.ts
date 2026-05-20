@@ -57,6 +57,49 @@ export const COLORS = {
   white: '#ffffff',
   black: '#000000',
   transparent: 'transparent',
+
+  // Extended icon colors
+  purple: {
+    500: '#8b5cf6',
+    50: '#f5f3ff',
+  },
+  indigo: {
+    500: '#6366f1',
+    50: '#eef2ff',
+  },
+  amber: {
+    600: '#d97706',
+    100: '#fef3c7',
+    50: '#fffbeb',
+  },
+  orange: {
+    500: '#f97316',
+    50: '#fff7ed',
+  },
+  sky: {
+    500: '#0ea5e9',
+    50: '#f0f9ff',
+  },
+  green: {
+    500: '#22c55e',
+    50: '#f0fdf4',
+  },
+  pink: {
+    600: '#db2777',
+    100: '#fce7f3',
+  },
+  yellow: {
+    500: '#eab308',
+    50: '#fefce8',
+  },
+  cyan: {
+    500: '#06b6d4',
+    50: '#ecfeff',
+  },
+  blue: {
+    100: '#dbeafe',
+  },
+  bookmark: '#5e40e0',
 } as const;
 
 export type ThemeColors = typeof COLORS;

@@ -15,14 +15,15 @@ const Section9Card: React.FC<Props> = ({ item }) => {
           src={item.image}
           alt={item.title}
           className="sec9-card-img"
+          loading="lazy"
         />
       </div>
 
       {/* Content */}
       <div className="sec9-card-content">
-        <h3 className="sec9-card-title">
+        <h1 className="sec9-card-title">
           {item.title}
-        </h3>
+        </h1>
         <p className="sec9-card-desc">
           {item.description}
         </p>

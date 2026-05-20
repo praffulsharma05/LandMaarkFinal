@@ -121,8 +121,8 @@
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   /* Consistent gap between sections */
 }
 
@@ -1113,8 +1113,7 @@ tbody tr {
 .pdf-section-wrapper {
   width: 100%;
   /* Standard section top margin */
-  margin-bottom: 36px;
-  /* Retains beautiful footer separation at the end of the page! */
+  margin-bottom: 0;
 }
 
 .pdf-grid-premium {

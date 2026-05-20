@@ -14,6 +14,7 @@ const Section7Card: React.FC<Props> = ({ item }) => {
         src={item.image}
         alt={item.title}
         className="sec7-card-img"
+        loading="lazy"
       />
 
       {/* Gradient Overlay */}
@@ -23,7 +24,7 @@ const Section7Card: React.FC<Props> = ({ item }) => {
 
       {/* Bottom Content */}
       <div className="sec7-content">
-        <h3 className="sec7-card-title">{item.title}</h3>
+        <h1 className="sec7-card-title">{item.title}</h1>
         <p className="sec7-card-subtitle">{item.subtitle}</p>
       </div>
     </div>

@@ -1,4 +1,8 @@
  
+.ai-floating-bar-hidden{
+  display:none;
+}
+
 .ai-floating-bar{
   position:fixed;
   bottom:80px;

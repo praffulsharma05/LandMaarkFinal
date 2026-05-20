@@ -228,7 +228,7 @@
   width: 100%;
   background-color: #f3f4f6;
   /* bg-gray-100 */
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -246,7 +246,6 @@
 .section-2-title {
   font-size: 1.875rem;
   font-family: Georgia, Cambria, "Times New Roman", Times, serif;
-  letter-spacing: 3px;
   color: #113028;
   /* text-teal-950 */
   margin-bottom: 2rem;
@@ -315,6 +314,10 @@
   }
 }
 
+.section-2-btn-hidden {
+  display: none;
+}
+
 /* Section 3 - Why LandMaark */
 .home-section-3 {
   position: relative;
@@ -369,6 +372,7 @@
   /* text-teal-900 */
   font-weight: 300;
   margin: 0;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 @media (min-width: 640px) {
@@ -435,7 +439,7 @@
   position: relative;
   width: 100%;
   background-color: #f4f4f2;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -463,6 +467,7 @@
   font-weight: 600;
   color: #1c3b2a;
   margin-bottom: 1.5rem;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 @media (min-width: 640px) {
@@ -544,7 +549,7 @@
   position: relative;
   width: 100%;
   background-color: #f6f3ee;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -573,6 +578,7 @@
   color: #1c3b2a;
   margin-top: 0;
   margin-bottom: 0.5rem;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 @media (min-width: 640px) {
@@ -640,7 +646,7 @@
   position: relative;
   width: 100%;
   background-color: white;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -664,11 +670,12 @@
 }
 
 .section-7-title {
-  font-size: 1.875rem;
+  font-size: 1rem;
   letter-spacing: 4px;
   font-weight: 600;
   color: #1c3b2a;
   margin-bottom: 1.5rem;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 @media (min-width: 640px) {
@@ -687,11 +694,12 @@
 
 .section-7-subtitle {
   max-width: 56rem;
+  margin-top: 0;
   margin-left: auto;
   margin-right: auto;
   color: #4b5563;
   line-height: 1.625;
-  margin-bottom: 2.5rem;
+  margin-bottom: 0.5rem;
   font-size: 0.75rem;
 }
 
@@ -755,10 +763,11 @@
 }
 
 .section-8-title {
-  font-size: 2.25rem;
+  font-size: 1.875rem;
   font-weight: 600;
   color: #0d2c24;
   margin-bottom: 1rem;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 .section-8-subtitle {
@@ -813,7 +822,7 @@
 .home-section-9 {
   background-color: white;
   position: relative;
-  padding: 0.5rem;
+  padding: 1rem;
 }
 
 @media (min-width: 640px) {
@@ -859,8 +868,8 @@
 .section-9-grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 2rem;
-}
+  gap: 1rem;
+ }
 
 @media (min-width: 640px) {
   .section-9-grid {
@@ -879,6 +888,7 @@
 .enquiry-section-desktop {
   width: 100%;
   background-color: #f4f1ec;
+  display: none;
 }
 
 @media (max-width: 767px) {
@@ -1085,6 +1095,7 @@
   width: 100%;
   background-color: #f4f1ec;
   padding: 1rem;
+  display: none;
 }
 
 @media (min-width: 640px) {

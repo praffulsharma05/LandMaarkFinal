@@ -1,35 +1,37 @@
 import React from 'react';
 import { Building, Award, Check, User, Phone, Mail } from 'lucide-react';
+import { useTranslation } from '../../hooks/useTranslation';
 import './ContactCard.css';
 
 const ContactCard = () => {
+  const { t } = useTranslation();
   return (
     <div className="contact-card-container">
       <div className="contact-header">
         <div className="contact-icon-wrapper">
           <Building className="contact-main-icon" />
         </div>
-        <h3 className="contact-title">Volt Group</h3>
+        <h1 className="contact-title">{t('property.contact.voltGroup')}</h1>
         <p className="expert-badge">
           <Award className="expert-icon" />
-          Housing Expert Pro
+          {t('property.contact.housingExpertPro')}
         </p>
       </div>
 
       <div className="contact-body">
         <div className="choice-highlight">
           <Check className="choice-icon" />
-          <span className="choice-text">Great choice! Nice neighborhood around</span>
+          <span className="choice-text">{t('property.contact.greatChoice')}</span>
         </div>
 
         <div className="form-section">
-          <p className="form-instruction">Please share your contact</p>
+          <p className="form-instruction">{t('property.contact.shareContact')}</p>
           <div className="input-group">
             <div className="input-relative">
               <User className="input-icon" />
               <input 
                 type="text" 
-                placeholder="Name"
+                placeholder={t('property.contact.namePlaceholder')}
                 className="contact-input"
               />
             </div>
@@ -37,7 +39,7 @@ const ContactCard = () => {
               <Phone className="input-icon" />
               <input 
                 type="tel" 
-                placeholder="Phone"
+                placeholder={t('property.contact.phonePlaceholder')}
                 className="contact-input"
               />
             </div>
@@ -45,7 +47,7 @@ const ContactCard = () => {
               <Mail className="input-icon" />
               <input 
                 type="email" 
-                placeholder="Email"
+                placeholder={t('property.contact.emailPlaceholder')}
                 className="contact-input"
               />
             </div>
@@ -54,20 +56,20 @@ const ContactCard = () => {
           <div className="checkbox-group">
             <label className="checkbox-label">
               <input type="checkbox" className="contact-checkbox" />
-              <span className="checkbox-text">I agree to be contacted by Housing and agents via WhatsApp, SMS, phone, email etc</span>
+              <span className="checkbox-text">{t('property.contact.agreeContact')}</span>
             </label>
             <label className="checkbox-label">
               <input type="checkbox" className="contact-checkbox" />
-              <span className="checkbox-text">I am interested in Home Loans</span>
+              <span className="checkbox-text">{t('property.contact.interestedHomeLoans')}</span>
             </label>
           </div>
 
           <button className="submit-button">
-            Get Contact Details
+            {t('property.contact.getContactDetails')}
           </button>
 
           <p className="form-disclaimer">
-            By proceeding, you consent to receive calls and texts at the number you provided.
+            {t('property.contact.byProceeding')}
           </p>
         </div>
       </div>

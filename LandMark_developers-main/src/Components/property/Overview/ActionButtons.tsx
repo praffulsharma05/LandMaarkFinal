@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Share2, Bookmark, CheckCircle2 } from 'lucide-react';
+import { useTranslation } from '../../../hooks/useTranslation';
+import { COLORS } from '../../../styles/colors';
 import './ActionButtons.css';
 
 interface ActionButtonsProps {
@@ -13,6 +15,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   onSave,
   onAskDetails,
 }) => {
+  const { t } = useTranslation();
   const [isSaved, setIsSaved] = useState(false);
   const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState<{ message: string; visible: boolean }>({ message: '', visible: false });
@@ -26,7 +29,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
     e.stopPropagation();
     const shareData = {
       title: document.title,
-      text: 'Check out this property on LandMaark!',
+      text: t('property.actions.checkOutProperty'),
       url: window.location.href,
     };
     try {
@@ -36,7 +39,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         await navigator.clipboard.writeText(window.location.href);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
-        showToast('Link copied to clipboard!');
+        showToast(t('property.actions.linkCopied'));
       }
     } catch (err) {
       console.error('Share failed:', err);
@@ -48,44 +51,43 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
     e.stopPropagation();
     const next = !isSaved;
     setIsSaved(next);
-    showToast(next ? 'Property saved!' : 'Removed from saved');
+    showToast(next ? t('property.actions.propertySaved') : t('property.actions.removedFromSaved'));
     onSave?.();
   };
 
   return (
     <div className="action-buttons-container">
-      {/* Toast Notification */}
       <div className={`action-toast ${toast.visible ? 'action-toast-visible' : ''}`}>
         <CheckCircle2 size={16} />
         <span>{toast.message}</span>
       </div>
 
       <div className="buttons-layout">
-        <button onClick={onAskDetails} className="primary-button" type="button">
-          <span className="primary-button-text">Ask For Details</span>
+        <button onClick={onAskDetails} className="primary-button" type="button" aria-label={t('property.actions.askForDetails')}>
+          <span className="primary-button-text">{t('property.actions.askForDetails')}</span>
         </button>
 
         <div className="secondary-buttons-wrapper">
-          <button onClick={handleShare} className="secondary-button" type="button">
+          <button onClick={handleShare} className="secondary-button" type="button" aria-label={t('property.actions.share')}>
             <Share2 size={16} />
             <span className="secondary-button-text">
-              {copied ? 'Copied!' : 'Share'}
+              {copied ? t('property.actions.copied') : t('property.actions.share')}
             </span>
           </button>
 
           <button
             onClick={handleSave}
-            className="secondary-button"
+            className={`secondary-button ${isSaved ? 'saved' : ''}`}
             type="button"
-            style={{ color: isSaved ? '#5e40e0' : undefined }}
+            aria-label={isSaved ? t('property.actions.saved') : t('property.actions.save')}
           >
             <Bookmark
               size={16}
-              fill={isSaved ? '#5e40e0' : 'none'}
-              stroke={isSaved ? '#5e40e0' : 'currentColor'}
+              fill={isSaved ? COLORS.bookmark : 'none'}
+              stroke={isSaved ? COLORS.bookmark : 'currentColor'}
             />
             <span className="secondary-button-text">
-              {isSaved ? 'Saved' : 'Save'}
+              {isSaved ? t('property.actions.saved') : t('property.actions.save')}
             </span>
           </button>
         </div>

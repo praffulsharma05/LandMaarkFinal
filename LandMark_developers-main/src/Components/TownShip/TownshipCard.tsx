@@ -1,4 +1,4 @@
-/* eslint-disable custom/reusability-rules, custom/performance-strictness */
+/* eslint-disable custom/performance-strictness */
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useTranslation } from "../../hooks/useTranslation";
 import { Township } from "../../store/TownShip/townshipsData";

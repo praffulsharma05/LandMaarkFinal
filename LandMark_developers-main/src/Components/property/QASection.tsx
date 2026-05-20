@@ -1,28 +1,30 @@
 import React from 'react';
 import './QASection.css';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const QASection = () => {
+  const { t } = useTranslation();
   return (
     <div className="tab-content-card">
-      <h2 className="qa-title">
+      <div className="qa-title">
         <span className="qa-title-underline">
-          Questions & Answer
+          {t('property.qa.questionsAnswers')}
         </span>
-      </h2>
+      </div>
       <div className="qa-list">
         <div className="qa-item">
-          <p className="qa-question">Q: What is the total carpet area of units in the project?</p>
-          <p className="qa-answer">A: Carpet area of 1 BHK flat starts from 248.86 sqft, 2 BHK flat starts from 407.74 sqft.</p>
-          <p className="qa-date">Answered 6 years ago</p>
+          <p className="qa-question">{t('property.qa.q1')}</p>
+          <p className="qa-answer">{t('property.qa.a1')}</p>
+          <p className="qa-date">{t('property.qa.answered6YearsAgo')}</p>
         </div>
         <div className="qa-item">
-          <p className="qa-question">Q: Is there water harvesting in the society?</p>
-          <p className="qa-answer">A: Yes, water harvesting facility is available.</p>
-          <p className="qa-date">Answered 6 years ago</p>
+          <p className="qa-question">{t('property.qa.q2')}</p>
+          <p className="qa-answer">{t('property.qa.a2')}</p>
+          <p className="qa-date">{t('property.qa.answered6YearsAgo')}</p>
         </div>
       </div>
-      <button className="qa-button">
-        <span className="qa-button-text">View All Questions → </span>
+      <button className="qa-button" aria-label={t('property.qa.viewAllQuestions')}>
+        <span className="qa-button-text">{t('property.qa.viewAllQuestions')}</span>
       </button>
     </div>
   );

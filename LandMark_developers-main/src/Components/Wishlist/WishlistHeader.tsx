@@ -55,6 +55,7 @@
  
 import React from "react";
 import { Heart, Trash2, CheckSquare, Square } from "lucide-react";
+import { useTranslation } from "../../hooks/useTranslation";
 
 interface Props {
   total: number;
@@ -69,6 +70,7 @@ const WishlistHeader = ({
   onSelectAll,
   onClear,
 }: Props) => {
+  const { t } = useTranslation();
   const allSelected = total > 0 && selectedCount === total;
 
   return (
@@ -80,9 +82,9 @@ const WishlistHeader = ({
           </div>
 
           <div>
-            <h1 className="text-2xl font-light text-amber-900">My Wishlist</h1>
+            <h1 className="text-2xl font-normal text-amber-900">{t('wishlist.title')}</h1>
             <p className="text-sm text-amber-600">
-              {total} {total === 1 ? "property" : "properties"} saved
+              {total} {total === 1 ? t('wishlist.property') : t('wishlist.properties')} {t('wishlist.propertiesSaved')}
             </p>
           </div>
         </div>
@@ -96,12 +98,12 @@ const WishlistHeader = ({
               {allSelected ? (
                 <>
                   <CheckSquare className="w-4 h-4" />
-                  Deselect All
+                  {t('wishlist.deselectAll')}
                 </>
               ) : (
                 <>
                   <Square className="w-4 h-4" />
-                  Select All
+                  {t('wishlist.selectAll')}
                 </>
               )}
             </button>
@@ -111,7 +113,7 @@ const WishlistHeader = ({
               className="flex items-center gap-2 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 rounded-lg transition"
             >
               <Trash2 className="w-4 h-4" />
-              Clear All
+              {t('wishlist.clearAll')}
             </button>
           </div>
         )}
@@ -119,7 +121,7 @@ const WishlistHeader = ({
 
       {selectedCount > 0 && (
         <div className="bg-amber-50 px-4 py-2 text-sm text-amber-700">
-          {selectedCount} property{selectedCount !== 1 ? 'ies' : ''} selected
+          {selectedCount} {selectedCount !== 1 ? t('wishlist.properties') : t('wishlist.property')} {t('wishlist.selected')}
         </div>
       )}
     </div>

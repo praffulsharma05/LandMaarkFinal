@@ -130,11 +130,33 @@ const PropertyDetailPage = () => {
           // Extract key_values into a flat dictionary for easy access
           const kvMap = propertyData.key_values?.reduce((acc: any, kv: any) => {
             acc[kv.key] = kv.value;
+            if (kv.key) {
+              acc[kv.key.toLowerCase()] = kv.value;
+            }
             return acc;
           }, {}) || {};
 
           // Calculate a fallback area from Size/Sq Yds if needed
           const fallbackArea = parseFloat(String(kvMap['Sq Yds'] || kvMap['Size'] || '0').replace(/[^0-9.]/g, '')) || 0;
+
+          // Parse PDF values dynamically (from topLevelData, propertyData, or key_values)
+          let pdfVal = topLevelData.pdf || propertyData.pdf || kvMap['pdf'];
+          let pdfArray: string[] = [];
+          if (pdfVal) {
+            if (Array.isArray(pdfVal)) {
+              pdfArray = pdfVal;
+            } else if (typeof pdfVal === 'string') {
+              try {
+                if (pdfVal.trim().startsWith('[')) {
+                  pdfArray = JSON.parse(pdfVal);
+                } else {
+                  pdfArray = [pdfVal];
+                }
+              } catch {
+                pdfArray = [pdfVal];
+              }
+            }
+          }
 
           const transformedProperty: CityProperty = {
             id: propertyData.property_id,
@@ -205,7 +227,7 @@ const PropertyDetailPage = () => {
             verified: true,
             tag: '',
             video: topLevelData.video || propertyData.video,
-            pdf: topLevelData.pdf || propertyData.pdf,
+            pdf: pdfArray,
             additionalDetails: normalizedData["Additional Details"] || propertyData["Additional Details"] || [],
           };
 

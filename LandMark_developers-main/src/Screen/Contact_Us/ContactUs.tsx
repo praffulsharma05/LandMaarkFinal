@@ -1,20 +1,20 @@
 import React from "react";
 import "./ContactUs.css";
+import { useTranslation } from "../../hooks/useTranslation";
 
 const ContactUs: React.FC = () => {
+  const { t } = useTranslation();
   const mapUrl = `https://www.google.com/maps?q=26.5395603,74.662056&output=embed`;
 
   return (
     <div className="cu-page">
-      {/* Ambient Glow */}
       <div className="cu-glow-top" />
       <div className="cu-glow-bottom" />
 
-      {/* MAP SECTION */}
       <div className="cu-map-section">
         <div className="cu-map-container">
           <iframe
-            title="Google Map of Location"
+            title={t("contact.mapTitle")}
             src={mapUrl}
             className="cu-map-iframe"
             allowFullScreen={true}
@@ -24,50 +24,45 @@ const ContactUs: React.FC = () => {
         </div>
       </div>
 
-      {/* MAIN CONTENT */}
       <main className="cu-main">
-        {/* LEFT TEXT */}
         <div className="cu-text-content">
-          <h2 className="cu-heading">
-            Let's Build Your
-            <span className="cu-heading-highlight">Luxury Future</span>
-          </h2>
+          <h1 className="cu-heading">
+            {t("contact.heading")}
+            <span className="cu-heading-highlight">{t("contact.headingHighlight")}</span>
+          </h1>
           <div className="cu-divider" />
           <p className="cu-description">
-            Speak with our private advisors and gain exclusive access to Dubai's
-            most prestigious real estate developments and off-market
-            opportunities.
+            {t("contact.description")}
           </p>
         </div>
 
-        {/* CONTACT FORM */}
         <div className="cu-form-card">
           <form className="cu-form">
             {[
-              { label: "Full Name", type: "text", placeholder: "Name" },
-              { label: "Email", type: "email", placeholder: "Email" },
-              { label: "Phone", type: "tel", placeholder: "Phone" },
+              { labelKey: "contact.fullNameLabel", type: "text", placeholderKey: "contact.fullNamePlaceholder" },
+              { labelKey: "contact.emailLabel", type: "email", placeholderKey: "contact.emailPlaceholder" },
+              { labelKey: "contact.phoneLabel", type: "tel", placeholderKey: "contact.phonePlaceholder" },
             ].map((field, index) => (
               <div key={index} className="cu-field">
-                <label className="cu-label">{field.label}</label>
+                <label className="cu-label">{t(field.labelKey)}</label>
                 <input
                   type={field.type}
-                  placeholder={field.placeholder}
+                  placeholder={t(field.placeholderKey)}
                   className="cu-input"
                 />
               </div>
             ))}
             <div className="cu-field">
-              <label className="cu-label">Investment in Ajmer</label>
+              <label className="cu-label">{t("contact.investmentLabel")}</label>
               <select className="cu-select">
-                <option>PanchSheel</option>
-                <option>Gulab Bari</option>
-                <option>Gandhi Nagar</option>
-                <option>Vashali Nagar</option>
+                <option>{t("contact.location1")}</option>
+                <option>{t("contact.location2")}</option>
+                <option>{t("contact.location3")}</option>
+                <option>{t("contact.location4")}</option>
               </select>
             </div>
             <button type="submit" className="cu-submit-btn">
-              Request Private Call
+              {t("contact.submitBtn")}
             </button>
           </form>
         </div>
