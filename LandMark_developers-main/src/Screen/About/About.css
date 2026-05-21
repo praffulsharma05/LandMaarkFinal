@@ -20,7 +20,7 @@
 /* Hero Section */
 .ab-hero {
   position: relative;
-  height: 50vh;
+  height: 65vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,6 +39,8 @@
 .ab-hero-overlay {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
 }
 
@@ -73,7 +75,7 @@
 
 @media (min-width: 640px) {
   .ab-hero {
-    height: 60vh;
+    height: 75vh;
   }
 
   .ab-hero-title {
@@ -87,7 +89,7 @@
 
 @media (min-width: 768px) {
   .ab-hero {
-    height: 80vh;
+    height: 85vh;
   }
 
   .ab-hero-title {
@@ -116,13 +118,11 @@
 
 @media (min-width: 640px) {
   .ab-section {
-    padding: 4rem 1.5rem;
   }
 }
 
 @media (min-width: 768px) {
   .ab-section {
-    padding: 7rem 5rem;
   }
 }
 
@@ -181,6 +181,23 @@
 
 .ab-text-muted {
   color: #475569;
+}
+
+/* Margin bottom spacing for ab-grid components */
+.ab-grid .ab-label {
+  margin-bottom: 0.75rem;
+}
+
+.ab-grid .ab-heading {
+  margin-bottom: 1.25rem;
+}
+
+.ab-grid .ab-text {
+  margin-bottom: 1rem;
+}
+
+.ab-grid .ab-text:last-child {
+  margin-bottom: 0;
 }
 
 @media (min-width: 640px) {
@@ -305,12 +322,174 @@
 
 @media (min-width: 640px) {
   .ab-cta {
-    padding: 4rem 1.5rem;
   }
 }
 
 @media (min-width: 768px) {
   .ab-cta {
-    padding: 7rem 1.5rem;
+  }
+}
+
+/* Premium Desktop Overrides (min-width: 1024px) */
+@media (min-width: 1024px) {
+  .ab-section {
+  }
+
+  .ab-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 5rem;
+  }
+
+  .ab-centered {
+    max-width: 800px;
+    margin: 0 auto 4rem auto;
+  }
+
+  .ab-feature-grid,
+  .ab-values-grid {
+     margin: 0 auto;
+   }
+
+  .ab-feature-card {
+    padding: 3rem 2rem;
+  }
+
+  .ab-cta {
+    padding: 6rem 3rem;
+  }
+
+  .ab-cta .ab-heading {
+    max-width: 800px;
+    margin: 0 auto 1.5rem auto;
+  }
+
+  .ab-cta .ab-text {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+}
+
+/* Premium Image Hover Animation */
+.ab-image-wrapper {
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+.ab-img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ab-image-wrapper:hover .ab-img {
+  transform: scale(1.05);
+}
+
+/* Stats Section Styles */
+.ab-section-stats {
+  background-color: #0d2c24; /* Dark premium teal */
+  color: #ffffff;
+  padding: 3rem 1.5rem;
+}
+
+.ab-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ab-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ab-stat-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #f59e0b; /* Amber */
+  margin: 0 0 0.5rem 0;
+}
+
+.ab-stat-label {
+  font-size: 0.875rem;
+  color: #e2e8f0;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (min-width: 768px) {
+  .ab-section-stats {
+    padding: 5rem 3rem;
+  }
+  .ab-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .ab-stat-value {
+    font-size: 3.5rem;
+  }
+  .ab-stat-label {
+    font-size: 1rem;
+  }
+}
+
+/* Core Values Section Styles */
+.ab-values-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin: 0 auto;
+}
+
+.ab-value-card {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f1f5f9;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.ab-value-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.ab-value-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.ab-value-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.5rem 0;
+}
+
+.ab-value-desc {
+  font-size: 0.875rem;
+  color: #475569;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+  .ab-values-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ab-values-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  .ab-value-card {
+    padding: 2rem;
   }
 }

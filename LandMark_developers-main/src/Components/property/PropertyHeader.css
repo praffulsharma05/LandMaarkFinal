@@ -17,6 +17,7 @@
 /* Left Section */
 .ph-left {
   flex: 1;
+  padding: 2rem;
 }
 
 .ph-title-row {

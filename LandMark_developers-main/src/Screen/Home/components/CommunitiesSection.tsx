@@ -1,5 +1,4 @@
 import React from "react";
-import Section8Card from "../../../Components/HomePage/Section8Card";
 import { Section8Type as Section8Item } from "../../../store/HomePage/section8Card";
 import { useTranslation } from "../../../hooks/useTranslation";
 
@@ -28,11 +27,14 @@ export const CommunitiesSection: React.FC<CommunitiesSectionProps> = ({
         <p className="section-8-subtitle">{subtitle}</p>
 
         <div className="section-8-grid-wrapper">
-          <div className="section-8-cards-grid">
+          <ul className="section-8-points-list">
             {items.map((item) => (
-              <Section8Card key={item.id} item={item} />
+              <li key={item.id} className="section-8-point-item">
+                <span className="section-8-point-icon">{item.icon}</span>
+                <span className="section-8-point-title">{item.title}</span>
+              </li>
             ))}
-          </div>
+          </ul>
 
           {videoUrl && (
             <div className="section-8-video-wrapper">

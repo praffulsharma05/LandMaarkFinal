@@ -65,6 +65,14 @@ const TownShip: React.FC = () => {
   return (
     <div className="townships-page-container">
       <div className="townships-grid-wrapper">
+        <div className="townships-header-premium">
+          <h1 className="townships-title-premium">{t("township.premiumTownships")}</h1>
+          <p className="townships-subtitle-premium">
+            {t("township.discoverSubtitle")}
+          </p>
+          <div className="townships-divider-premium"></div>
+        </div>
+
         <div className="townships-grid">
           {townships.map((item) => (
             <TownshipCard

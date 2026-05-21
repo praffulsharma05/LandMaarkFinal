@@ -6,20 +6,7 @@ import { useTranslation } from "../../hooks/useTranslation";
 const About: React.FC = () => {
   const { t } = useTranslation();
 
-  const features = [
-    {
-      title: t("about.feature1Title"),
-      desc: t("about.feature1Desc"),
-    },
-    {
-      title: t("about.feature2Title"),
-      desc: t("about.feature2Desc"),
-    },
-    {
-      title: t("about.feature3Title"),
-      desc: t("about.feature3Desc"),
-    },
-  ];
+
 
   return (
     <div className="ab-page">
@@ -77,35 +64,65 @@ const About: React.FC = () => {
         </div>
       </section>
 
-      <section className="ab-section ab-section-light">
+      {/* Stats Section */}
+      <section className="ab-section ab-section-stats">
+        <div className="ab-stats-grid">
+          <div className="ab-stat-item">
+            <h3 className="ab-stat-value">{t("about.stats1Val")}</h3>
+            <p className="ab-stat-label">{t("about.stats1Lbl")}</p>
+          </div>
+          <div className="ab-stat-item">
+            <h3 className="ab-stat-value">{t("about.stats2Val")}</h3>
+            <p className="ab-stat-label">{t("about.stats2Lbl")}</p>
+          </div>
+          <div className="ab-stat-item">
+            <h3 className="ab-stat-value">{t("about.stats3Val")}</h3>
+            <p className="ab-stat-label">{t("about.stats3Lbl")}</p>
+          </div>
+          <div className="ab-stat-item">
+            <h3 className="ab-stat-value">{t("about.stats4Val")}</h3>
+            <p className="ab-stat-label">{t("about.stats4Lbl")}</p>
+          </div>
+        </div>
+      </section>
+
+
+
+      {/* Core Values Section */}
+      <section className="ab-section">
         <div className="ab-centered">
           <span className="ab-label">{t("about.ourAdvantageLabel")}</span>
           <h2 className="ab-heading">
-            {t("about.whatMakesUsTitle")}<span>{t("about.whatMakesUsTitleHighlight")}</span>
+            {t("about.valuesTitle")}<span>{t("about.valuesTitleHighlight")}</span>
           </h2>
-          <p className="ab-text ab-text-max-w">
-            {t("about.whatMakesUsDesc")}
-          </p>
         </div>
-
-        <div className="ab-feature-grid">
-          {features.map((item, i) => (
-            <div key={i} className="ab-feature-card">
-              <h3 className="ab-feature-title">{item.title}</h3>
-              <p className="ab-feature-desc">{item.desc}</p>
-            </div>
-          ))}
+        <div className="ab-values-grid">
+          <div className="ab-value-card">
+            <div className="ab-value-icon">🛡️</div>
+            <h3 className="ab-value-title">{t("about.value1Title")}</h3>
+            <p className="ab-value-desc">{t("about.value1Desc")}</p>
+          </div>
+          <div className="ab-value-card">
+            <div className="ab-value-icon">💎</div>
+            <h3 className="ab-value-title">{t("about.value2Title")}</h3>
+            <p className="ab-value-desc">{t("about.value2Desc")}</p>
+          </div>
+          <div className="ab-value-card">
+            <div className="ab-value-icon">🤝</div>
+            <h3 className="ab-value-title">{t("about.value3Title")}</h3>
+            <p className="ab-value-desc">{t("about.value3Desc")}</p>
+          </div>
+          <div className="ab-value-card">
+            <div className="ab-value-icon">💡</div>
+            <h3 className="ab-value-title">{t("about.value4Title")}</h3>
+            <p className="ab-value-desc">{t("about.value4Desc")}</p>
+          </div>
         </div>
       </section>
 
-      <section className="ab-cta">
-        <h2 className="ab-heading">
-          {t("about.ctaTitle")}<span>{t("about.ctaTitleHighlight")}</span>
-        </h2>
-        <p className="ab-text mx-auto ab-cta-text-max-w">
-          {t("about.ctaDesc")}
-        </p>
-      </section>
+
+
+
     </div>
   );
 };

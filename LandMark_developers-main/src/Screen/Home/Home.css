@@ -78,8 +78,14 @@
 .hero-desktop {
   position: relative;
   width: 100%;
-  height: 75vh;
+  height: 55vh;
   overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .hero-desktop {
+    height: 75vh;
+  }
 }
 
 .hero-image-wrapper {
@@ -232,15 +238,11 @@
 }
 
 @media (min-width: 768px) {
-  .home-section-2 {
-    padding: 5rem 3rem;
-  }
+  .home-section-2 {}
 }
 
 @media (min-width: 1024px) {
-  .home-section-2 {
-    padding: 5rem 6rem;
-  }
+  .home-section-2 {}
 }
 
 .section-2-title {
@@ -327,15 +329,11 @@
 }
 
 @media (min-width: 768px) {
-  .home-section-3 {
-    padding: 5rem 3rem;
-  }
+  .home-section-3 {}
 }
 
 @media (min-width: 1024px) {
-  .home-section-3 {
-    padding: 5rem 6rem;
-  }
+  .home-section-3 {}
 }
 
 .section-3-inner {
@@ -349,9 +347,7 @@
 }
 
 @media (min-width: 1024px) {
-  .section-3-inner {
-    padding: 0 5rem;
-  }
+  .section-3-inner {}
 }
 
 .section-3-header {
@@ -367,12 +363,9 @@
 
 .section-3-title {
   font-size: 1.875rem;
-  letter-spacing: 0.05em;
-  color: #113f36;
-  /* text-teal-900 */
-  font-weight: 300;
-  margin: 0;
   font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+  color: #113028;
+  font-weight: 400;
 }
 
 @media (min-width: 640px) {
@@ -394,12 +387,9 @@
 }
 
 .section-3-subtitle {
-  margin-top: 1rem;
   color: #374151;
-  max-width: 64rem;
   margin-left: auto;
   margin-right: auto;
-  line-height: 1.625;
   font-size: 1rem;
 }
 
@@ -409,11 +399,7 @@
   }
 }
 
-@media (min-width: 1024px) {
-  .section-3-subtitle {
-    font-size: 1.125rem;
-  }
-}
+
 
 .section-3-grid {
   display: grid;
@@ -443,15 +429,11 @@
 }
 
 @media (min-width: 768px) {
-  .home-section-5 {
-    padding: 5rem 3rem;
-  }
+  .home-section-5 {}
 }
 
 @media (min-width: 1024px) {
-  .home-section-5 {
-    padding: 5rem 6rem;
-  }
+  .home-section-5 {}
 }
 
 .section-5-inner {
@@ -462,12 +444,11 @@
 }
 
 .section-5-title {
-  font-size: 1.5rem;
-  letter-spacing: 2px;
-  font-weight: 600;
-  color: #1c3b2a;
-  margin-bottom: 1.5rem;
+  font-size: 1.875rem;
   font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+  color: #113028;
+  margin-bottom: 1rem;
+  font-weight: 400;
 }
 
 @media (min-width: 640px) {
@@ -480,17 +461,14 @@
   .section-5-title {
     font-size: 2.25rem;
     letter-spacing: 3px;
-    margin-bottom: 2rem;
   }
 }
 
 .section-5-subtitle {
-  max-width: 48rem;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 2rem;
   color: #4b5563;
-  line-height: 1.625;
-  margin-bottom: 2.5rem;
   font-size: 1rem;
 }
 
@@ -503,7 +481,7 @@
 @media (min-width: 768px) {
   .section-5-subtitle {
     font-size: 1rem;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
   }
 }
 
@@ -539,7 +517,6 @@
 }
 
 .section-5-btn-wrapper {
-  margin-top: 2rem;
   display: flex;
   justify-content: center;
 }
@@ -553,15 +530,11 @@
 }
 
 @media (min-width: 768px) {
-  .home-section-6 {
-    padding: 5rem 3rem;
-  }
+  .home-section-6 {}
 }
 
 @media (min-width: 1024px) {
-  .home-section-6 {
-    padding: 5rem 6rem;
-  }
+  .home-section-6 {}
 }
 
 .section-6-inner {
@@ -573,12 +546,9 @@
 
 .section-6-title {
   font-size: 1.875rem;
-  letter-spacing: 2px;
-  font-weight: 600;
-  color: #1c3b2a;
-  margin-top: 0;
-  margin-bottom: 0.5rem;
   font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+  color: #113028;
+  font-weight: 400;
 }
 
 @media (min-width: 640px) {
@@ -596,13 +566,12 @@
 }
 
 .section-6-subtitle {
-  max-width: 48rem;
   margin-top: 0;
   margin-left: auto;
   margin-right: auto;
   color: #4b5563;
-  line-height: 1.625;
   margin-bottom: 2rem;
+  line-height: 1.625;
   font-size: 1rem;
 }
 
@@ -615,7 +584,7 @@
 @media (min-width: 768px) {
   .section-6-subtitle {
     font-size: 1rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
   }
 }
 
@@ -650,15 +619,11 @@
 }
 
 @media (min-width: 768px) {
-  .home-section-7 {
-    padding: 5rem 3rem;
-  }
+  .home-section-7 {}
 }
 
 @media (min-width: 1024px) {
-  .home-section-7 {
-    padding: 5rem 6rem;
-  }
+  .home-section-7 {}
 }
 
 .section-7-inner {
@@ -670,12 +635,11 @@
 }
 
 .section-7-title {
-  font-size: 1rem;
-  letter-spacing: 4px;
-  font-weight: 600;
-  color: #1c3b2a;
-  margin-bottom: 1.5rem;
+  font-size: 1.875rem;
   font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+  color: #113028;
+  margin-bottom: 1rem;
+  font-weight: 400;
 }
 
 @media (min-width: 640px) {
@@ -687,20 +651,17 @@
 @media (min-width: 768px) {
   .section-7-title {
     font-size: 3rem;
-    letter-spacing: 6px;
-    margin-bottom: 2rem;
   }
 }
 
 .section-7-subtitle {
-  max-width: 56rem;
   margin-top: 0;
   margin-left: auto;
   margin-right: auto;
   color: #4b5563;
   line-height: 1.625;
-  margin-bottom: 0.5rem;
-  font-size: 0.75rem;
+  margin-bottom: 2rem;
+  font-size: 1rem;
 }
 
 @media (min-width: 640px) {
@@ -712,7 +673,7 @@
 @media (min-width: 768px) {
   .section-7-subtitle {
     font-size: 1.125rem;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
   }
 }
 
@@ -744,15 +705,11 @@
 }
 
 @media (min-width: 768px) {
-  .home-section-8 {
-    padding: 5rem 3rem;
-  }
+  .home-section-8 {}
 }
 
 @media (min-width: 1024px) {
-  .home-section-8 {
-    padding: 5rem 6rem;
-  }
+  .home-section-8 {}
 }
 
 .section-8-inner {
@@ -764,20 +721,18 @@
 
 .section-8-title {
   font-size: 1.875rem;
-  font-weight: 600;
-  color: #0d2c24;
-  margin-bottom: 1rem;
   font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+  color: #113028;
+  margin-bottom: 1rem;
+  font-weight: 400;
 }
 
 .section-8-subtitle {
-  max-width: 56rem;
   margin-left: auto;
   margin-right: auto;
   color: #374151;
   font-size: 1.125rem;
   line-height: 1.625;
-  margin-bottom: 1rem;
 }
 
 .section-8-grid-wrapper {
@@ -794,15 +749,68 @@
   }
 }
 
-.section-8-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 1rem;
+.section-8-points-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-align: left;
 }
 
-@media (min-width: 640px) {
-  .section-8-cards-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.section-8-point-item {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background-color: #ffffff;
+  padding: 1.25rem 1.75rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 4px solid #113028;
+}
+
+.section-8-point-item:hover {
+  transform: translateX(8px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  background-color: #fcfbfa;
+}
+
+.section-8-point-icon {
+  font-size: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  background-color: #f4f1ea;
+  border-radius: 50%;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.section-8-point-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #113028;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .section-8-point-item {
+    padding: 1rem 1.25rem;
+    gap: 1rem;
+  }
+
+  .section-8-point-title {
+    font-size: 1rem;
+  }
+
+  .section-8-point-icon {
+    font-size: 1.5rem;
+    width: 38px;
+    height: 38px;
   }
 }
 
@@ -826,19 +834,14 @@
 }
 
 @media (min-width: 640px) {
-  .home-section-9 {
-    padding: 5rem 1.5rem;
-  }
+  .home-section-9 {}
 }
 
 @media (min-width: 768px) {
-  .home-section-9 {
-    padding: 5rem 3rem;
-  }
+  .home-section-9 {}
 }
 
 .section-9-inner {
-  max-width: 80rem;
   margin-left: auto;
   margin-right: auto;
 }
@@ -846,9 +849,10 @@
 .section-9-title {
   text-align: center;
   font-size: 1.875rem;
-  font-weight: 600;
-  color: #0d2c24;
-  margin-bottom: 2.5rem;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+  color: #113028;
+  margin-bottom: 0.5rem;
+  font-weight: 400;
 }
 
 @media (min-width: 640px) {
@@ -861,15 +865,16 @@
   .section-9-title {
     font-size: 3rem;
     letter-spacing: 6px;
-    margin-bottom: 4rem;
+    margin-bottom: 1rem;
+
   }
 }
 
 .section-9-grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 1rem;
- }
+  margin-bottom: 2rem;
+}
 
 @media (min-width: 640px) {
   .section-9-grid {
@@ -880,7 +885,7 @@
 @media (min-width: 1024px) {
   .section-9-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 3rem;
+    gap: 1.7rem;
   }
 }
 

@@ -1,6 +1,6 @@
  
 .ai-floating-bar-hidden{
-  display:none;
+  display:none !important;
 }
 
 .ai-floating-bar{
