@@ -24,6 +24,13 @@ const TownshipCard: React.FC<TownshipCardProps> = ({ item, onSelect }) => {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const cb = () => setIsMobile(window.innerWidth <= 768);
+    cb(); window.addEventListener("resize", cb);
+    return () => window.removeEventListener("resize", cb);
+  }, []);
 
   const startHover = useCallback(() => setIsHovered(true), []);
   const stopHover = useCallback(() => {
@@ -31,13 +38,22 @@ const TownshipCard: React.FC<TownshipCardProps> = ({ item, onSelect }) => {
     setCurrentImageIndex(0);
   }, []);
 
+  const startTouch = useCallback(() => {
+    setIsHovered(true);
+    setCurrentImageIndex((prev) => (prev + 1) % imagesList.length);
+  }, [imagesList.length]);
+
+  const stopTouch = useCallback(() => {
+    setIsHovered(false);
+  }, []);
+
   useEffect(() => {
     if (imagesList.length <= 1 || !isHovered) return;
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % imagesList.length);
-    }, 3000);
+    }, isMobile ? 1500 : 3000);
     return () => clearInterval(interval);
-  }, [imagesList.length, isHovered]);
+  }, [imagesList.length, isHovered, isMobile]);
 
   const handleShare = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -67,9 +83,9 @@ const TownshipCard: React.FC<TownshipCardProps> = ({ item, onSelect }) => {
       className="township-card"
       onMouseEnter={startHover}
       onMouseLeave={stopHover}
-      onTouchStart={startHover}
-      onTouchEnd={stopHover}
-      onTouchCancel={stopHover}
+      onTouchStart={startTouch}
+      onTouchEnd={stopTouch}
+      onTouchCancel={stopTouch}
     >
       <div className="township-card-img-wrapper">
         <div 
@@ -77,11 +93,11 @@ const TownshipCard: React.FC<TownshipCardProps> = ({ item, onSelect }) => {
           style={{
             width: `${imagesList.length * 100}%`,
             transform: `translateX(-${(currentImageIndex * 100) / imagesList.length}%)`,
-            transition: "transform 0.5s ease-in-out"
+            transition: isMobile ? "transform 0.4s ease-in-out" : "transform 1.2s cubic-bezier(0.25, 1, 0.5, 1)"
           }}
         >
           {imagesList.map((imgUrl, index) => (
-            <img key={index} src={imgUrl} alt={`${cityName} slide ${index + 1}`} className="township-card-img" style={{ width: `${100 / imagesList.length}%` }} loading="lazy" onError={handleImageError} />
+            <img key={index} src={imgUrl} alt={`${cityName} slide ${index + 1}`} className="township-card-img" style={{ width: `${100 / imagesList.length}%` }} loading={index === 0 ? "lazy" : "eager"} onError={handleImageError} />
           ))}
         </div>
 
@@ -89,7 +105,7 @@ const TownshipCard: React.FC<TownshipCardProps> = ({ item, onSelect }) => {
           <div className="township-card-lines">
             {imagesList.map((_, idx) => (
               <div key={idx} className={`township-card-line ${isHovered ? (idx < currentImageIndex ? "completed" : idx === currentImageIndex ? "active" : "") : ""}`}>
-                <div className="township-card-line-fill" />
+                <div className="township-card-line-fill" style={isHovered && idx === currentImageIndex ? { animationDuration: isMobile ? "1.5s" : "3s" } : undefined} />
               </div>
             ))}
           </div>

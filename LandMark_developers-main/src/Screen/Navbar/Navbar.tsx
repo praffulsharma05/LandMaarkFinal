@@ -6,8 +6,8 @@ import { useTranslation } from "../../hooks/useTranslation";
 
 const navLinks = [
   { key: "homeLink", path: "/" },
-  { key: "townshipLink", path: "/Township" },
-  { key: "aboutLink", path: "/About" },
+  { key: "townshipLink", path: "/township" },
+  { key: "aboutLink", path: "/about" },
   { key: "contactLink", path: "/contactUs" },
 ];
 

@@ -31,9 +31,10 @@ const About: React.FC = () => {
       <section className="ab-section">
         <div className="ab-grid">
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.01 }}
+            transition={{ duration: 0.5 }}
           >
             <span className="ab-label">{t("about.establishedLabel")}</span>
             <h2 className="ab-heading">
@@ -48,9 +49,10 @@ const About: React.FC = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.01 }}
+            transition={{ duration: 0.5 }}
             className="ab-image-wrapper"
           >
             <img

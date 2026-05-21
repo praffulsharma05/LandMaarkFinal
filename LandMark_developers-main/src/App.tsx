@@ -24,7 +24,7 @@ function App() {
         <Route path="/contactUs" element={<ContactUs />} />
         <Route path="/properties" element={<Properties />} />
         <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/townShip" element={<TownShip />} />
+        <Route path="/township" element={<TownShip />} />
         <Route path="/search" element={<PropertySearch />} />
         <Route path="/search2/:id" element={<PropertySearch2 />} />
         <Route path="/property/:id" element={<PropertyDetailPage />} />
