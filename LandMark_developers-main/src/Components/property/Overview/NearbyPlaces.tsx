@@ -172,7 +172,7 @@ const NearbyPlaces: React.FC<NearbyPlacesProps> = ({ places }) => {
   if (!places || places.length === 0) return null;
 
   return (
-    <div className="places-container">
+    <div className="tab-content-card">
       <div className="section-title">
         <span className="title-underline">
           {t('property.nearby.aroundThisProject')}

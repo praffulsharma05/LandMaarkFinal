@@ -395,10 +395,10 @@ const PropertyDetailPage = () => {
               </div>
             </div>
           )}
-        </div>
 
-        <div className="">
-          <PropertyListings initialData={allTownshipProperties} townshipId={id} townshipName={townshipName} pdf={property.pdf} />
+          <div className="component-spacing-mobile">
+            <PropertyListings initialData={allTownshipProperties} townshipId={id} townshipName={townshipName} pdf={property.pdf} />
+          </div>
         </div>
       </div>
     );

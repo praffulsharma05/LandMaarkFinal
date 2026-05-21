@@ -34,19 +34,22 @@ const PropertyListingsTable: React.FC<Props> = ({ filteredData, ui, pdf, t, hand
     <div className="container">
       <div className="table-container">
         <div className="township-banner-header">
-          <div className="township-banner">
-            <h1>{ui.townshipName || t('property.listings.propertyList')}<span className="banner-count">({filteredData.length})</span></h1>
-          </div>
-          {filteredData.length > 0 && (
-            <div className="listings-expand-all-wrapper">
-              <button className={`listings-expand-all-btn ${isAllExpanded ? 'expanded' : ''}`} onClick={handlers.handleToggleAll}
-                title={isAllExpanded ? t('property.listings.collapseAllCards') : t('property.listings.expandAllCards')}
-                aria-label={isAllExpanded ? t('property.listings.collapseAllCards') : t('property.listings.expandAllCards')}>
-                <span>{isAllExpanded ? t('property.listings.collapseAll') : t('property.listings.expandAll')}</span>
-                <ChevronRight size={16} className="toggle-chevron" />
-              </button>
-            </div>
-          )}
+          <h1 className="section-title section-title--listings">
+            <span className="title-underline">
+              {ui.townshipName || t('property.listings.propertyList')}
+              <span className="banner-count">({filteredData.length})</span>
+            </span>
+            {filteredData.length > 0 && (
+              <div className="listings-expand-all-wrapper">
+                <button className={`listings-expand-all-btn ${isAllExpanded ? 'expanded' : ''}`} onClick={handlers.handleToggleAll}
+                  title={isAllExpanded ? t('property.listings.collapseAllCards') : t('property.listings.expandAllCards')}
+                  aria-label={isAllExpanded ? t('property.listings.collapseAllCards') : t('property.listings.expandAllCards')}>
+                  <span>{isAllExpanded ? t('property.listings.collapseAll') : t('property.listings.expandAll')}</span>
+                  <ChevronRight size={16} className="toggle-chevron" />
+                </button>
+              </div>
+            )}
+          </h1>
         </div>
         <div className="project-details-cards-grid">
           {ui.error ? (

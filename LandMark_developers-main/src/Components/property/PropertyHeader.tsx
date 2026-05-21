@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { 
+import {
   Phone,
   Check
 } from 'lucide-react';
@@ -33,30 +33,8 @@ const PropertyHeader: React.FC<PropertyHeaderProps> = ({ property }) => {
   const builder = property?.builder || '';
   const location = property?.location || t('property.header.locationNotSpecified');
   const reraId = property?.rera_id || '';
-  
-  const priceMin = property?.price?.min || 0;
-  const priceMax = property?.price?.max || 0;
+
   const emi = property?.price?.emi || 0;
-
-  const formatPrice = (price: number) => {
-    if (price === 0) return '';
-    if (price >= 10000) {
-      if (price >= 10000000) {
-        return `₹${(price / 10000000).toFixed(2)} Cr`;
-      } else if (price >= 100000) {
-        return `₹${(price / 100000).toFixed(2)} L`;
-      }
-      return `₹${price.toLocaleString()}`;
-    }
-    return `₹${price.toLocaleString()} L`;
-  };
-
-  const priceDisplay = () => {
-    if (property?.price?.display) return property.price.display;
-    if (priceMin === 0 && priceMax === 0) return t('property.header.contactForPrice');
-    if (priceMin === priceMax || priceMax === 0) return formatPrice(priceMin);
-    return `${formatPrice(priceMin)} - ${formatPrice(priceMax)}`;
-  };
 
   const handleContactClick = useCallback(() => {
     console.warn('Contact button clicked');
@@ -83,13 +61,11 @@ const PropertyHeader: React.FC<PropertyHeaderProps> = ({ property }) => {
       </div>
 
       <div className="ph-right">
-        <p className="ph-price">{priceDisplay()}</p>
-        
+
         {emi > 0 && (
           <p className="ph-emi">{t('property.header.emiStartsAt')} ₹{emi.toLocaleString()} {t('property.header.emiUnit')}</p>
         )}
 
-        <p className="ph-price-type">{t('property.header.basicPrice')}</p>
 
         <button
           className="ph-contact-btn"

@@ -2,7 +2,7 @@
   position: fixed;
   bottom: 24px;
   right: 24px;
-  display: flex;
+  display: none;
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);

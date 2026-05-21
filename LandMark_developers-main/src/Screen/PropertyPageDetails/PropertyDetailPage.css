@@ -13,6 +13,7 @@
 .desktop-padding {
   padding-top: 8rem;
 }
+
 .desktop-padding {
   padding: 5rem;
 }
@@ -38,11 +39,19 @@
 .contact-card-container {
   background-color: white;
   border-radius: 1rem;
-  padding: 1.25rem;
+  padding: 0.7rem;
   border: 1px solid #e2e8f0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-  margin-bottom: 1rem;
+  margin-bottom: 0;
+  /* Let flex gap control the vertical spacing */
   width: 100%;
+}
+
+/* Ensure no override adds margins inside details container */
+.property-detail-container .tab-content-card,
+.property-detail-container .property-overview-container,
+.property-detail-container .contact-card-container {
+  margin-bottom: 0 !important;
 }
 
 .section-title {
@@ -234,16 +243,20 @@
 .mobile-content-wrapper {
   padding: 0 1rem;
   margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
 .component-spacing-mobile {
-  margin-top: 0.5rem;
+  margin-top: 0;
 }
-
-
 
 .desktop-main-content {
   grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 /* ===== Premium Error Screen ===== */

@@ -21,10 +21,9 @@
 
 /* Container Styles */
 .container {
-  max-width: 1400px;
-  margin-top: -2rem;
-  padding: 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* Stats Section */
@@ -72,10 +71,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 24px;
-  background: white;
-  border-bottom: 1px solid #f1f5f9;
-  gap: 16px;
+  margin-bottom: 1rem;
+  width: 100%;
 }
 
 .township-banner {
@@ -117,13 +114,14 @@
 
 /* Table Container */
 .table-container {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
   overflow: hidden;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  /* Consistent gap between sections */
+  margin: 0;
+  width: 100%;
 }
 
 .table-header {
@@ -516,6 +514,13 @@ tbody td {
   font-size: 14px;
   color: #2d3748;
   font-weight: 500;
+}
+
+.section-title--listings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
 }
 
 /* Header Title Section */
@@ -1112,7 +1117,7 @@ tbody tr {
 /* PDF Section Styles */
 .pdf-section-wrapper {
   width: 100%;
-  /* Standard section top margin */
+  margin-top: 3rem;
   margin-bottom: 0;
 }
 
@@ -1294,13 +1299,13 @@ tbody tr {
 .pdf-card-name {
   font-weight: 700;
   color: #1e293b;
-  font-size: 1.7rem;
+  font-size: 1.125rem;
   margin: 0;
   overflow: hidden;
 }
 
 .pdf-card-size {
-  font-size: 1rem;
+  font-size: 0.75rem;
   color: #64748b;
   font-weight: 700;
   text-transform: uppercase;
@@ -1309,6 +1314,10 @@ tbody tr {
 
 /* Mobile Glass Overlay Adjustments */
 @media (max-width: 768px) {
+  .pdf-section-wrapper {
+    margin-top: 1.25rem;
+  }
+
   .pdf-glass-overlay {
     opacity: 1 !important;
     background: transparent;
