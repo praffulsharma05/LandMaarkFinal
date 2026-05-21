@@ -124,6 +124,10 @@ const PropertyListings: React.FC<PropertyListingsProps> = ({ initialData, townsh
   const handleStopPropagation = useCallback((e: React.MouseEvent) => { e.stopPropagation(); }, []);
   const createToggleHandler = useCallback((idx: number) => () => { setUiState(prev => { const next = new Set(prev.expandedIndices); if (next.has(idx)) { next.delete(idx); } else { next.add(idx); } return { ...prev, expandedIndices: next }; }); }, []);
 
+  if (!uiState.loading && plotData.length === 0 && pdfState.data.length === 0) {
+    return null;
+  }
+
   return (
     <PropertyListingsTable
       filteredData={filteredData}

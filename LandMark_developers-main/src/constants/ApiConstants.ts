@@ -1,5 +1,5 @@
 export const ApiConstants = {
-    API_BASE_URL: "https://ointment-bath-icky.ngrok-free.dev/",
+    API_BASE_URL: "http://localhost:3000/",
     UNKNOWN: "unknown",
     HEADERS: {
         'Cache-Control': 'no-cache',

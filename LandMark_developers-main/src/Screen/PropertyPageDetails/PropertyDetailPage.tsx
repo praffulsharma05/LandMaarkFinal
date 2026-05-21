@@ -466,25 +466,23 @@ const PropertyDetailPage = () => {
         <AmenitiesSpecs property={property} />
 
         {/* Desktop Additional Details Section */}
-        <div className="tab-content-card additional-details-section" style={{ marginTop: '0.75rem' }}>
-          <h2 className="section-title">
-            <span className="title-underline">Additional Details</span>
-          </h2>
-          <div className="items-grid">
-            {property.additionalDetails && property.additionalDetails.length > 0 ? (
-              property.additionalDetails.map((detail: any, idx: number) => (
+        {property.additionalDetails && property.additionalDetails.length > 0 && (
+          <div className="tab-content-card additional-details-section" style={{ marginTop: '0.75rem' }}>
+            <h2 className="section-title">
+              <span className="title-underline">Additional Details</span>
+            </h2>
+            <div className="items-grid">
+              {property.additionalDetails.map((detail: any, idx: number) => (
                 <OverviewItem
                   key={idx}
                   label={detail.key}
                   value={detail.value}
                   icon={Info}
                 />
-              ))
-            ) : (
-              null
-            )}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <PropertyListings initialData={allTownshipProperties} townshipId={id} townshipName={townshipName} pdf={property.pdf} />
       </div>

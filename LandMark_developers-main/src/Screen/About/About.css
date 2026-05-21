@@ -444,6 +444,7 @@
   grid-template-columns: 1fr;
   gap: 1.5rem;
   margin: 0 auto;
+  max-width: 1200px;
 }
 
 .ab-value-card {
@@ -494,12 +495,12 @@
 
   .ab-value-card {
     padding: 2rem;
-    text-align: left;
+    text-align: center;
   }
 }
 
 @media (min-width: 768px) {
   .ab-value-card {
-    text-align: left;
+    text-align: center;
   }
 }

@@ -39,6 +39,12 @@ const PropertyOverview: React.FC<PropertyOverviewProps> = ({ property, pricePerS
 
   const displayName = townshipName || property.title || 'Township';
 
+  const validOverviewItems = overviewItems.filter(item => item.value && item.value !== 'N/A' && item.value !== 'undefined');
+
+  if (!validOverviewItems || validOverviewItems.length === 0) {
+    return null;
+  }
+
   return (
     <div className="tab-content-card">
       <div className="section-title">
@@ -48,22 +54,16 @@ const PropertyOverview: React.FC<PropertyOverviewProps> = ({ property, pricePerS
       </div>
 
       <div className="mb-4">
-        {overviewItems && overviewItems.filter(item => item.value && item.value !== 'N/A' && item.value !== 'undefined').length > 0 ? (
-          <div className="items-grid">
-            {overviewItems
-              .filter(item => item.value && item.value !== 'N/A' && item.value !== 'undefined')
-              .map((item, index) => (
-                <OverviewItem
-                  key={index}
-                  label={item.label}
-                  value={String(item.value)}
-                  icon={item.icon}
-                />
-              ))}
-          </div>
-        ) : (
-          <p className="text-gray-500">{t('property.overview.noOverview')}</p>
-        )}
+        <div className="items-grid">
+          {validOverviewItems.map((item, index) => (
+            <OverviewItem
+              key={index}
+              label={item.label}
+              value={String(item.value)}
+              icon={item.icon}
+            />
+          ))}
+        </div>
       </div>
 
       <ActionButtons

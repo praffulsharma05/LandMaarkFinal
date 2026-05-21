@@ -99,6 +99,7 @@ html {
   .nav-center-slot {
     flex: none;
     justify-content: flex-start;
+    margin-left: 1.5rem;
   }
 
   .nav-right-slot {

@@ -99,18 +99,19 @@ const AmenitiesSpecs: React.FC<AmenitiesSpecsProps> = ({ property }) => {
   const hasSpecifications = Object.keys(groupedSpecifications).length > 0 &&
     Object.values(groupedSpecifications).some(arr => arr.length > 0);
 
+  if (!hasAmenities && !hasSpecifications) return null;
+
   return (
     <div className="amenities-specs-wrapper">
       <div className="amenities-specs-container">
         <div id="amenities-section" className="amenities-main-grid">
-          <div className="tab-content-card">
-            <div className="section-title">
-              <span className="title-underline">
-                {t('property.topAmenities')}
-              </span>
-            </div>
-            {/* Amenities Section */}
-            {hasAmenities && (
+          {hasAmenities && (
+            <div className="tab-content-card">
+              <div className="section-title">
+                <span className="title-underline">
+                  {t('property.topAmenities')}
+                </span>
+              </div>
               <div className="amenities-list-wrapper">
                 <div className="items-grid">
                   {property.amenities.slice(0, 8).map((item, i) => {
@@ -128,16 +129,16 @@ const AmenitiesSpecs: React.FC<AmenitiesSpecsProps> = ({ property }) => {
                   })}
                 </div>
               </div>
-            )}
-          </div>
-
-          <div className="tab-content-card" id="specifications-section">
-            <div className="section-title">
-              <span className="title-underline">
-                {t('property.specifications')}
-              </span>
             </div>
-            {hasSpecifications && (
+          )}
+
+          {hasSpecifications && (
+            <div className="tab-content-card" id="specifications-section">
+              <div className="section-title">
+                <span className="title-underline">
+                  {t('property.specifications')}
+                </span>
+              </div>
               <div className="specifications-categories-wrapper">
                 {Object.entries(groupedSpecifications).map(([category, specs], idx) => {
                   if (specs.length === 0) return null;
@@ -163,8 +164,8 @@ const AmenitiesSpecs: React.FC<AmenitiesSpecsProps> = ({ property }) => {
                   );
                 })}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -24,7 +24,9 @@ const OverviewItem: React.FC<OverviewItemProps> = ({ label, value, icon: Icon, i
       )}
       <div className="overview-text-content">
         <p className="overview-label">{label}</p>
-        <p className="overview-value">{value}</p>
+        {value !== undefined && value !== '' && value !== null && (
+          <p className="overview-value">{value}</p>
+        )}
         {subText && <p className="overview-subtext">{subText}</p>}
       </div>
     </div>
