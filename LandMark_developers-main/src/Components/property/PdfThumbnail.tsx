@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { useRef, useEffect, useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
+import { FileText } from 'lucide-react';
 
 // Set the worker source to the bundled worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
@@ -68,40 +69,36 @@ const PdfThumbnail: React.FC<PdfThumbnailProps> = ({ url, className, style }) =>
 
   if (error) {
     return (
-      <div
-        className={className}
-        style={{
-          width: '100%',
-          aspectRatio: '4/3',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'var(--md-sys-color-surface-container)',
-          borderRadius: '12px',
-          color: 'var(--md-sys-color-on-surface-variant)',
-          fontSize: '14px',
-          fontWeight: 700,
-          ...style,
-        }}
-      >
-        PDF Preview Unavailable
+      <div className="md3-brochure-fallback-container error" style={style}>
+        <div className="fallback-glow"></div>
+        <FileText className="fallback-pdf-icon" size={48} />
+        <span className="fallback-pdf-badge">PREVIEW UNAVAILABLE</span>
       </div>
     );
   }
 
   return (
-    <canvas
-      ref={canvasRef}
-      className={className}
-      style={{
-        width: '100%',
-        display: 'block',
-        borderRadius: '12px',
-        opacity: loading ? 0.3 : 1,
-        transition: 'opacity 0.3s ease',
-        ...style,
-      }}
-    />
+    <div style={{ position: 'relative', width: '100%', height: '200px', ...style }}>
+      {loading && (
+        <div className="md3-brochure-fallback-container loading" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
+          <div className="fallback-glow"></div>
+          <FileText className="fallback-pdf-icon" size={48} />
+          <span className="fallback-pdf-badge">LOADING PREVIEW...</span>
+        </div>
+      )}
+      <canvas
+        ref={canvasRef}
+        className={className}
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'block',
+          objectFit: 'cover',
+          opacity: loading ? 0 : 1,
+          transition: 'opacity 0.3s ease',
+        }}
+      />
+    </div>
   );
 };
 

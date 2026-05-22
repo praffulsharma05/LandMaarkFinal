@@ -1,9 +1,9 @@
-/* eslint-disable */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, no-restricted-syntax, custom/no-literal-strings-in-jsx, custom/performance-strictness, custom/component-strictness, custom/a11y-strictness, custom/no-restricted-values, prefer-const, max-lines, custom/typography-strictness */
 import React, { useState, useEffect, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useParams } from 'react-router-dom';
-import { Loader, Info, ChevronDown, ChevronUp, Eye, Download } from 'lucide-react';
+import { Loader, Info, ChevronDown, ChevronUp, Eye, Download, ChevronsDown, ChevronsUp, Image } from 'lucide-react';
 import useIsMobile from '../../hooks/useIsMobile';
 import ImageGalleryModal from '../../Components/ImageGalleryModal/ImageGalleryModal';
 import PropertyHeader from '../../Components/property/PropertyHeader';
@@ -13,10 +13,10 @@ import ImageGallery from '../../Components/property/ImageGallery';
 import ContactCard from '../../Components/property/ContactCard';
 import PropertyListings from '../../Components/property/CardsDetails/PropertyListings';
 import AmenitiesSpecs from '../../Components/property/AmenitiesSpecs';
+import PdfThumbnail from '../../Components/property/PdfThumbnail';
 import OverviewItem from '../../Components/property/Overview/OverviewItem';
 import NearbyPlaces from '../../Components/property/Overview/NearbyPlaces';
-import PdfThumbnail from '../../Components/property/PdfThumbnail';
-import { Car, Home, Building2, ShieldCheck, CheckCircle2, Share2, Heart, Bookmark } from 'lucide-react';
+import { Car, Home, Building2, ShieldCheck, CheckCircle2, Share2, Heart, Bookmark, FileText } from 'lucide-react';
 import { CityProperty } from '../../services/services';
 import { ApiConstants } from '../../constants/ApiConstants';
 import { ApiEndPoints } from '../../constants/ApiEndpoints';
@@ -34,7 +34,7 @@ const fetchImageAsBlob = async (url: string): Promise<Blob | null> => {
     if (response.ok) return await response.blob();
   } catch (fetchError) { console.warn('Proxy fetch failed, falling back to Canvas:', fetchError); }
   return new Promise((resolve) => {
-    const img = new Image();
+    const img = new window.Image();
     img.crossOrigin = 'Anonymous';
     img.onload = () => {
       try {
@@ -203,6 +203,7 @@ const PropertyDetailPage = () => {
             }
           }
         }
+
 
         const transformedProperty: CityProperty = {
           id: propertyData.property_id,
@@ -987,36 +988,62 @@ const PropertyDetailPage = () => {
           })()}
           {/* Property Units */}
           {allTownshipProperties && allTownshipProperties.length > 0 && (
-            <section className="md3-section">
-              <h3 className="md3-headline" style={{ marginBottom: '8px' }}>Property Units</h3>
-              <div className="md3-units-header">
-                <p className="md3-unit-count">{property.title} ({allTownshipProperties.length})</p>
-                <button className="md3-expand-btn" onClick={toggleAllUnits}>
-                  <span>{allExpanded ? 'Collapse All' : 'Expand All'}</span>
-                  {allExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+            <section className="md3-section" style={{ marginTop: '24px' }}>
+              <h3 className="md3-headline">Property Units</h3>
+              <div className="md3-unit-actions-row">
+                <button className="md3-unit-action-btn expand-btn" onClick={toggleAllUnits}>
+                  {allExpanded ? (
+                    <>
+                      <ChevronsUp size={16} strokeWidth={2.5} />
+                      <span>COLLAPSE ALL</span>
+                    </>
+                  ) : (
+                    <>
+                      <ChevronsDown size={12} strokeWidth={2.5} />
+                      <span>EXPAND ALL</span>
+                    </>
+                  )}
+                </button>
+                <button className="md3-unit-action-btn gallery-btn" onClick={() => setHeroModalOpen(true)}>
+                  <Image size={16} strokeWidth={2.5} />
+                  <span>GALLERY</span>
                 </button>
               </div>
               <div>
                 {allTownshipProperties.map((unit: any, idx: number) => {
                   const kvMap = unit.key_values?.reduce((acc: any, kv: any) => {
                     acc[kv.key] = kv.value;
+                    if (kv.key) {
+                      acc[kv.key.toLowerCase().trim()] = kv.value;
+                    }
                     return acc;
                   }, {}) || {};
 
                   const isAvailable = unit.status?.toLowerCase() !== 'sold out' && unit.status?.toLowerCase() !== 'sold';
-                  const plotName = kvMap['Plot'] || unit.title || `Plot ${idx + 1}`;
-                  const sizeStr = kvMap['Sq Yds'] || unit.area_sqft || 'N/A';
-                  const priceStr = kvMap['Price'] || unit.price || 'Contact';
-                  const facingStr = kvMap['Facing'] || 'N/A';
+                  const plotName = kvMap['Plot'] || kvMap['plot'] || unit.title || `${idx + 1}`;
+                  const cleanPlotName = String(plotName).replace(/plot:?/i, '').replace(/#/g, '').trim();
+                  const displayPlotName = `Plot: #${cleanPlotName}`;
+
+                  const sizeStr =
+                    kvMap['size in sqyds.'] ||
+                    kvMap['size in sqyds'] ||
+                    kvMap['sq yds'] ||
+                    kvMap['sq. yds'] ||
+                    kvMap['size'] ||
+                    unit.area_sqft ||
+                    'N/A';
+                  const cleanSizeStr = String(sizeStr).replace(/sq\.?\s*yds\.?/i, '').trim();
 
                   return (
                     <details key={idx} className="md3-unit-detail unit-detail">
                       <summary className="md3-unit-summary">
                         <div className="md3-unit-summary-left">
-                          <div className="md3-unit-badge">{plotName}</div>
-                          <span className="md3-unit-size">{sizeStr} Sq Yds</span>
+                          <div className="md3-unit-badge">{displayPlotName}</div>
+                          <span className="md3-unit-size">{cleanSizeStr} Sq.Yds</span>
                         </div>
-                        <ChevronDown className="md3-chevron" size={24} />
+                        <svg className="md3-chevron-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
                       </summary>
                       <div className="md3-unit-content">
                         <div className="md3-unit-grid">
@@ -1028,7 +1055,7 @@ const PropertyDetailPage = () => {
                               const isAvail = statusVal === 'available';
                               const isSold = statusVal === 'sold out' || statusVal === 'sold';
                               return (
-                                <div key={kvIdx}>
+                                <div key={kvIdx} className="detail-item-premium">
                                   <p className="md3-unit-meta-label">{kv.key}</p>
                                   <p className={`md3-unit-meta-val ${isStatus ? (isAvail ? 'md3-status-avail' : isSold ? 'md3-status-sold' : '') : ''}`}>
                                     {kv.value}
@@ -1047,14 +1074,17 @@ const PropertyDetailPage = () => {
 
           {/* Brochures */}
           {property.pdf && property.pdf.length > 0 && (
-            <section className="md3-section">
+            <section className="md3-section" style={{ marginTop: '24px' }}>
               <h3 className="md3-headline">Download Brochures</h3>
               {property.pdf.map((pdfUrl: string, idx: number) => {
                 const fileName = pdfUrl.split('/').pop() || `Brochure_${idx + 1}.pdf`;
                 return (
                   <div key={idx} className="md3-brochure-card" style={{ marginBottom: '1rem' }}>
                     <div className="md3-brochure-preview">
-                      <PdfThumbnail url={pdfUrl} />
+                      <PdfThumbnail
+                        url={pdfUrl}
+                        className="md3-brochure-thumbnail-canvas"
+                      />
                       <div className="md3-brochure-overlay">
                         <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="md3-brochure-btn view">
                           <Eye size={16} />

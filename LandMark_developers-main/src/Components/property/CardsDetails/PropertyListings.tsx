@@ -7,22 +7,6 @@ import { Property, ApiProperty, ApiResponse } from './PropertyListingsHelpers';
 import { normalizeData } from './PropertyListingsHelpers';
 import PropertyListingsTable from './PropertyListingsTable';
 
-interface PdfJsPage {
-  getViewport: (options: { scale: number }) => { width: number; height: number };
-  render: (options: { canvasContext: CanvasRenderingContext2D; viewport: { width: number; height: number } }) => { promise: Promise<void> };
-}
-
-interface PdfJsDocument {
-  getPage: (pageNum: number) => Promise<PdfJsPage>;
-}
-
-interface PdfJsLib {
-  GlobalWorkerOptions?: { workerSrc: string };
-  getDocument: (options: { url: string; headers: Record<string, string> }) => {
-    promise: Promise<PdfJsDocument>;
-  };
-}
-
 interface PropertyListingsProps {
   initialData?: unknown[];
   townshipId?: string | number;
@@ -42,10 +26,36 @@ const PropertyListings: React.FC<PropertyListingsProps> = ({ initialData, townsh
 
   const processApiData = (data: ApiProperty[]) => {
     const properties: Property[] = data.map((p, index) => {
-      const kv = (p.key_values?.reduce((acc: Record<string, unknown>, item) => { acc[item.key] = item.value; return acc; }, {} as Record<string, unknown>)) || {};
-      const sizeVal = parseFloat(String(kv.Size || kv['Sq Yds'] || '0').replace(/[^0-9.]/g, '')) || 0;
-      const bhkMatch = String(kv.Configuration || p.property_type || '').match(/(\d+)\s*BHK/i);
-      return { sno: index + 1, id: String(kv.ID || p.property_id), plotNo: String(kv.Plot || p.plot_number || '-'), size: String(kv.Size || kv['Sq Yds'] || '-'), sizeRaw: sizeVal, type: String(kv.Configuration || p.property_type || '-'), price: parseFloat(p.price) || 0, priceRaw: parseFloat(p.price) || 0, description: p.description || '', location: p.location || '', bhk: bhkMatch ? bhkMatch[1] : '', rawKeyValues: p.key_values || [] };
+      const kv = (p.key_values?.reduce((acc: Record<string, unknown>, item) => {
+        acc[item.key] = item.value;
+        if (item.key) {
+          acc[item.key.toLowerCase().trim()] = item.value;
+        }
+        return acc;
+      }, {} as Record<string, unknown>)) || {};
+      const sizeStr = 
+        kv['size in sqyds.'] || 
+        kv['size in sqyds'] || 
+        kv['sq yds'] || 
+        kv['sq. yds'] || 
+        kv['size'] || 
+        '-';
+      const sizeVal = parseFloat(String(sizeStr).replace(/[^0-9.]/g, '')) || 0;
+      const bhkMatch = String(kv.configuration || p.property_type || '').match(/(\d+)\s*BHK/i);
+      return { 
+        sno: index + 1, 
+        id: String(kv.id || kv.id || p.property_id), 
+        plotNo: String(kv.plot || p.plot_number || '-'), 
+        size: String(sizeStr), 
+        sizeRaw: sizeVal, 
+        type: String(kv.configuration || p.property_type || '-'), 
+        price: parseFloat(p.price) || 0, 
+        priceRaw: parseFloat(p.price) || 0, 
+        description: p.description || '', 
+        location: p.location || '', 
+        bhk: bhkMatch ? bhkMatch[1] : '', 
+        rawKeyValues: p.key_values || [] 
+      };
     }).sort((a, b) => (parseInt(a.plotNo.replace(/\D/g, '')) || 0) - (parseInt(b.plotNo.replace(/\D/g, '')) || 0));
     setPlotData(properties);
   };
@@ -59,7 +69,9 @@ const PropertyListings: React.FC<PropertyListingsProps> = ({ initialData, townsh
       if (result.success && result.data) {
         const normalizedData = normalizeData(result.data);
         setTownshipName((normalizedData.name as string) || '');
-        if (normalizedData.pdf) setPdfState(prev => ({ ...prev, data: normalizedData.pdf as { name: string; url: string; file_path?: string }[] }));
+        if (normalizedData.pdf) {
+          setPdfState(prev => ({ ...prev, data: normalizedData.pdf as { name: string; url: string; file_path?: string }[] }));
+        }
         processApiData((normalizedData.properties as ApiProperty[]) || []);
       } else { setUiState(prev => ({ ...prev, error: t('property.listings.failedToLoadData') })); }
     } catch (err) { console.error('Error:', err); setUiState(prev => ({ ...prev, error: t('property.listings.errorLoadingData') })); }
@@ -82,47 +94,6 @@ const PropertyListings: React.FC<PropertyListingsProps> = ({ initialData, townsh
       setPdfState(prev => ({ ...prev, data: pdf.map((url, index) => ({ name: (url.split('/').pop() || '').replace(/[-_]/g, ' ').toUpperCase() || `DOCUMENT ${index + 1}`, url })) }));
     }
   }, [pdf]);
-
-  useEffect(() => {
-    if (pdfState.data.length === 0) return;
-    const loadPdfThumbnails = async () => {
-      const win = window as unknown as Record<string, PdfJsLib | undefined>;
-      if (!win.pdfjsLib) {
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js';
-        script.async = true;
-        script.onload = () => {
-          const p = (window as unknown as Record<string, PdfJsLib | undefined>).pdfjsLib;
-          if (p && p.GlobalWorkerOptions) {
-            p.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
-          }
-          renderAllPdfsThumbnails();
-        };
-        document.head.appendChild(script);
-      } else { renderAllPdfsThumbnails(); }
-    };
-    const renderAllPdfsThumbnails = async () => {
-      const pdfjs = (window as unknown as Record<string, PdfJsLib | undefined>).pdfjsLib;
-      if (!pdfjs) return;
-      pdfState.data.forEach(async (pdfItem) => {
-        const pdfUrl = pdfItem.url || pdfItem.file_path;
-        if (!pdfUrl) return;
-        try {
-          const doc = await pdfjs.getDocument({ url: pdfUrl, headers: { 'ngrok-skip-browser-warning': 'true' } }).promise;
-          const page = await doc.getPage(1);
-          const viewport = page.getViewport({ scale: 0.5 });
-          const canvas = document.createElement('canvas');
-          const context = canvas.getContext('2d');
-          canvas.height = viewport.height; canvas.width = viewport.width;
-          if (context) {
-            await page.render({ canvasContext: context, viewport }).promise;
-            setPdfState(prev => ({ ...prev, thumbnails: { ...prev.thumbnails, [pdfUrl]: canvas.toDataURL('image/jpeg', 0.8) } }));
-          }
-        } catch (error) { console.warn(`Render thumbnail failed for ${pdfUrl}:`, error); }
-      });
-    };
-    loadPdfThumbnails();
-  }, [pdfState.data]);
 
   useEffect(() => {
     if (plotData.length === 0 && !initialTownshipName) { fetchData(); }
