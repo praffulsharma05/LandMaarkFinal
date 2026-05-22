@@ -4,6 +4,7 @@
   max-width: 1280px;
   margin: 0 auto;
   background-color: #f9fafb;
+  font-family: 'Outfit', sans-serif;
   /* gray-50 */
   min-height: 100vh;
   position: relative;
@@ -344,7 +345,7 @@
 }
 
 .md3-mobile-view {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Outfit', sans-serif;
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
   /* pb-24 */

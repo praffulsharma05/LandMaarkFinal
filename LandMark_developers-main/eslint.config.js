@@ -588,6 +588,180 @@ const customRulesPlugin = {
         };
       },
     },
+
+    'no-unapproved-fonts': {
+      meta: {
+        type: 'problem',
+        docs: { description: 'Ensure only approved fonts are used in the codebase.' },
+      },
+      create(context) {
+        let cssScanDone = false;
+
+        function validateFontFamilyString(fontFamilyStr, node) {
+          if (typeof fontFamilyStr !== 'string') return;
+          const ALLOWED_FONTS = new Set([
+            'plus jakarta sans',
+            'inter',
+            'outfit',
+            'roboto',
+            'courier new',
+            'courier',
+            'font awesome',
+            'font awesome 6 free',
+            'font awesome 6 brands',
+            'font awesome 5 free',
+            'fontawesome',
+            'fa',
+            'sans-serif',
+            'serif',
+            'monospace',
+            'system-ui',
+            '-apple-system',
+            'blinkmacsystemfont',
+            'segoe ui',
+            'oxygen',
+            'ubuntu',
+            'cantarell',
+            'open sans',
+            'helvetica neue',
+            'helvetica',
+            'arial',
+            'inherit',
+            'initial',
+            'unset',
+            'revert',
+            'revert-layer'
+          ]);
+
+          const parts = fontFamilyStr.split(',');
+          for (const part of parts) {
+            const cleanFont = part.replace(/!important/gi, '').replace(/['"]/g, '').trim().toLowerCase();
+            if (cleanFont && !ALLOWED_FONTS.has(cleanFont)) {
+              if (cleanFont.startsWith('font awesome') || cleanFont.startsWith('font-awesome')) {
+                continue;
+              }
+              context.report({
+                node,
+                message: `Unapproved font-family "${part.trim()}". Approved fonts: Plus Jakarta Sans, Inter, Outfit, Roboto, Courier New, Font Awesome.`,
+              });
+            }
+          }
+        }
+
+        function scanAndValidateCssFiles(node) {
+          if (cssScanDone) return;
+          cssScanDone = true;
+
+          const ALLOWED_FONTS = new Set([
+            'plus jakarta sans',
+            'inter',
+            'outfit',
+            'roboto',
+            'courier new',
+            'courier',
+            'font awesome',
+            'font awesome 6 free',
+            'font awesome 6 brands',
+            'font awesome 5 free',
+            'fontawesome',
+            'fa',
+            'sans-serif',
+            'serif',
+            'monospace',
+            'system-ui',
+            '-apple-system',
+            'blinkmacsystemfont',
+            'segoe ui',
+            'oxygen',
+            'ubuntu',
+            'cantarell',
+            'open sans',
+            'helvetica neue',
+            'helvetica',
+            'arial',
+            'inherit',
+            'initial',
+            'unset',
+            'revert',
+            'revert-layer'
+          ]);
+
+          const srcDir = path.join(process.cwd(), 'src');
+          if (!fs.existsSync(srcDir)) return;
+
+          function walk(dir) {
+            const files = fs.readdirSync(dir);
+            for (const file of files) {
+              const fullPath = path.join(dir, file);
+              const stat = fs.statSync(fullPath);
+              if (stat.isDirectory()) {
+                if (file !== 'node_modules' && file !== 'dist' && file !== '.git') {
+                  walk(fullPath);
+                }
+              } else if (file.endsWith('.css')) {
+                const content = fs.readFileSync(fullPath, 'utf8');
+                const regex = /font-family\s*:\s*([^;}\n]+)/gi;
+                let match;
+                while ((match = regex.exec(content)) !== null) {
+                  const fontList = match[1];
+                  const parts = fontList.split(',');
+                  for (const part of parts) {
+                    const cleanFont = part.replace(/!important/gi, '').replace(/['"]/g, '').trim().toLowerCase();
+                    if (cleanFont && !ALLOWED_FONTS.has(cleanFont)) {
+                      if (cleanFont.startsWith('font awesome') || cleanFont.startsWith('font-awesome')) {
+                        continue;
+                      }
+                      context.report({
+                        node,
+                        message: `Unapproved font "${part.trim()}" found in CSS file "${path.relative(process.cwd(), fullPath)}". Approved fonts: Plus Jakarta Sans, Inter, Outfit, Roboto, Courier New, Font Awesome.`,
+                      });
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          try {
+            walk(srcDir);
+          } catch (err) {
+            // ignore
+          }
+        }
+
+        return {
+          Program(node) {
+            scanAndValidateCssFiles(node);
+          },
+          Property(node) {
+            if (node.key.type === 'Identifier' && node.key.name === 'fontFamily' && node.value.type === 'Literal') {
+              validateFontFamilyString(node.value.value, node);
+            }
+          },
+          JSXAttribute(node) {
+            if (node.name.name === 'className' && node.value && node.value.type === 'Literal' && typeof node.value.value === 'string') {
+              const classes = node.value.value.split(/\s+/);
+              for (const cls of classes) {
+                if (cls.startsWith('font-')) {
+                  const fontVal = cls.slice(5);
+                  if (fontVal.startsWith('[') && fontVal.endsWith(']')) {
+                    const inside = fontVal.slice(1, -1);
+                    validateFontFamilyString(inside, node);
+                  } else {
+                    if (['serif'].includes(fontVal)) {
+                      context.report({
+                        node,
+                        message: `Unapproved Tailwind font class "${cls}". Approved fonts: Plus Jakarta Sans, Inter, Outfit, Roboto, Courier New, Font Awesome.`,
+                      });
+                    }
+                  }
+                }
+              }
+            }
+          },
+        };
+      },
+    },
   },
 };
 
@@ -620,6 +794,7 @@ export default defineConfig([
       'custom/a11y-strictness': 'error',
       'custom/performance-strictness': 'error',
       'custom/one-component-per-file': 'error',
+      'custom/no-unapproved-fonts': 'error',
 
       // Avoid console.log in production
       'no-console': ['error', { allow: ['warn', 'error'] }],

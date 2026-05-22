@@ -22,6 +22,7 @@ html {
   border-radius: 9999px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   padding: 0.4rem 1rem;
+  font-family: 'Roboto', sans-serif;
 }
 
 .navbar-header.scrolled {
@@ -342,6 +343,7 @@ html {
   backdrop-filter: blur(20px);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   z-index: 9999;
+  font-family: 'Roboto', sans-serif;
 }
 
 @media (min-width: 768px) {

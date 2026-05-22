@@ -81,7 +81,7 @@ const Properties = () => {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-6 mt-10 py-10">
+    <div className="mx-auto max-w-7xl px-6 mt-10 py-10 font-inter">
       <h1 className="text-4xl font-bold mb-10">{t("properties.title")}</h1>
 
       {properties.length === 0 ? (

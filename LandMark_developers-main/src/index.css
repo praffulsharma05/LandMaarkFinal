@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@theme {
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
+  --font-inter: "Inter", sans-serif;
+  --font-outfit: "Outfit", sans-serif;
+  --font-roboto: "Roboto", sans-serif;
+  --font-mono: "Courier New", Courier, monospace;
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    FIX #1: Background on html + body — MUST use !important to
    override Tailwind v4 preflight which sets background-color: Canvas
@@ -9,6 +17,7 @@ html {
   background-color: #f5f2ec !important;
   margin: 0 !important;
   padding: 0 !important;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
 }
 
 body {
@@ -18,12 +27,14 @@ body {
   padding: 0 !important;
   min-width: 320px;
   overflow-x: hidden;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
 }
 
 #root {
   background: #f5f2ec !important;
   background-color: #f5f2ec !important;
   min-height: 100vh;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
 }
 
 * {
@@ -31,13 +42,18 @@ body {
 }
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Courier New for code, numbers, and tech details */
+code, pre, .font-mono, .tech-details, .number-font {
+  font-family: "Courier New", Courier, monospace !important;
 }
 
 a {
