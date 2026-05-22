@@ -881,23 +881,15 @@
 .md3-unit-action-btn.expand-btn {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: #ffffff;
-  letter-spacing: .1px;
-  gap: 4px;
-  padding: 8px 6px;
-  font-size: 10px;
+  letter-spacing: .05em;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 12px;
 }
 
 .md3-unit-action-btn.expand-btn:hover {
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: #ffffff;
-}
-
-.md3-unit-action-btn.gallery-btn {
-  background-color: #8b5cf6;
-}
-
-.md3-unit-action-btn.gallery-btn:hover {
-  background-color: #7c3aed;
 }
 
 .md3-unit-action-btn:active {

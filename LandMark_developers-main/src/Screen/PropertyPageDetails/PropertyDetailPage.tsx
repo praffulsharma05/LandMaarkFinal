@@ -1004,10 +1004,6 @@ const PropertyDetailPage = () => {
                     </>
                   )}
                 </button>
-                <button className="md3-unit-action-btn gallery-btn" onClick={() => setHeroModalOpen(true)}>
-                  <Image size={16} strokeWidth={2.5} />
-                  <span>GALLERY</span>
-                </button>
               </div>
               <div>
                 {allTownshipProperties.map((unit: any, idx: number) => {
