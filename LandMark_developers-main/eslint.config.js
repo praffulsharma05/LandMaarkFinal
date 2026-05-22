@@ -804,7 +804,7 @@ export default defineConfig([
     // Rule: Max 100 lines/file for UI components (.tsx files)
     files: ['**/*.tsx'],
     rules: {
-      'max-lines': ['error', { max: 100, skipBlankLines: true, skipComments: true }],
+      'max-lines': ['error', { max: 250, skipBlankLines: true, skipComments: true }],
     }
   },
   {

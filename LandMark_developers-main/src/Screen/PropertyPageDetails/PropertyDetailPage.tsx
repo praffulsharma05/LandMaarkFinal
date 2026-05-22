@@ -708,63 +708,12 @@ const PropertyDetailPage = () => {
             </p>
           </section>
 
-          {/* Quick Info Grid */}
-          <section className="md3-section" style={{ marginTop: '32px' }}>
-            <div className="md3-quick-info-grid">
-              <div className="md3-info-card">
-                <div className="md3-info-icon-wrapper">
-                  {property.area_unit_image ? (
-                    <img src={property.area_unit_image} alt="Area Unit" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
-                  ) : (
-                    <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>square_foot</span>
-                  )}
-                </div>
-                <div>
-                  <p className="md3-info-label">Area Unit</p>
-                  <p className="md3-info-value">{property.area_unit || 'sq. yd.'}</p>
-                </div>
-              </div>
-              <div className="md3-info-card">
-                <div className="md3-info-icon-wrapper">
-                  {property.avg_price_image ? (
-                    <img src={property.avg_price_image} alt="Avg. Price" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
-                  ) : (
-                    <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>trending_up</span>
-                  )}
-                </div>
-                <div>
-                  <p className="md3-info-label">Avg. Price</p>
-                  <p className="md3-info-value">{property.avg_price || 'Contact'}</p>
-                </div>
-              </div>
-              <div className="md3-info-card">
-                <div className="md3-info-icon-wrapper">
-                  {property.configurations_image ? (
-                    <img src={property.configurations_image} alt="Configurations" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
-                  ) : (
-                    <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>home</span>
-                  )}
-                </div>
-                <div>
-                  <p className="md3-info-label">Configurations</p>
-                  <p className="md3-info-value">{property.configurations || property.propertyType || 'Plots'}</p>
-                </div>
-              </div>
-              <div className="md3-info-card">
-                <div className="md3-info-icon-wrapper">
-                  {property.project_area_image ? (
-                    <img src={property.project_area_image} alt="Area" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
-                  ) : (
-                    <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>straighten</span>
-                  )}
-                </div>
-                <div>
-                  <p className="md3-info-label">Area</p>
-                  <p className="md3-info-value">{property.area || 'N/A'}</p>
-                </div>
-              </div>
-            </div>
+          {/* Nearby Places Section */}
+          <section className="md3-section" style={{ marginTop: '24px' }}>
+            <NearbyPlaces places={property.places} />
           </section>
+
+
 
           {/* Navigation Tabs */}
           <nav className="md3-tabs-nav">
@@ -936,8 +885,8 @@ const PropertyDetailPage = () => {
                     onClick={() => setShowAllAmenities(true)}
                     style={{ cursor: 'pointer' }}
                   >
-                    <div className="md3-amenity-icon-wrapper" style={{ backgroundColor: 'var(--md-sys-color-primary-container)' }}>
-                      <span style={{ color: 'var(--md-sys-color-on-primary-container)', fontWeight: 700, fontSize: '12px' }}>
+                    <div className="md3-amenity-icon-wrapper md3-amenity-action-btn">
+                      <span style={{ fontWeight: 700, fontSize: '12px' }}>
                         +{property.amenities.length - 5}
                       </span>
                     </div>
@@ -950,7 +899,7 @@ const PropertyDetailPage = () => {
                     onClick={() => setShowAllAmenities(false)}
                     style={{ cursor: 'pointer' }}
                   >
-                    <div className="md3-amenity-icon-wrapper" style={{ backgroundColor: 'var(--md-sys-color-primary-container)', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="md3-amenity-icon-wrapper md3-amenity-action-btn">
                       <ChevronUp size={24} />
                     </div>
                     <span className="md3-amenity-label" style={{ color: 'var(--md-sys-color-primary)', fontWeight: 700 }}>Less</span>
@@ -1036,7 +985,6 @@ const PropertyDetailPage = () => {
               </section>
             );
           })()}
-
           {/* Property Units */}
           {allTownshipProperties && allTownshipProperties.length > 0 && (
             <section className="md3-section">

@@ -1,9 +1,10 @@
-import React, { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import { MapPinIcon, Heart } from "lucide-react";
-import { ApiConstants } from "../../constants/ApiConstants";
 import { useTranslation } from "../../hooks/useTranslation";
-import './PropertyCards.css'
+import './PropertyCards.css';
+import SkeletonCard from "./SkeletonCard";
+import { formatPrice, formatBHK, getStatusColor, getImageUrl } from "./PropertyCardsHelper";
+import { usePropertyCards } from "./usePropertyCards";
 
 interface Property {
   property_id: number; title: string; image: string; construction_status: string;
@@ -14,71 +15,9 @@ interface Property {
 
 interface Props { properties: Property[]; totalCount: number; loading?: boolean; }
 
-const SkeletonCard = () => (
-  <div className="animate-pulse rounded-2xl bg-white shadow border overflow-hidden">
-    <div className="property-search-image-skeleton bg-gray-200"></div>
-    <div className="p-6">
-      <div className="flex justify-between mb-2">
-        <div className="h-6 bg-gray-200 rounded w-3/4"></div><div className="h-6 bg-gray-200 rounded w-1/4"></div>
-      </div>
-      <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
-      <div className="border-t pt-4">
-        <div className="flex justify-between">
-          <div className="h-4 bg-gray-200 rounded w-1/4"></div><div className="h-4 bg-gray-200 rounded w-1/4"></div><div className="h-4 bg-gray-200 rounded w-1/4"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
 const PropertyCards: React.FC<Props> = ({ properties, totalCount, loading = false }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
-  const [likedProperties, setLikedProperties] = useState<Set<number>>(new Set());
-
-  const formatPrice = (price: number) => {
-    if (price >= 10000000) return `₹${(price / 10000000).toFixed(2)} Cr`;
-    if (price >= 100000) return `₹${(price / 100000).toFixed(2)} L`;
-    return `₹${price.toLocaleString()}`;
-  };
-
-  const formatBHK = (bhk: number) => bhk === 0 ? "Studio" : `${bhk} BHK`;
-
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'ready to move': case 'ready': return 'bg-green-500';
-      case 'under construction': return 'bg-amber-500';
-      case 'new launch': return 'bg-blue-500';
-      default: return 'bg-gray-500';
-    }
-  };
-
-  const getImageUrl = (image: string, propertyId: number) => {
-    if (!image || imageErrors.has(propertyId)) return null;
-    if (image.startsWith('http://') || image.startsWith('https://')) return image;
-    return ApiConstants.API_BASE_URL + `uploads/${image}`;
-  };
-
-  const onCardClick = useCallback((e: React.MouseEvent) => {
-    const id = Number((e.currentTarget as HTMLElement).dataset.propertyId);
-    if (id) navigate(`/property/${id}`);
-  }, [navigate]);
-
-  const onImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
-    const id = Number((e.currentTarget as HTMLElement).dataset.propertyId);
-    if (id) setImageErrors(prev => new Set(prev).add(id));
-  }, []);
-
-  const onToggleLike = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    const id = Number((e.currentTarget as HTMLElement).dataset.propertyId);
-    if (id) setLikedProperties((prev) => {
-      const ns = new Set(prev);
-      if (ns.has(id)) { ns.delete(id); } else { ns.add(id); }
-      return ns;
-    });
-  }, []);
+  const { imageErrors, likedProperties, onCardClick, onImageError, onToggleLike } = usePropertyCards();
 
   if (loading) return (
     <div className="w-full bg-white py-8">
@@ -100,7 +39,7 @@ const PropertyCards: React.FC<Props> = ({ properties, totalCount, loading = fals
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8">
         {properties.map((property) => {
-          const imageUrl = getImageUrl(property.image, property.property_id);
+          const imageUrl = getImageUrl(property.image, property.property_id, imageErrors);
           const isLiked = likedProperties.has(property.property_id);
           return (
             <div key={property.property_id} onClick={onCardClick} data-property-id={property.property_id}

@@ -1,0 +1,113 @@
+/* NearbyPlaces.css */
+
+.places-scroll-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 12px 12px 16px 12px;
+  -webkit-overflow-scrolling: touch;
+  background: linear-gradient(135deg, rgba(94, 64, 224, 0.06) 0%, rgba(94, 64, 224, 0.02) 100%);
+  border-radius: 16px;
+  margin-top: 10px;
+}
+
+/* Hide scrollbar by default but allow smooth mouse scrolling */
+.places-scroll-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.places-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.places-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.3);
+  border-radius: 99px;
+}
+
+.places-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.5);
+}
+
+.place-card-new {
+  flex-shrink: 0;
+  width: 260px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.place-card-new:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 12px 24px -3px rgba(94, 64, 224, 0.12), 0 4px 12px -2px rgba(94, 64, 224, 0.06);
+  border-color: rgba(94, 64, 224, 0.25);
+}
+
+.place-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.place-category-new {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3b82f6; /* Modern Indigo/Blue category label */
+  background: #eff6ff;
+  padding: 4px 10px;
+  border-radius: 99px;
+  letter-spacing: 0.2px;
+}
+
+.place-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.place-info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.place-name-new {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.place-distance-tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4b5563;
+  background-color: #f3f4f6;
+  padding: 4px 10px;
+  border-radius: 99px;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+}
+
+.places-chevron-svg {
+  display: block;
+}

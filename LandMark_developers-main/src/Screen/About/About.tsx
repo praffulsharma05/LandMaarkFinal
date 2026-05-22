@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import "./About.css";
 import { useTranslation } from "../../hooks/useTranslation";
 import useIsMobile from "../../hooks/useIsMobile";
+import AboutValues from "./AboutValues";
 
 const About: React.FC = () => {
   const { t } = useTranslation();
@@ -106,92 +107,6 @@ const About: React.FC = () => {
 
 
 
-    </div>
-  );
-};
-
-interface AboutValuesProps {
-  isMobile: boolean;
-}
-
-const AboutValues: React.FC<AboutValuesProps> = ({ isMobile }) => {
-  const { t } = useTranslation();
-
-  if (isMobile) {
-    return (
-      <div className="section-8-grid-wrapper">
-        <ul className="section-8-points-list ab-no-margin">
-          <li className="section-8-point-item">
-            <span className="section-8-point-icon">🛡️</span>
-            <div>
-              <h3 className="section-8-point-title ab-left-nomargin">
-                {t("about.value1Title")}
-              </h3>
-              <p className="ab-value-desc">
-                {t("about.value1Desc")}
-              </p>
-            </div>
-          </li>
-          <li className="section-8-point-item">
-            <span className="section-8-point-icon">💎</span>
-            <div>
-              <h3 className="section-8-point-title ab-left-nomargin">
-                {t("about.value2Title")}
-              </h3>
-              <p className="ab-value-desc">
-                {t("about.value2Desc")}
-              </p>
-            </div>
-          </li>
-          <li className="section-8-point-item">
-            <span className="section-8-point-icon">🤝</span>
-            <div>
-              <h3 className="section-8-point-title ab-left-nomargin">
-                {t("about.value3Title")}
-              </h3>
-              <p className="ab-value-desc">
-                {t("about.value3Desc")}
-              </p>
-            </div>
-          </li>
-          <li className="section-8-point-item">
-            <span className="section-8-point-icon">💡</span>
-            <div>
-              <h3 className="section-8-point-title ab-left-nomargin">
-                {t("about.value4Title")}
-              </h3>
-              <p className="ab-value-desc">
-                {t("about.value4Desc")}
-              </p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    );
-  }
-
-  return (
-    <div className="ab-values-grid">
-      <div className="ab-value-card">
-        <div className="ab-value-icon">🛡️</div>
-        <h3 className="ab-value-title">{t("about.value1Title")}</h3>
-        <p className="ab-value-desc">{t("about.value1Desc")}</p>
-      </div>
-      <div className="ab-value-card">
-        <div className="ab-value-icon">💎</div>
-        <h3 className="ab-value-title">{t("about.value2Title")}</h3>
-        <p className="ab-value-desc">{t("about.value2Desc")}</p>
-      </div>
-      <div className="ab-value-card">
-        <div className="ab-value-icon">🤝</div>
-        <h3 className="ab-value-title">{t("about.value3Title")}</h3>
-        <p className="ab-value-desc">{t("about.value3Desc")}</p>
-      </div>
-      <div className="ab-value-card">
-        <div className="ab-value-icon">💡</div>
-        <h3 className="ab-value-title">{t("about.value4Title")}</h3>
-        <p className="ab-value-desc">{t("about.value4Desc")}</p>
-      </div>
     </div>
   );
 };

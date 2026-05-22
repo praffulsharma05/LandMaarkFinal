@@ -1,13 +1,9 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useTranslation } from "../../../hooks/useTranslation";
+import EnquiryForm from "./EnquiryForm";
 
 export const EnquiryFormSection: React.FC = () => {
   const { t } = useTranslation();
-
-  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.warn("Form Submitted");
-  }, []);
 
   return (
     <>
@@ -34,38 +30,12 @@ export const EnquiryFormSection: React.FC = () => {
               {t("home.fieldsCompulsory")}
             </p>
 
-            <form className="enquiry-form-wrapper" onSubmit={handleSubmit}>
-              <input
-                type="text"
-                placeholder={t("home.firstNamePlaceholder")}
-                required
-                className="enquiry-input"
-              />
-
-              <input
-                type="email"
-                placeholder={t("home.emailPlaceholder")}
-                required
-                className="enquiry-input"
-              />
-
-              <input
-                type="tel"
-                placeholder={t("home.phonePlaceholder")}
-                required
-                className="enquiry-input"
-              />
-
-              <textarea
-                rows={4}
-                placeholder={t("home.commentsPlaceholder")}
-                className="enquiry-textarea"
-              />
-
-              <button className="rounded-btn text-sm">
-                {t("home.getCallback")}
-              </button>
-            </form>
+            <EnquiryForm
+              formClassName="enquiry-form-wrapper"
+              inputClassName="enquiry-input"
+              textareaClassName="enquiry-textarea"
+              buttonClassName="rounded-btn text-sm"
+            />
           </div>
         </div>
 
@@ -94,38 +64,12 @@ export const EnquiryFormSection: React.FC = () => {
             {t("home.fieldsCompulsory")}
           </p>
 
-          <form className="enquiry-form-mobile" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder={t("home.firstNamePlaceholder")}
-              required
-              className="enquiry-input-mobile"
-            />
-
-            <input
-              type="email"
-              placeholder={t("home.emailPlaceholder")}
-              required
-              className="enquiry-input-mobile"
-            />
-
-            <input
-              type="tel"
-              placeholder={t("home.phonePlaceholder")}
-              required
-              className="enquiry-input-mobile"
-            />
-
-            <textarea
-              rows={4}
-              placeholder={t("home.commentsPlaceholder")}
-              className="enquiry-textarea-mobile"
-            />
-
-            <button className="rounded-btn enquiry-btn-mobile">
-              {t("home.getCallback")}
-            </button>
-          </form>
+          <EnquiryForm
+            formClassName="enquiry-form-mobile"
+            inputClassName="enquiry-input-mobile"
+            textareaClassName="enquiry-textarea-mobile"
+            buttonClassName="rounded-btn enquiry-btn-mobile"
+          />
         </div>
       </section>
     </>

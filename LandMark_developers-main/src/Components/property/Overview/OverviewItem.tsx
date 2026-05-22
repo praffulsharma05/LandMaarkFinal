@@ -1,11 +1,10 @@
 import React from 'react';
-import { LucideIcon } from 'lucide-react';
 import './OverviewItem.css';
 
 interface OverviewItemProps {
   label: string;
   value: string | number;
-  icon?: LucideIcon;
+  icon?: React.ComponentType<{ className?: string }>;
   imageSrc?: string;
   subText?: string;
 }

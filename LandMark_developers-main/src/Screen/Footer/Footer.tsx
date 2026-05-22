@@ -1,85 +1,23 @@
-import React, { useState, useEffect } from "react";
-import {
-  Phone,
-  MapPin,
-  Globe,
-  Facebook,
-  Twitter,
-  Instagram,
-  Youtube,
-  Linkedin,
-} from "lucide-react";
+import React from "react";
+import { Phone, MapPin, Globe } from "lucide-react";
+import { getSocialIcon } from "./FooterHelper";
+import { useFooter } from "./useFooter";
 import "./Footer.css";
-import { fetchHomepageData, FooterDetails } from "../../services/HomeService";
 import { useTranslation } from "../../hooks/useTranslation";
-
-const initialFooterDetails: FooterDetails = {
-  logoText: "",
-  locations: [],
-  socialLinks: [],
-  websiteUrl: "",
-  websiteHref: "",
-  copyrightPattern: ""
-};
-
-const getSocialIcon = (platform: string) => {
-  switch (platform.toLowerCase()) {
-    case "facebook":
-      return Facebook;
-    case "twitter":
-      return Twitter;
-    case "instagram":
-      return Instagram;
-    case "youtube":
-      return Youtube;
-    case "linkedin":
-      return Linkedin;
-    default:
-      return Globe;
-  }
-};
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
-  const [footerDetails, setFooterDetails] = useState<FooterDetails>(initialFooterDetails);
-
-  useEffect(() => {
-    const loadFooter = async () => {
-      const data = await fetchHomepageData();
-      if (data) {
-        const footerSrc = data.footer || {};
-        setFooterDetails({
-          logoText: footerSrc.logoText || data.logoText || "LandMaark",
-          locations: footerSrc.locations || data.locations || [],
-          socialLinks: footerSrc.socialLinks || data.socialLinks || [],
-          websiteUrl: footerSrc.websiteUrl || data.websiteUrl || "www.LandMaarkproperties.com",
-          websiteHref: footerSrc.websiteHref || data.websiteHref || "https://www.LandMaarkproperties.com",
-          copyrightPattern: footerSrc.copyrightPattern || data.copyrightPattern || "© {year} LandMaark Properties. All rights reserved."
-        });
-      }
-    };
-    loadFooter();
-  }, []);
-
-  const copyrightText = footerDetails.copyrightPattern.replace(
-    "{year}",
-    new Date().getFullYear().toString()
-  );
+  const { footerDetails, copyrightText } = useFooter();
 
   return (
     <footer className="footer-container">
       <div className="footer-max-width">
-        {/* Logo Section */}
         <div className="footer-logo-section">
-          <h1 className="footer-title">
-            {footerDetails.logoText}
-          </h1>
+          <h1 className="footer-title">{footerDetails.logoText}</h1>
         </div>
 
-        {/* Main Content Grid */}
         <div className="footer-divider">
           <div className="footer-grid">
-            {/* Locations */}
             <div className="footer-locations">
               <div className="locations-grid">
                 {footerDetails.locations.map((location, index) => (
@@ -88,21 +26,16 @@ const Footer: React.FC = () => {
                       <MapPin className="location-icon" />
                       <span>{location.city}</span>
                     </h2>
-                    <p className="location-address">
-                      {location.address}
-                    </p>
+                    <p className="location-address">{location.address}</p>
                     <div className="location-contact">
                       <Phone className="location-icon" />
-                      <span className="contact-phone-label">
-                        {location.phone}
-                      </span>
+                      <span className="contact-phone-label">{location.phone}</span>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Social Media Links */}
             <div className="footer-social-section">
               <h2 className="social-heading">
                 {t("footer.followUs")}
@@ -130,7 +63,6 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Contact Info Bar */}
         <div className="footer-bottom-bar">
           <div className="footer-bottom-flex">
             <div className="contact-links">
@@ -145,7 +77,6 @@ const Footer: React.FC = () => {
               </a>
             </div>
 
-            {/* Copyright */}
             <div className="copyright-text">
               <p>{copyrightText}</p>
             </div>

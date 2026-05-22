@@ -35,47 +35,6 @@ if (isMobile) {
           </div>
         </section>
 
-        {/* Quick Info Grid */}
-        <section className="md3-section" style={{ marginTop: '32px' }}>
-          <div className="md3-quick-info-grid">
-            <div className="md3-info-card">
-              <div className="md3-info-icon-wrapper">
-                <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>square_foot</span>
-              </div>
-              <div>
-                <p className="md3-info-label">Area Unit</p>
-                <p className="md3-info-value">{property.area_unit || 'sq. yd.'}</p>
-              </div>
-            </div>
-            <div className="md3-info-card">
-              <div className="md3-info-icon-wrapper">
-                <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>trending_up</span>
-              </div>
-              <div>
-                <p className="md3-info-label">Avg. Price</p>
-                <p className="md3-info-value">{property.avg_price || 'Contact'}</p>
-              </div>
-            </div>
-            <div className="md3-info-card">
-              <div className="md3-info-icon-wrapper">
-                <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>home</span>
-              </div>
-              <div>
-                <p className="md3-info-label">Type</p>
-                <p className="md3-info-value">{property.propertyType || 'Plots'}</p>
-              </div>
-            </div>
-            <div className="md3-info-card">
-              <div className="md3-info-icon-wrapper">
-                <span className="material-symbols-outlined" style={{ color: 'var(--md-sys-color-primary)' }}>straighten</span>
-              </div>
-              <div>
-                <p className="md3-info-label">Area</p>
-                <p className="md3-info-value">{property.area || 'N/A'}</p>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Navigation Tabs */}
         <nav className="md3-tabs-nav">
@@ -92,10 +51,7 @@ if (isMobile) {
               className={`md3-tab-btn ${activeTab === 'specs' ? 'active' : ''}`}
               onClick={() => setActiveTab('specs')}
             >Specs</button>
-            <button
-              className={`md3-tab-btn ${activeTab === 'location' ? 'active' : ''}`}
-              onClick={() => setActiveTab('location')}
-            >Location</button>
+
           </div>
         </nav>
 

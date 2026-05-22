@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React from "react";
 import { CurrencyRupeeIcon } from "@heroicons/react/24/outline";
 import { useTranslation } from "../../hooks/useTranslation";
+import { getOptionValue, getOptionLabel } from "./PropertyFiltersHelper";
+import { usePropertyFilters } from "./usePropertyFilters";
 
 interface FiltersType {
   city: string; bhk: string; property_type: string; construction_status: string;
@@ -21,55 +23,16 @@ interface Props {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void; resetFilters: () => void;
 }
 
-const getOptionValue = (option: FilterOptionRecord | string | null | undefined): string => {
-  if (typeof option === 'string') return option;
-  if (option && typeof option === 'object') return String(option.name ?? option.bhk ?? '');
-  return '';
-};
-
-const getOptionLabel = (option: FilterOptionRecord | string | null | undefined): string => {
-  if (typeof option === 'string') return option;
-  if (option && typeof option === 'object') {
-    if (option.bhk) return `${option.bhk} BHK`;
-    if (option.name) return String(option.name);
-  }
-  return '';
-};
+const selectClass = "px-4 py-2 rounded-full border border-gray-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400 transition cursor-pointer";
 
 const PropertyFilters: React.FC<Props> = ({ filters, filterOptions, priceError, handleFilterChange, handleSubmit, resetFilters }) => {
   const { t } = useTranslation();
-  const [cities, setCities] = useState<{ city_id: number; name: string }[]>([]);
-  const [isLoadingCities, setIsLoadingCities] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      setIsLoadingCities(true);
-      try {
-        const res = await fetch("/api/cities", { method: 'GET', headers: { 'Content-Type': 'application/json' } });
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const json = await res.json();
-        setCities(json.data || json || []);
-      } catch (error) { console.error("Error fetching cities:", error); }
-      finally { setIsLoadingCities(false); }
-    })();
-  }, []);
+  const { cities, isLoadingCities, onSelectChange, onPriceChange } = usePropertyFilters({ handleFilterChange });
 
   const bhkOptions = Array.isArray(filterOptions?.bhk) ? filterOptions.bhk : [];
   const propertyTypeOptions = Array.isArray(filterOptions?.property_type) ? filterOptions.property_type : [];
   const constructionStatusOptions = Array.isArray(filterOptions?.construction_status) ? filterOptions.construction_status : [];
   const constructionTypeOptions = Array.isArray(filterOptions?.construction_type) ? filterOptions.construction_type : [];
-
-  const onSelectChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    const field = (e.currentTarget as HTMLSelectElement).dataset.field;
-    if (field) handleFilterChange(field, e.target.value);
-  }, [handleFilterChange]);
-
-  const onPriceChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const field = (e.currentTarget as HTMLInputElement).dataset.field;
-    if (field) handleFilterChange(field, e.target.value);
-  }, [handleFilterChange]);
-
-  const selectClass = "px-4 py-2 rounded-full border border-gray-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400 transition cursor-pointer";
 
   return (
     <div className="sticky top-4 z-10 flex justify-center px-4">
