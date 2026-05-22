@@ -1,5 +1,5 @@
 export const ApiConstants = {
-    API_BASE_URL: "https://smokiness-armful-wackiness.ngrok-free.dev/",
+    API_BASE_URL: "https://wildfire-ample-justifier.ngrok-free.dev/",
     UNKNOWN: "unknown",
     HEADERS: {
         'Cache-Control': 'no-cache',

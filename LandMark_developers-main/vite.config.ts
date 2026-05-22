@@ -69,11 +69,12 @@ export default defineConfig({
     }),
   ],
   server: {
+    host: true,
     port: 5173,
-    allowedHosts: ["smokiness-armful-wackiness.ngrok-free.dev"],
+    allowedHosts: true,
     proxy: {
       '/api': {
-        target: 'https://ointment-bath-icky.ngrok-free.dev',
+        target: 'https://wildfire-ample-justifier.ngrok-free.dev',
         changeOrigin: true,
         secure: false,
         configure: (proxy) => {
@@ -83,7 +84,7 @@ export default defineConfig({
         }
       },
       '/uploads': {
-        target: 'https://ointment-bath-icky.ngrok-free.dev',
+        target: 'https://wildfire-ample-justifier.ngrok-free.dev',
         changeOrigin: true,
         secure: false,
         configure: (proxy) => {
