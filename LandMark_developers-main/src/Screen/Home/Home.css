@@ -72,6 +72,8 @@
 .home-container {
   width: 100%;
   overflow-x: hidden;
+  /* Fills any sub-pixel gap between sections during fast scroll */
+  background-color: #f5f2ec;
 }
 
 /* Section 1 - Hero Desktop */

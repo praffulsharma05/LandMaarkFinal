@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import "./Home.css";
 import "../PropertyPageDetails/PropertyDetailPage.css";
-import { fetchHomepageData, HomepageData } from "../../services/HomeService";
+import { fetchHomepageData, prefetchHomepageData, HomepageData } from "../../services/HomeService";
 import { useTranslation } from "../../hooks/useTranslation";
+import { preloadImagesBackground } from "../../utils/imagePreloader";
+import { usePrefetchOnScroll } from "../../hooks/usePrefetchOnScroll";
 import {
   HeroSection,
   PerfectHomeSection,
@@ -38,27 +40,59 @@ const EMPTY_DATA: HomepageData = {
   },
 };
 
+// ── Extract all image URLs from homepage data ─────────────────────────────────
+function extractImageUrls(data: HomepageData): string[] {
+  return [
+    // Hero first (above-fold, highest priority)
+    ...data.hero.slides.map((s) => s.image),
+    // Then below-fold sections in scroll order
+    ...data.section3.items.map((i) => i.image),
+    ...data.section5.items.map((i) => i.image),
+    ...data.section6.items.map((i) => i.image),
+    ...data.section7.items.map((i) => i.image),
+    ...data.section9.items.map((i) => i.image),
+  ].filter(Boolean);
+}
+
 const Home: React.FC = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [homepageData, setHomepageData] = useState<HomepageData>(EMPTY_DATA);
 
+  // ── Prefetch related pages when user scrolls 60% down ────────────────────
+  // Warms township/homepage cache before user clicks a nav link
+  usePrefetchOnScroll(0.6, [prefetchHomepageData]);
+
+  // ── Apply data + start image preloading ──────────────────────────────────────
+  const applyData = useCallback((data: HomepageData) => {
+    setHomepageData(data);
+
+    // Fire-and-forget: preload all images in the background using new Image()
+    // — no CORS issues, populates browser HTTP cache, marks images as loaded
+    //   so LazyImage skips shimmer for already-preloaded images.
+    preloadImagesBackground(extractImageUrls(data));
+  }, []);
+
   const loadData = useCallback(async () => {
     setLoading(true);
     setHasError(false);
     try {
-      const data = await fetchHomepageData();
-      if (data) {
-        setHomepageData(data);
-      }
+      // fetchHomepageData returns localStorage/memory cache instantly if available,
+      // then background-refreshes. The onUpdate callback silently updates UI.
+      const data = await fetchHomepageData((fresh) => {
+        // Background refresh arrived — update content silently (no spinner)
+        applyData(fresh);
+      });
+
+      applyData(data);
     } catch (error) {
-      console.error("Error loading dynamic homepage data from API:", error);
+      console.error("Error loading homepage data:", error);
       setHasError(true);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [applyData]);
 
   useEffect(() => {
     loadData();

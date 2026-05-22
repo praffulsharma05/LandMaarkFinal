@@ -15,6 +15,7 @@ export interface Property {
 }
 
 export interface Filters {
+  [key: string]: string;
   city: string;
   bhk: string;
   property_type: string;

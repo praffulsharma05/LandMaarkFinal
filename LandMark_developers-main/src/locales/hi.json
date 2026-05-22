@@ -46,7 +46,7 @@
   },
   "township": {
     "shareTownship": "टाउनशिप साझा करें",
-    "shareTextIntro": "नमस्ते, 👋 \nहाउसिंग पर मुझे मिली इस खूबसूरत संपत्ति को देखें। क्या आप इसे तुरंत देख सकते हैं और रुचि होने पर संपर्क कर सकते हैं?",
+    "shareTextIntro": "नमस्ते, 👋 \nLandMaark पर मुझे मिली इस खूबसूरत संपत्ति को देखें। क्या आप इसे तुरंत देख सकते हैं और रुचि होने पर संपर्क कर सकते हैं?",
     "shareTextLink": "लिंक",
     "shareTextPreview": "पूर्वावलोकन छवि",
     "property": "संपत्ति",
@@ -105,7 +105,7 @@
       "namePlaceholder": "Name",
       "phonePlaceholder": "Phone",
       "emailPlaceholder": "Email",
-      "agreeContact": "I agree to be contacted by Housing and agents via WhatsApp, SMS, phone, email etc",
+      "agreeContact": "I agree to be contacted by LandMaark and agents via WhatsApp, SMS, phone, email etc",
       "interestedHomeLoans": "I am interested in Home Loans",
       "getContactDetails": "Get Contact Details",
       "byProceeding": "By proceeding, you consent to receive calls and texts at the number you provided."

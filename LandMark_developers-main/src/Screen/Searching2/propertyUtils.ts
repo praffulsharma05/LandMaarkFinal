@@ -2,6 +2,22 @@ import { ApiConstants } from "../../constants/ApiConstants";
 import { ApiEndPoints } from "../../constants/ApiEndpoints";
 import { Property } from "./types";
 
+interface ApiPropertyItem {
+  property_id: number;
+  title?: string;
+  image?: string;
+  construction_status?: string;
+  construction_type?: string;
+  property_type?: string;
+  bhk?: number;
+  verified?: number;
+  area_sqft?: number;
+  created_at?: string;
+  price?: string | number;
+  location?: string;
+  description?: string;
+}
+
 export const fetchProperties = async (townshipId: number, query: string = ""): Promise<Property[]> => {
   try {
     const baseUrl = `${ApiConstants.API_BASE_URL}${ApiEndPoints.TOWNSHIP_PROPERTIES_FULL(townshipId)}`;
@@ -10,7 +26,7 @@ export const fetchProperties = async (townshipId: number, query: string = ""): P
       headers: ApiConstants.HEADERS 
     });
     const data = await res.json();
-    return (data.data?.properties || []).map((item: Record<string, unknown>) => ({
+    return (data.data?.properties || []).map((item: ApiPropertyItem) => ({
       property_id: item.property_id,
       title: item.title || "",
       image: item.image || "",
@@ -21,7 +37,7 @@ export const fetchProperties = async (townshipId: number, query: string = ""): P
       verified: item.verified || 0,
       area_sqft: item.area_sqft || 0,
       created_at: item.created_at || "",
-      price: parseFloat(item.price) || 0,
+      price: parseFloat(String(item.price)) || 0,
       location: item.location || "",
       description: item.description || "",
     }));
@@ -34,7 +50,7 @@ export const fetchProperties = async (townshipId: number, query: string = ""): P
 export const buildQueryString = (filters: Record<string, string>): string => {
   const params = new URLSearchParams();
   Object.entries(filters).forEach(([key, value]) => {
-    if (value) params.append(key, value as string);
+    if (value) params.append(key, String(value));
   });
   return params.toString();
 };

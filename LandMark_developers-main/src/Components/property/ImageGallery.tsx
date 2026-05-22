@@ -44,7 +44,7 @@ const fetchImageAsBlob = async (url: string): Promise<Blob | null> => {
 const shareProperty = async (
   imgUrl: string, title: string, link: string, showToast: () => void
 ): Promise<void> => {
-  const fullShareText = `Hi there, \u{1F44B} \nCheck out this beautiful property which I have found on Housing. Could you take a quick look and connect if interested?: ${title}\n${link}`;
+  const fullShareText = `Hi there, \u{1F44B}\nCheck out this beautiful property which I have found on LandMaark. Could you take a quick look and connect if interested?: ${title}\n${link}`;
   try {
     if (navigator.share) {
       if (imgUrl) {
@@ -67,7 +67,7 @@ const shareProperty = async (
           }
         } catch (shareError) { console.warn('Sharing with image file failed:', shareError); }
       }
-      await navigator.share({ title, text: `\u{1F3E0} Check out this property: ${title}`, url: link });
+      await navigator.share({ title, text: fullShareText });
       return;
     }
     await navigator.clipboard.writeText(fullShareText);

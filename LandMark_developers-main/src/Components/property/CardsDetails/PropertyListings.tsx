@@ -7,6 +7,22 @@ import { Property, ApiProperty, ApiResponse } from './PropertyListingsHelpers';
 import { normalizeData } from './PropertyListingsHelpers';
 import PropertyListingsTable from './PropertyListingsTable';
 
+interface PdfJsPage {
+  getViewport: (options: { scale: number }) => { width: number; height: number };
+  render: (options: { canvasContext: CanvasRenderingContext2D; viewport: { width: number; height: number } }) => { promise: Promise<void> };
+}
+
+interface PdfJsDocument {
+  getPage: (pageNum: number) => Promise<PdfJsPage>;
+}
+
+interface PdfJsLib {
+  GlobalWorkerOptions?: { workerSrc: string };
+  getDocument: (options: { url: string; headers: Record<string, string> }) => {
+    promise: Promise<PdfJsDocument>;
+  };
+}
+
 interface PropertyListingsProps {
   initialData?: unknown[];
   townshipId?: string | number;
@@ -57,7 +73,7 @@ const PropertyListings: React.FC<PropertyListingsProps> = ({ initialData, townsh
     const filtered = plotData.filter((_, i) =>
       matchesFilter(kvs[i], 'Sub Township', empty) && matchesFilter(kvs[i], 'Project Area', empty) && matchesFilter(kvs[i], 'Configuration', empty) && matchesFilter(kvs[i], 'Construction Status', empty)
     );
-    if (empty === 'size-asc') filtered.sort((a, b) => (parseFloat(String(a.size).replace(/[^0-9.]/g, '')) || 0) - (parseFloat(String(b.size).replace(/[^0-9.]/g, '')) || 0));
+    if ((empty as string) === 'size-asc') filtered.sort((a, b) => (parseFloat(String(a.size).replace(/[^0-9.]/g, '')) || 0) - (parseFloat(String(b.size).replace(/[^0-9.]/g, '')) || 0));
     setFilteredData(filtered);
   };
 
@@ -70,27 +86,30 @@ const PropertyListings: React.FC<PropertyListingsProps> = ({ initialData, townsh
   useEffect(() => {
     if (pdfState.data.length === 0) return;
     const loadPdfThumbnails = async () => {
-      const win = window as unknown as Record<string, unknown>;
+      const win = window as unknown as Record<string, PdfJsLib | undefined>;
       if (!win.pdfjsLib) {
         const script = document.createElement('script');
         script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js';
         script.async = true;
         script.onload = () => {
-          const p = (window as unknown as Record<string, Record<string, unknown>>).pdfjsLib as Record<string, unknown>;
-          if (p && typeof p.GlobalWorkerOptions === 'object') (p.GlobalWorkerOptions as Record<string, string>).workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+          const p = (window as unknown as Record<string, PdfJsLib | undefined>).pdfjsLib;
+          if (p && p.GlobalWorkerOptions) {
+            p.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+          }
           renderAllPdfsThumbnails();
         };
         document.head.appendChild(script);
       } else { renderAllPdfsThumbnails(); }
     };
     const renderAllPdfsThumbnails = async () => {
-      const pdfjs = (window as unknown as Record<string, unknown>).pdfjsLib;
+      const pdfjs = (window as unknown as Record<string, PdfJsLib | undefined>).pdfjsLib;
       if (!pdfjs) return;
       pdfState.data.forEach(async (pdfItem) => {
         const pdfUrl = pdfItem.url || pdfItem.file_path;
         if (!pdfUrl) return;
         try {
-          const page = await (await (await pdfjs.getDocument({ url: pdfUrl, headers: { 'ngrok-skip-browser-warning': 'true' } }).promise).getPage(1));
+          const doc = await pdfjs.getDocument({ url: pdfUrl, headers: { 'ngrok-skip-browser-warning': 'true' } }).promise;
+          const page = await doc.getPage(1);
           const viewport = page.getViewport({ scale: 0.5 });
           const canvas = document.createElement('canvas');
           const context = canvas.getContext('2d');

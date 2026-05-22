@@ -1,5 +1,6 @@
 import React from "react";
 import { Section9Type } from "../../store/HomePage/section9Card";
+import LazyImage from "../LazyImage/LazyImage";
 import "./section9Card.css";
 
 interface Props {
@@ -11,11 +12,10 @@ const Section9Card: React.FC<Props> = ({ item }) => {
     <div className="sec9-card">
       {/* Image */}
       <div className="sec9-card-img-wrapper">
-        <img
+        <LazyImage
           src={item.image}
           alt={item.title}
           className="sec9-card-img"
-          loading="lazy"
         />
       </div>
 

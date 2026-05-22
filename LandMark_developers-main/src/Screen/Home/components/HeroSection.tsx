@@ -26,6 +26,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ hero }) => {
             alt={slide.title}
             className={`hero-bg-img ${idx === heroIndex ? "active" : ""}`}
             loading="lazy"
+            decoding={idx === 0 ? "sync" : "async"}
+            fetchPriority={idx === 0 ? "high" : "low"}
           />
         ))}
         <div className="hero-overlay" />

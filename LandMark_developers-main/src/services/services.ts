@@ -28,6 +28,7 @@ export interface CityProperty {
     place_name: string;
     place_category: string;
     distance_meters: string;
+    iconUrl?: string;
   }>;
   specifications: Record<string, string>;
   overview: Record<string, string>;
@@ -60,6 +61,20 @@ construction_type?:string;  property_type?: string;
   video?: string[];
   pdf?: string[];
   additionalDetails?: Array<{ key: string; value: string }>;
+
+  // Overview Images from API
+  area_unit_image?: string;
+  avg_price_image?: string;
+  configurations_image?: string;
+  land_area_image?: string;
+  launch_date_image?: string;
+  possession_starts_image?: string;
+  project_area_image?: string;
+  property_count_image?: string;
+  rera_id_image?: string;
+  total_units_image?: string;
+  sizes_image?: string;
+  city_image?: string;
 }
 
 // Interface for property images from API

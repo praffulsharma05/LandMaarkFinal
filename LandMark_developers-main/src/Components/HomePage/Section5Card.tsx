@@ -1,6 +1,7 @@
 import React from "react";
 import { MapPin } from "lucide-react";
 import { Cards } from "../../store/HomePage/Section5Card";
+import LazyImage from "../LazyImage/LazyImage";
 import "./Section5Card.css";
 
 interface PropertyCardProps {
@@ -10,11 +11,11 @@ interface PropertyCardProps {
 const Section5Card: React.FC<PropertyCardProps> = ({ property }) => {
   return (
     <div className="section5-card">
-      <img
+      <LazyImage
         src={property.image}
         alt={property.title}
         className="section5-card-img"
-        loading="lazy"
+        wrapperClassName="section5-img-lazy"
       />
 
       <div className="section5-card-content">

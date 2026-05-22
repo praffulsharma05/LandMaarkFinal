@@ -594,7 +594,7 @@ const customRulesPlugin = {
 // --- ESLint Flat Config Array ---
 
 export default defineConfig([
-  globalIgnores(['dist', 'node_modules', 'build']),
+  globalIgnores(['dist', 'node_modules', 'build', 'scratch', 'dev-dist']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -635,7 +635,7 @@ export default defineConfig([
   {
     // Override: Check hex/rgb/rgba hardcoded colors strictly outside theme definitions
     files: ['**/*.{ts,tsx}'],
-    ignores: ['src/styles/colors.ts', 'src/styles/colors.tsx'],
+    ignores: ['src/styles/colors.ts', 'src/styles/colors.tsx', 'vite.config.ts'],
     rules: {
       'no-restricted-syntax': [
         'error',

@@ -9,9 +9,7 @@ interface InvestSectionProps {
   };
 }
 
-export const InvestSection: React.FC<InvestSectionProps> = ({
-  section9,
-}) => {
+export const InvestSection: React.FC<InvestSectionProps> = ({ section9 }) => {
   const title = section9.title || "";
   const items = section9.items || [];
 
@@ -19,7 +17,6 @@ export const InvestSection: React.FC<InvestSectionProps> = ({
     <section className="home-section-9">
       <div className="section-9-inner">
         <div className="section-9-title">{title}</div>
-
         <div className="section-9-grid">
           {items.map((item) => (
             <Section9Card key={item.id} item={item} />

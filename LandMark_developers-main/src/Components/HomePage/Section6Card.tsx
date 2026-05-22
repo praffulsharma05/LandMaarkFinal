@@ -1,5 +1,6 @@
 import React from "react";
 import { Section6Type } from "../../store/HomePage/Section6Card";
+import LazyImage from "../LazyImage/LazyImage";
 import "./Section6Card.css";
 
 interface Props {
@@ -13,11 +14,10 @@ const Section6Card: React.FC<Props> = ({ item, isActive }) => {
       {/* Wrapper must be relative */}
       <div className="sec6-image-wrapper">
         {/* Image */}
-        <img
+        <LazyImage
           src={item.image}
           alt={item.title}
           className="sec6-card-img"
-          loading="lazy"
         />
 
         {/* Dark Overlay */}

@@ -1,5 +1,6 @@
 import React from "react";
 import { Section7Type } from "../../store/HomePage/section7Card";
+import LazyImage from "../LazyImage/LazyImage";
 import "./Section7Card.css";
 
 interface Props {
@@ -10,11 +11,11 @@ const Section7Card: React.FC<Props> = ({ item }) => {
   return (
     <div className="sec7-card">
       {/* Image */}
-      <img
+      <LazyImage
         src={item.image}
         alt={item.title}
         className="sec7-card-img"
-        loading="lazy"
+        wrapperClassName="sec7-lazy-wrapper"
       />
 
       {/* Gradient Overlay */}

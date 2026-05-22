@@ -1,16 +1,16 @@
 import React from "react";
 import { Section3Item } from "../../store/HomePage/Section3";
+import LazyImage from "../LazyImage/LazyImage";
 import "./Section2Card.css";
 
 const Section3Card: React.FC<Section3Item> = ({ image, title, price }) => {
   return (
     <div className="section2-card">
       <div className="section2-card-img-wrapper">
-        <img
+        <LazyImage
           src={image}
           alt={title}
           className="section2-card-img"
-          loading="lazy"
         />
       </div>
 

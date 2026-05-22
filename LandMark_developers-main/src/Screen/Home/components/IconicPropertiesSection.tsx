@@ -30,10 +30,9 @@ export const IconicPropertiesSection: React.FC<IconicPropertiesSectionProps> = (
             <Section5Card key={item.id} property={item} />
           ))}
         </div>
+
         <p className="section-5-footer-text">{footerText}</p>
-        <div className="section-5-btn-wrapper">
-      
-        </div>
+        <div className="section-5-btn-wrapper" />
       </div>
     </section>
   );

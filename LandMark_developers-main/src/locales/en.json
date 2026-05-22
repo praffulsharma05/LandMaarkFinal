@@ -46,7 +46,7 @@
   },
   "township": {
     "shareTownship": "Share Township",
-    "shareTextIntro": "Hi there, 👋 \nCheck out this beautiful property which I have found on Housing. Could you take a quick look and connect if interested?",
+    "shareTextIntro": "Hi there, 👋 \nCheck out this beautiful property which I have found on LandMaark. Could you take a quick look and connect if interested?",
     "shareTextLink": "Link",
     "shareTextPreview": "Preview Image",
     "property": "Property",
@@ -105,7 +105,7 @@
       "namePlaceholder": "Name",
       "phonePlaceholder": "Phone",
       "emailPlaceholder": "Email",
-      "agreeContact": "I agree to be contacted by Housing and agents via WhatsApp, SMS, phone, email etc",
+      "agreeContact": "I agree to be contacted by LandMaark and agents via WhatsApp, SMS, phone, email etc",
       "interestedHomeLoans": "I am interested in Home Loans",
       "getContactDetails": "Get Contact Details",
       "byProceeding": "By proceeding, you consent to receive calls and texts at the number you provided."

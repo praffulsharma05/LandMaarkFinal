@@ -7,9 +7,16 @@
   cursor: pointer;
 }
 
-.sec7-card-img {
+/* LazyImage wrapper — matches card image height */
+.sec7-lazy-wrapper {
   width: 100%;
   height: 420px;
+  display: block;
+}
+
+.sec7-card-img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   transition: transform 0.7s ease;
 }

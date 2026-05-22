@@ -79,7 +79,7 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({ isOpen, onClose, 
     }
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
       document.body.classList.remove('gallery-modal-open');
     };
   }, [isOpen, handleKeyDown]);
