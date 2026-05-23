@@ -1,128 +1,67 @@
-import React, { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import React from "react";
+import { X, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "../../hooks/useTranslation";
+import { navLinks } from "./NavbarHelper";
+import { useNavbar } from "./useNavbar";
+import "./Navbar.css";
 
 const Navbar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const navLinks = [
-    { name: "Home", path: "/" },
-     
-    { name: "Property", path: "/search" },
-    // { name: "", path: "/Wishlist" },
-    { name: "Township", path: "/Township" },
-    { name: "About", path: "/About" },
-    { name: "Contact", path: "/contactUs" },
-  ];
+  const { t } = useTranslation();
+  const { isOpen, scrolled, location, pageTitle, handleMobileToggle, handleCloseMobile, handleGoBack } = useNavbar();
+  const isHome = location.pathname === "/";
 
   return (
     <>
-      {/* Navbar */}
-      <header
-        className={`fixed top-0 left-0 opacity-85 w-full z-9999 transition-all duration-500
-  ${
-    scrolled
-      ? "bg-black/90 backdrop-blur-md py-2"
-      : "bg-linear-to-r from-black/80 to-black/60 py-3"
-  }`}
-      >
-        <div className="max-w-8xl mx-auto px-6 flex items-center justify-between">
-          
+      <header className={`navbar-header ${scrolled ? "scrolled" : "not-scrolled"}`}>
+        <div className="navbar-container">
+          <div className="navbar-flex">
+            <div className={`nav-left-slot ${!isHome ? "with-back-btn" : ""}`}>
+              {location.pathname !== "/" ? (
+                <button onClick={handleGoBack} className="nav-back-btn" aria-label={t("navbar.goBack")}><ArrowLeft size={16} strokeWidth={1.5} className="back-icon-svg" /></button>
+              ) : (
+                <Link to="/" className="logo-text-link">{t("navbar.homeLink")}</Link>
+              )}
+            </div>
 
-          <Link to="/" className="flex items-center  gap-2">
-            <img
-            src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=scale-down,q=100/YNqMEWZ1PXT9OR5G/untitled-removebg-preview---edited-ad0zeWFJjhv7eqm2.png"
-              alt="Real Estate"
-              className="h-20 object-contain"
-            />
-          </Link>
- 
-          {/* Desktop Menu */}
-          <nav className="hidden lg:flex items-center gap-4 text-sm tracking-widest">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={`relative text-gray-300 hover:text-white transition duration-300 pb-2 ${
-                  location.pathname === link.path ? "text-white" : ""
-                }`}
-              >
-                {link.name}
+            <div className={`nav-center-slot ${!isHome ? "with-back-btn" : ""}`}>
+              {location.pathname !== "/" && <span className="page-title">{pageTitle()}</span>}
+            </div>
 
-                {/* Gold underline */}
-                <span
-                  className={`absolute left-0 bottom-0 h-0.5 bg-yellow-500 transition-all duration-300 ${
-                    location.pathname === link.path
-                      ? "w-full"
-                      : "w-0 group-hover:w-full"
-                  }`}
-                ></span>
-              </Link>
-            ))}
-          </nav>
+            <div className={`nav-right-slot ${!isHome ? "with-back-btn" : ""}`}>
+              <nav className="desktop-nav">
+                {navLinks.map((link) => (
+                  <Link key={link.key} to={link.path} className={`nav-link ${location.pathname === link.path ? "active" : ""}`}>
+                    {t(`navbar.${link.key}`)}
+                    <span className="nav-underline" />
+                  </Link>
+                ))}
+              </nav>
 
-          {/* Book Button */}
-
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden text-white"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+              <button className="mobile-menu-btn" onClick={handleMobileToggle} aria-label={isOpen ? t("navbar.closeMenu") : t("navbar.openMenu")} aria-expanded={isOpen}><div className={`hamburger-pill-icon ${isOpen ? 'open' : ''}`}><span className="hamburger-line line-1" /><span className="hamburger-line line-2" /><span className="hamburger-line line-3" /></div></button>
+            </div>
+          </div>
         </div>
       </header>
 
-      {/* Mobile Menu */}
-      <div
-        className={`fixed top-0 right-0 h-full w-80 bg-black shadow-2xl transform transition-transform duration-500 z-9998 ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex justify-between items-center px-6 h-20 border-b border-gray-800">
-          <span className="text-lg font-semibold text-white">Menu</span>
-
-          <button aria-label="Close menu" onClick={() => setIsOpen(false)}>
-            <X className="text-white" />
-          </button>
-        </div>
-
-        <div className="flex flex-col p-6 gap-5">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              onClick={() => setIsOpen(false)}
-              className="text-gray-300 hover:text-white text-lg"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Overlay */}
       {isOpen && (
-        <div
-          role="button"
-          tabIndex={0}
-          className="fixed inset-0 bg-black/60 z-9997"
-          onClick={() => setIsOpen(false)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") setIsOpen(false);
-          }}
-        ></div>
+        <>
+          <div className="mobile-overlay" onClick={handleCloseMobile} aria-hidden="true" />
+          <div className="mobile-drawer">
+            <div className="drawer-header">
+              <span className="drawer-title">{t("navbar.menu")}</span>
+              <button onClick={handleCloseMobile} className="drawer-close-btn" aria-label={t("navbar.closeMenu")}><X size={24} /></button>
+            </div>
+            <nav className="drawer-nav">
+              {navLinks.map((link, index) => (
+                <Link key={link.key} to={link.path} onClick={handleCloseMobile} className={`drawer-link drawer-link-animated drawer-link-${index} ${location.pathname === link.path ? "active" : ""}`}>
+                  {t(`navbar.${link.key}`)}
+                  <span className="drawer-underline" />
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </>
       )}
     </>
   );

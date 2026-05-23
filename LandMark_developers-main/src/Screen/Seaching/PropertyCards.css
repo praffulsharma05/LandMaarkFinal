@@ -85,3 +85,38 @@
   font-size: 14px;
   color: #333;
 }
+
+.property-search-container {
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 96px;
+  padding-bottom: 48px;
+}
+
+.property-search-loading {
+  padding-top: 80px;
+}
+
+.property-search-image {
+  height: 256px;
+}
+
+.property-search-image-skeleton {
+  height: 256px;
+}
+
+.property-search-width-skeleton {
+  width: 256px;
+}
+
+.property-search-width-small-skeleton {
+  width: 128px;
+}
+
+.property-cards-header {
+  padding-top: 80px;
+}
+
+.property-card-image-container {
+  height: 256px;
+}

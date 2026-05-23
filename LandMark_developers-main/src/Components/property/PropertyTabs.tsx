@@ -1,12 +1,9 @@
- 
-import React from 'react';
-import { 
-  Bed, Bath, Square, Calendar, Star, Check, X, TrendingDown, 
-  MapPin, Building2, Home, Ruler, Car, Trees, Wifi, Dumbbell,
-  Waves, Shield, Zap, ArrowUpDown, ParkingCircle
-} from 'lucide-react';
+import React, { useEffect, useRef, useCallback } from 'react';
+import { TrendingDown } from 'lucide-react';
 import { CityProperty } from '../../services/services';
- 
+import { useTranslation } from '../../hooks/useTranslation';
+import './PropertyTabs.css';
+
 interface PropertyTabsProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -14,321 +11,115 @@ interface PropertyTabsProps {
   property: CityProperty;
   pricePerSqft: number;
 }
- 
-const PropertyTabs: React.FC<PropertyTabsProps> = ({ 
-  activeTab, 
-  setActiveTab, 
-  tabs, 
-  property,
-  pricePerSqft 
-}) => {
+
+const PropertyTabs: React.FC<PropertyTabsProps> = ({ activeTab, setActiveTab, tabs, property, pricePerSqft }) => {
+  const { t } = useTranslation();
+  const navRef = useRef<HTMLDivElement>(null);
+  const handleTabClick = useCallback((tabId: string) => {
+    if (tabId === 'amenities' || tabId === 'specs') {
+      const targetId = tabId === 'amenities' ? 'amenities-section' : 'specifications-section';
+      const element = document.getElementById(targetId);
+      if (element) {
+        const offset = 100;
+        window.scrollTo({ top: element.getBoundingClientRect().top + window.pageYOffset - offset, behavior: 'smooth' });
+      }
+    }
+    setActiveTab(tabId);
+  }, [setActiveTab]);
+
+  const handleTabClickWithId = useCallback((tabId: string) => () => handleTabClick(tabId), [handleTabClick]);
+
+  useEffect(() => {
+    if (activeTab !== 'overview' && activeTab !== 'amenities' && activeTab !== 'specs' && navRef.current) {
+      setTimeout(() => {
+        const offset = 100;
+        window.scrollTo({ top: navRef.current!.getBoundingClientRect().top + window.pageYOffset - offset, behavior: 'smooth' });
+      }, 100);
+    }
+  }, [activeTab]);
+
   const renderTabContent = () => {
     switch (activeTab) {
-      case 'overview':
-        return (
-          <div>
-            <h2 className="text-xl text-left font-semibold mb-6">
-              <span className="border-b-2 border-gray-300 text-left pb-1 inline-block w-1/4">
-                Property Overview
-              </span>
-            </h2>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
-                  <Bed className="w-5 h-5 text-gray-600" />
-                  <p className="text-sm text-gray-500">Bedrooms</p>
-                </div>
-                <p className="font-semibold">{property.bhk} BedRoom</p>
-              </div>
-              
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
-                  <Bath className="w-5 h-5 text-gray-600" />
-                  <p className="text-sm text-gray-500">Bathrooms</p>
-                </div>
-                <p className="font-semibold">{property.bhk }</p>
-              </div>
-              
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
-                  <Square className="w-5 h-5 text-gray-600" />
-                  <p className="text-sm text-gray-500">Area</p>
-                </div>
-                <p className="font-semibold">{property.area_sqft?.toLocaleString()} sq.ft</p>
-              </div>
-              
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
-                  <Calendar className="w-5 h-5 text-gray-600" />
-                  <p className="text-sm text-gray-500">Possession</p>
-                </div>
-                <p className="font-semibold">{property.construction_status }</p>
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <p className="text-gray-700">{property.description}</p>
-            </div>
-
-            <div className="mt-6 border-t pt-6">
-              <h2 className="text-xl text-left font-semibold mb-6">
-                <span className="border-b-2 border-gray-300 text-left pb-1 inline-block w-1/4">
-                  Additional Details
-                </span>
-              </h2>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-500">Parking</p>
-                  <p className="font-medium">
-                    {property.amenities.some(a => a.amenity_name === 'Parking') ? 'Available' : 'Not Available'}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Balcony</p>
-                  <p className="font-medium">{property.specifications?.Balcony || 'Not Specified'}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Property Type</p>
-                  <p className="font-medium">{property.propertyType}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Verified</p>
-                  <p className="font-medium text-green-600">{property.verified ? 'Yes' : 'No'}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'amenities':
-        return (
-          <div>
-            <h2 className="text-xl font-semibold mb-6">Amenities</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {property.amenities.map((amenity, idx) => (
-                <div key={idx} className="flex items-center p-3 bg-gray-50 rounded-lg">
-                  {getAmenityIconComponent(amenity.amenity_name)}
-                  <span className="font-medium ml-3">{amenity.amenity_name}</span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 p-4 bg-green-50 rounded-lg">
-              <p className="text-green-700 flex items-center">
-                <Check className="w-5 h-5 mr-2" />
-                Water harvesting facility available
-              </p>
-            </div>
-          </div>
-        );
-
       case 'locality':
         return (
-          <div>
+          <>
             <div className="flex justify-between items-start mb-4">
-              <h2 className="text-xl font-semibold">{property.location} Locality</h2>
-              <div className="flex items-center bg-green-50 px-3 py-1 rounded-full">
-                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                <span className="ml-1 font-semibold">4.2</span>
-              </div>
+              <h1 className="section-title"><span className="title-underline">{property.location} {t('property.tabs.locality')}</span></h1>
             </div>
-
             <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <p className="text-2xl font-bold text-gray-800">{property.places?.length || 15}</p>
-                <p className="text-sm text-gray-600">Nearby Places</p>
-              </div>
-              <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <p className="text-2xl font-bold text-gray-800">5</p>
-                <p className="text-sm text-gray-600">Schools</p>
-              </div>
-              <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <p className="text-2xl font-bold text-gray-800">3</p>
-                <p className="text-sm text-gray-600">Hospitals</p>
+                <p className="text-2xl font-bold text-gray-800">{property.places?.length || 0}</p>
+                <p className="text-sm text-gray-600">{t('property.tabs.places')}</p>
               </div>
             </div>
-
             {property.places && property.places.length > 0 && (
               <div className="mb-6">
-                <h3 className="font-semibold mb-3">Nearby Places</h3>
+                <h2 className="font-semibold mb-3">{t('property.tabs.nearbyPlaces')}</h2>
                 <div className="space-y-2">
                   {property.places.slice(0, 5).map((place, idx) => (
                     <div key={idx} className="flex justify-between items-center p-2 bg-gray-50 rounded">
                       <span className="text-gray-700">{place.place_name}</span>
                       <span className="text-sm text-blue-600">
-                        {(parseFloat(place.distance_meters) / 1000).toFixed(1)} km
+                        {String(place.distance_meters).toLowerCase().includes('km') ? place.distance_meters : `${(parseFloat(place.distance_meters) / 1000).toFixed(1)} km`}
                       </span>
                     </div>
                   ))}
                 </div>
               </div>
             )}
-
-            <div className="space-y-6">
-              <div>
-                <h3 className="font-semibold mb-3 flex items-center">
-                  <Check className="w-5 h-5 text-green-600 mr-2" />
-                  Good Things Here
-                </h3>
-                <ul className="space-y-2">
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">•</span>
-                    <span className="text-gray-700">Well-connected to major roads</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">•</span>
-                    <span className="text-gray-700">Nearby schools and hospitals</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">•</span>
-                    <span className="text-gray-700">Good neighborhood</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="font-semibold mb-3 flex items-center">
-                  <X className="w-5 h-5 text-red-600 mr-2" />
-                  Things that need improvement
-                </h3>
-                <ul className="space-y-2">
-                  <li className="flex items-start">
-                    <span className="text-red-500 mr-2">•</span>
-                    <span className="text-gray-700">Traffic during peak hours</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-red-500 mr-2">•</span>
-                    <span className="text-gray-700">Limited public transport options</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          </>
         );
-
       case 'pricing':
         return (
-          <div>
-            <h2 className="text-xl font-semibold mb-6">Price Trends</h2>
-            
+          <>
+            <h1 className="section-title"><span className="title-underline">{t('property.tabs.priceTrends')}</span></h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div className="bg-red-50 p-4 rounded-lg">
                 <div className="flex items-center mb-2">
-                  <TrendingDown className="w-5 h-5 text-red-600 mr-2" />
-                  <span className="text-red-600 font-semibold">2.5%</span>
+                  <TrendingDown className="w-5 h-5 text-red-600 mr-2" /><span className="text-red-600 font-semibold">2.5%</span>
                 </div>
-                <p className="text-sm text-gray-600">depreciation in avg. price/sq.ft for {property.title}</p>
-                <p className="text-xs text-gray-500 mt-2">Last 1 year</p>
-                <p className="text-lg font-bold mt-2">₹{pricePerSqft.toLocaleString()}/sq.ft</p>
+                <p className="text-sm text-gray-600">{t('property.tabs.depreciation')} {property.title}</p>
+                <p className="text-xs text-gray-500 mt-2">{t('property.tabs.last1Year')}</p>
+                <p className="text-lg font-bold mt-2">₹{pricePerSqft.toLocaleString()}{t('property.tabs.sqFt')}</p>
               </div>
-
               <div className="bg-red-50 p-4 rounded-lg">
                 <div className="flex items-center mb-2">
-                  <TrendingDown className="w-5 h-5 text-red-600 mr-2" />
-                  <span className="text-red-600 font-semibold">3.2%</span>
+                  <TrendingDown className="w-5 h-5 text-red-600 mr-2" /><span className="text-red-600 font-semibold">3.2%</span>
                 </div>
-                <p className="text-sm text-gray-600">depreciation in avg. price/sq.ft for {property.location}</p>
-                <p className="text-xs text-gray-500 mt-2">Last 1 year</p>
-                <p className="text-lg font-bold mt-2">₹{Math.round(pricePerSqft * 0.95).toLocaleString()}/sq.ft</p>
+                <p className="text-sm text-gray-600">{t('property.tabs.depreciation')} {property.location}</p>
+                <p className="text-xs text-gray-500 mt-2">{t('property.tabs.last1Year')}</p>
+                <p className="text-lg font-bold mt-2">₹{Math.round(pricePerSqft * 0.95).toLocaleString()}{t('property.tabs.sqFt')}</p>
               </div>
             </div>
-
             <div className="border-t pt-6">
-              <h3 className="font-semibold mb-4">Price Details</h3>
+              <h2 className="font-semibold mb-4">{t('property.tabs.priceDetails')}</h2>
               <div className="space-y-3">
                 <div className="flex justify-between py-2 border-b">
-                  <span className="text-gray-600">Base Price</span>
-                  <span className="font-semibold">{property.price}</span>
+                  <span className="text-gray-600">{t('property.tabs.basePrice')}</span><span className="font-semibold">{property.price}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b">
-                  <span className="text-gray-600">Price per sq.ft</span>
-                  <span className="font-semibold">₹{pricePerSqft.toLocaleString()}</span>
+                  <span className="text-gray-600">{t('property.tabs.pricePerSqft')}</span><span className="font-semibold">₹{pricePerSqft.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b">
-                  <span className="text-gray-600">Total Area</span>
-                  <span className="font-semibold">{property.area_sqft?.toLocaleString()} sq.ft</span>
+                  <span className="text-gray-600">{t('property.tabs.totalArea')}</span><span className="font-semibold">{property.area_sqft?.toLocaleString()} {t('property.tabs.sqFt')}</span>
                 </div>
                 <div className="flex justify-between py-2">
-                  <span className="text-gray-600">Estimated EMI</span>
-                  <span className="font-semibold text-blue-600">₹{(property.raw_price! / 200).toLocaleString()}/month</span>
+                  <span className="text-gray-600">{t('property.tabs.estimatedEMI')}</span><span className="font-semibold text-blue-600">₹{(property.raw_price! / 200).toLocaleString()}{t('property.tabs.perMonth')}</span>
                 </div>
               </div>
             </div>
-          </div>
+          </>
         );
-
       case 'floorplans':
         return (
-          <div>
-            <h2 className="text-xl font-semibold mb-6">Floor Plans</h2>
+          <>
+            <h1 className="section-title"><span className="title-underline">{t('property.tabs.floorPlans')}</span></h1>
             <div className="text-center p-8 bg-gray-100 rounded-lg">
-              <p className="text-gray-500">Floor plans coming soon for {property.bhk} BHK configuration</p>
-              <p className="text-sm text-gray-400 mt-2">Contact us for detailed floor plans</p>
+              <p className="text-gray-500">{t('property.tabs.floorPlansComing')} {property.bhk} {t('property.tabs.bhkConfiguration')}</p>
+              <p className="text-sm text-gray-400 mt-2">{t('property.tabs.contactForFloorPlans')}</p>
             </div>
-          </div>
+          </>
         );
-
-      case 'reviews':
-        return (
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold">Resident Reviews</h2>
-              <div className="flex items-center">
-                <div className="flex items-center mr-4">
-                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                  <span className="ml-1 font-bold">4.2</span>
-                  <span className="text-gray-500 ml-1">/5</span>
-                </div>
-                <span className="text-gray-500">(12 reviews)</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-600">Connectivity</p>
-                <div className="flex items-center">
-                  <span className="text-2xl font-bold mr-2">4.0</span>
-                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                </div>
-              </div>
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-600">Neighborhood</p>
-                <div className="flex items-center">
-                  <span className="text-2xl font-bold mr-2">4.3</span>
-                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                </div>
-              </div>
-            </div>
-
-            <div className="border rounded-lg p-4">
-              <div className="flex justify-between items-start mb-3">
-                <div>
-                  <p className="font-semibold">Rahul Sharma</p>
-                  <p className="text-sm text-gray-500">Homeowner • 2 months ago</p>
-                </div>
-                <div className="flex items-center bg-green-50 px-2 py-1 rounded">
-                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                  <span className="ml-1 text-sm font-semibold">4.5</span>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm">
-                  <span className="font-medium text-green-600">Good: </span>
-                  Great location, peaceful neighborhood, good construction quality
-                </p>
-                <p className="text-sm">
-                  <span className="font-medium text-red-600">Needs improvement: </span>
-                  Parking space could be better
-                </p>
-              </div>
-            </div>
-
-            <button className="w-full mt-4 text-blue-600 font-medium hover:text-blue-800">
-              View All Reviews →
-            </button>
-          </div>
-        );
-
       default:
         return null;
     }
@@ -336,48 +127,20 @@ const PropertyTabs: React.FC<PropertyTabsProps> = ({
 
   return (
     <div>
-      {/* Tabs Navigation */}
-      <div className="border-b border-gray-200 mb-6 overflow-x-auto">
-        <nav className="flex space-x-8">
+      <div ref={navRef} className="tabs-nav-container">
+        <nav className="tabs-nav">
           {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                activeTab === tab.id
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
+            <button key={tab.id} onClick={handleTabClickWithId(tab.id)} className={`tab-button ${activeTab === tab.id ? 'tab-button-active' : ''}`}>
               {tab.label}
             </button>
           ))}
         </nav>
       </div>
-
-      {/* Tab Content */}
-      <div className="bg-white rounded-xl p-6 shadow-sm">
-        {renderTabContent()}
-      </div>
+      {activeTab !== 'overview' && activeTab !== 'amenities' && activeTab !== 'specs' && (
+        <div className="tab-content-card">{renderTabContent()}</div>
+      )}
     </div>
   );
-};
-
-// Helper function to get icon component for amenities
-const getAmenityIconComponent = (amenityName: string) => {
-  const iconMap: Record<string, any> = {
-    'Gym': <Dumbbell className="w-5 h-5 text-blue-600" />,
-    'Parking': <ParkingCircle className="w-5 h-5 text-blue-600" />,
-    'Swimming pool': <Waves className="w-5 h-5 text-blue-600" />,
-    'Club House': <Building2 className="w-5 h-5 text-blue-600" />,
-    'Security': <Shield className="w-5 h-5 text-blue-600" />,
-    'Garden': <Trees className="w-5 h-5 text-blue-600" />,
-    'Children Play Area': <Trees className="w-5 h-5 text-blue-600" />,
-    'Power Backup': <Zap className="w-5 h-5 text-blue-600" />,
-    'Lift': <ArrowUpDown className="w-5 h-5 text-blue-600" />,
-  };
-  
-  return iconMap[amenityName] || <Home className="w-5 h-5 text-blue-600" />;
 };
 
 export default PropertyTabs;

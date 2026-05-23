@@ -1,4 +1,10 @@
 export const ApiConstants = {
-    //API_BASE_URL: "http://localhost:5000/"
-    API_BASE_URL:"https://jess-unbroadcasted-audrina.ngrok-free.dev/"
+    API_BASE_URL: "https://wildfire-ample-justifier.ngrok-free.dev/",
+    UNKNOWN: "unknown",
+    HEADERS: {
+        'Cache-Control': 'no-cache',
+        'Accept': '*/*',
+        'ngrok-skip-browser-warning': 'true',
+        'Content-Type': 'application/json',
+    }
 }

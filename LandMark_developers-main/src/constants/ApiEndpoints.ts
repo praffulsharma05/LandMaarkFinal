@@ -1,9 +1,14 @@
 // src/constants/ApiConstants.ts
- 
+
+
+
 
 export const ApiEndPoints = {
-    CITIES: 'api/cities',
-    PROPERTIES: 'api/properties',
     OPTIONS: 'api/options',
-    AI_SEARCH: 'api/propSearch/ai'
+    AI_SEARCH: 'api/propSearch/ai',
+    TOWNSHIPS: "api/townships",
+    HomePageData: 'api/homepage',
+    // TOWNSHIPS: 'api/township-list?type=compact',
+    TOWNSHIP_PROPERTIES: (id: number) => `api/townshipDetails?id=${id}`,
+    TOWNSHIP_PROPERTIES_FULL: (id: number) => `api/townshipDetails?id=${id}`,
 }

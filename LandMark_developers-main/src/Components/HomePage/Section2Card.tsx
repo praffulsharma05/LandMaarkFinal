@@ -1,23 +1,32 @@
 import React from "react";
 import { Section3Item } from "../../store/HomePage/Section3";
+import LazyImage from "../LazyImage/LazyImage";
+import "./Section2Card.css";
 
 const Section3Card: React.FC<Section3Item> = ({ image, title, price }) => {
   return (
-    <div className="text-center group cursor-pointer">
-      <div className="overflow-hidden">
-        <img
+    <div className="section2-card">
+      <div className="section2-card-img-wrapper">
+        <LazyImage
           src={image}
           alt={title}
-          className="w-full h-64 object-cover transition duration-500 group-hover:scale-105"
+          className="section2-card-img"
         />
       </div>
 
-      <h3 className="mt-6 text-xl tracking-[3px] font-serif text-teal-900">
-        {title}
-      </h3>
-
-     </div>
+      <div className="section2-card-content">
+        <h1 className="section2-card-title">
+          {title}
+        </h1>
+        {price && (
+          <p className="section2-card-price">
+            {price}
+          </p>
+        )}
+      </div>
+    </div>
   );
 };
 
 export default Section3Card;
+

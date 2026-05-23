@@ -1,0 +1,13 @@
+.heart-icon {
+  width: 228px;
+  height: 228px;
+  stroke: #9ca3af;
+  fill: transparent;
+  transition: all 0.2s ease;
+}
+
+.heart-icon.selected {
+  stroke: #ef4444;
+  fill: #ef4444;
+  transform: scale(0.8);
+}

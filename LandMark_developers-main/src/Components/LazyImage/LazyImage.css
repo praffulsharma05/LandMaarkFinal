@@ -1,0 +1,75 @@
+/* =============================================
+   LazyImage — react-lazy-load-image-component
+   ============================================= */
+
+.lazy-img-wrapper {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  /* Exact cream match to html/body/home-container — zero flash */
+  background: #f5f2ec;
+}
+
+/* Library injects a <span> wrapper — make it fill the container */
+.lazy-lib-wrapper,
+.lazy-lib-wrapper span {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ── Image ────────────────────────────────────────────────────────── */
+.lazy-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lazy-img--loaded {
+  opacity: 1;
+}
+
+/* ── Blur-up effect (library classes) ─────────────────────────────── */
+.lazy-load-image-background {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.lazy-load-image-background.blur {
+  filter: blur(6px);
+}
+
+.lazy-load-image-background.blur.lazy-load-image-loaded {
+  filter: none;
+  transition: filter 0.35s ease;
+}
+
+.lazy-load-image-background.blur > img {
+  opacity: 0;
+}
+
+.lazy-load-image-background.blur.lazy-load-image-loaded > img {
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+/* ── Shimmer animation on the wrapper (shows only before image loads) */
+@keyframes shimmer-sweep {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.lazy-img-wrapper:not(:has(.lazy-load-image-loaded)):not(:has(.lazy-img--loaded)) {
+  background: linear-gradient(
+    90deg,
+    #e8e4dd 0%,
+    #f0ece5 40%,
+    #e8e4dd 80%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-sweep 1.6s ease-in-out infinite;
+}

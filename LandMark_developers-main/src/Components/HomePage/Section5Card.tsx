@@ -1,6 +1,8 @@
 import React from "react";
-import { MapPin, Hand } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { Cards } from "../../store/HomePage/Section5Card";
+import LazyImage from "../LazyImage/LazyImage";
+import "./Section5Card.css";
 
 interface PropertyCardProps {
   property: Cards;
@@ -8,31 +10,27 @@ interface PropertyCardProps {
 
 const Section5Card: React.FC<PropertyCardProps> = ({ property }) => {
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 hover:-translate-y-1">
-      <img
+    <div className="section5-card">
+      <LazyImage
         src={property.image}
         alt={property.title}
-        className="w-full h-56 object-cover"
+        className="section5-card-img"
+        wrapperClassName="section5-img-lazy"
       />
 
-      <div className="p-5 text-left">
-        <h3 className="text-base font-semibold text-[#1c3b2a] mb-2">
+      <div className="section5-card-content">
+        <h1 className="section5-card-title">
           {property.title}
-        </h3>
+        </h1>
 
-        <div className="flex items-center gap-2 text-gray-500 text-sm mb-4">
+        <div className="section5-card-location">
           <MapPin size={16} />
           <span>{property.location}</span>
         </div>
 
-        <p className="text-[#b38b3c] font-semibold mb-4">{property.price}</p>
+        <p className="section5-card-price">{property.price}</p>
 
-        <div className="border-t pt-4">
-          <button className="flex items-center gap-2 text-[#1c3b2a] font-semibold text-sm hover:text-[#b38b3c] transition">
-            <Hand size={16} />
-            ENQUIRE NOW
-          </button>
-        </div>
+
       </div>
     </div>
   );

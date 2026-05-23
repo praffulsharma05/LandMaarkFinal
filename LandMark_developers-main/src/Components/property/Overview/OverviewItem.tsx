@@ -1,23 +1,32 @@
 import React from 'react';
-import { LucideIcon } from 'lucide-react';
+import './OverviewItem.css';
 
 interface OverviewItemProps {
   label: string;
   value: string | number;
-  icon: LucideIcon;
+  icon?: React.ComponentType<{ className?: string }>;
+  imageSrc?: string;
   subText?: string;
 }
 
-const OverviewItem: React.FC<OverviewItemProps> = ({ label, value, icon: Icon, subText }) => {
+const OverviewItem: React.FC<OverviewItemProps> = ({ label, value, icon: Icon, imageSrc, subText }) => {
   return (
-    <div className="mt-1">
-      <p className="text-sm text-gray-500">{label}</p>
-      <div className="flex items-center gap-2 mt-1">
-        <Icon className="w-5 h-5 text-gray-400" />
-        <div>
-          <p className="text-lg text-gray-900 font-semibold">{value}</p>
-          {subText && <p className="text-xs text-gray-400">{subText}</p>}
+    <div className="overview-item-container">
+      {(Icon || imageSrc) && (
+        <div className="overview-icon-wrapper">
+          {imageSrc ? (
+            <img src={imageSrc} className="overview-icon" alt={label} loading="lazy" />
+          ) : (
+            Icon && <Icon className="overview-icon" />
+          )}
         </div>
+      )}
+      <div className="overview-text-content">
+        <p className="overview-label">{label}</p>
+        {value !== undefined && value !== '' && value !== null && (
+          <p className="overview-value">{value}</p>
+        )}
+        {subText && <p className="overview-subtext">{subText}</p>}
       </div>
     </div>
   );

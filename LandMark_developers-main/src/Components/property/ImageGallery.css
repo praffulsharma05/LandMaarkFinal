@@ -1,0 +1,421 @@
+/* ImageGallery.css */
+
+/* ===== Gallery Container ===== */
+.gallery-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .gallery-container {
+    grid-template-columns: 2fr 1fr;
+    gap: 0.75rem;
+    margin-top: 0;
+  }
+}
+
+/* ===== Main Image ===== */
+.main-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 330px;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 0;
+  background: #f7fafc;
+}
+
+@media (min-width: 768px) {
+  .main-image-wrapper {
+    height: 560px;
+    border-radius: 0;
+  }
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.main-image-wrapper:hover .main-image {
+  transform: scale(1.02);
+}
+
+@media (min-width: 768px) {
+
+  .main-image-wrapper::before,
+  .main-image-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2px);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .main-image-wrapper::before {
+    left: 0;
+  }
+
+  .main-image-wrapper::after {
+    right: 0;
+  }
+}
+
+/* ===== Desktop Overlays ===== */
+
+/* "Cover Image" label - top left on desktop */
+.cover-image-label {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  z-index: 5;
+}
+
+/* Desktop rectangular SHARE / SAVE buttons */
+.desktop-action-btns {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.desktop-share-btn,
+.desktop-save-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px 14px;
+  color: #1a202c;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.desktop-share-btn:hover,
+.desktop-save-btn:hover {
+  background: #f7fafc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== Mobile Overlays ===== */
+
+/* RERA capsule badge - mobile top-left */
+.rera-badge-capsule {
+  position: absolute;
+  top: 80px;
+  left: 16px;
+  background: white;
+  padding: 4px 10px 4px 4px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.rera-check-circle {
+  width: 20px;
+  height: 20px;
+  background: #22c55e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.rera-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #1a202c;
+  letter-spacing: 0.5px;
+}
+
+/* Back button */
+.back-button {
+  position: absolute;
+  top: 30px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s;
+  outline: none;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.back-button:focus {
+  outline: none;
+}
+
+/* Mobile circular action buttons */
+.prop-gallery-actions-unique {
+  position: absolute;
+  top: 70px;
+  right: 16px;
+  display: flex;
+  gap: 12px;
+  z-index: 100;
+}
+
+.prop-gallery-action-btn-unique {
+  width: 57px;
+  height: 57px;
+  border-radius: 50%;
+  background: white;
+  border: none;
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  color: #4a5568;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
+  z-index: 100;
+  outline: none;
+}
+
+.prop-gallery-action-btn-unique:focus {
+  outline: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.prop-gallery-action-btn-unique:hover {
+  background: #f7fafc;
+  transform: scale(1.05);
+}
+
+/* Mobile "Tap to see all images" */
+.tap-overlay {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  padding: 5px 10px;
+  border-radius: 14px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  pointer-events: none;
+  /* border: 1px solid rgba(255, 255, 255, 0.4); */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* Image count badge - bottom right */
+.image-count-badge {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 6px 12px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+/* ===== Desktop Sidebar ===== */
+.sidebar-images-desktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .sidebar-images-desktop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+.sidebar-img-container {
+  position: relative;
+  width: 100%;
+  height: 274px;
+  border-radius: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.sidebar-img-wrapper {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.sidebar-img-container:hover .sidebar-img-wrapper {
+  transform: scale(1.05);
+}
+
+/* Play overlay for video thumbnail */
+.play-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+}
+
+.sidebar-img-container:hover .play-overlay {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* "+X more" overlay */
+.view-more-wrapper {
+  position: relative;
+  height: 274px;
+  border-radius: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.view-more-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.view-more-wrapper:hover .view-more-img {
+  transform: scale(1.05);
+}
+
+.view-more-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-more-text {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 300;
+  text-align: center;
+  line-height: 1.4;
+  letter-spacing: 1px;
+}
+
+/* ===== Video / Photo Toggle Badges ===== */
+.media-toggle-badges {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 4px;
+  border-radius: 9999px;
+  z-index: 10;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.media-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.media-toggle-btn:hover {
+  color: #ffffff;
+}
+
+.media-toggle-btn.active {
+  color: #000000;
+  background: #fbbf24;
+  /* Signature gold color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Mobile Play Video Floating Badge ===== */
+.mobile-play-video-badge {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fbbf24;
+  /* Golden brand color */
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.mobile-play-video-badge:active {
+  transform: scale(0.95);
+  background: rgba(15, 23, 42, 0.95);
+}

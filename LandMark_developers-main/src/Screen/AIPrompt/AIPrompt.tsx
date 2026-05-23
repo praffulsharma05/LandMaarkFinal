@@ -1,14 +1,20 @@
- 
-import { useState } from "react";
+
+import { useState, useCallback } from "react";
 import "./AIPrompt.css";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "../../hooks/useTranslation";
 
 const AIPrompt = () => {
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const fetchData = async () => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  }, []);
+
+  const fetchData = useCallback(async () => {
     if (!query.trim()) {
       alert("Please enter something");
       return;
@@ -18,7 +24,7 @@ const AIPrompt = () => {
 
     try {
       const url = `/api/propSearch/ai?query=${encodeURIComponent(query)}`;
-      console.log("🤖 AI Search URL:", url);
+      console.warn("🤖 AI Search URL:", url);
 
       const res = await fetch(url, {
         method: 'GET',
@@ -32,7 +38,7 @@ const AIPrompt = () => {
       }
 
       const json = await res.json();
-      console.log("🤖 AI Response:", json);
+      console.warn("🤖 AI Response:", json);
 
       const result = json?.data || json;
 
@@ -42,20 +48,20 @@ const AIPrompt = () => {
       }
 
       const formattedData = (Array.isArray(result) ? result : [result]).map(
-        (item: any, index: number) => ({
-          property_id: item?.id || item?.property_id || index,
-          title: item?.title || item?.name || "No Title",
-          image: item?.image || "",
-          price: item?.price || item?.budget || "0",
-          location: item?.location || item?.city || "Unknown",
-          bhk: item?.bhk || 2,
-          property_type: item?.property_type || "Apartment",
-          construction_status: item?.status || item?.construction_status || "Ready",
-          area_sqft: item?.area || item?.area_sqft || 1000,
+        (item: unknown, index: number) => ({
+          property_id: (item as Record<string, unknown>)?.id || (item as Record<string, unknown>)?.property_id || index,
+          title: (item as Record<string, unknown>)?.title || (item as Record<string, unknown>)?.name || "No Title",
+          image: (item as Record<string, unknown>)?.image || "",
+          price: (item as Record<string, unknown>)?.price || (item as Record<string, unknown>)?.budget || "0",
+          location: (item as Record<string, unknown>)?.location || (item as Record<string, unknown>)?.city || "Unknown",
+          bhk: (item as Record<string, unknown>)?.bhk || 2,
+          property_type: (item as Record<string, unknown>)?.property_type || "Apartment",
+          construction_status: (item as Record<string, unknown>)?.status || (item as Record<string, unknown>)?.construction_status || "Ready",
+          area_sqft: (item as Record<string, unknown>)?.area || (item as Record<string, unknown>)?.area_sqft || 1000,
         })
       );
 
-      console.log("🤖 Formatted AI Results:", formattedData);
+      console.warn("🤖 Formatted AI Results:", formattedData);
 
       navigate("/search", {
         state: { aiResults: formattedData },
@@ -67,24 +73,30 @@ const AIPrompt = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [query, navigate]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      fetchData();
+    }
+  }, [fetchData]);
 
   return (
-    <div className="ai-floating-bar">
+    <div className="ai-floating-bar ai-floating-bar-hidden">
       <input
         className="ai-input"
         type="text"
-        placeholder="I want to buy 2bhk in Ajmer for around 1 crore"
+        placeholder={t("aiPrompt.searchPlaceholder")}
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && fetchData()}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
       />
       <button
         className="generate-btn"
         onClick={fetchData}
         disabled={loading}
       >
-        {loading ? "Loading..." : "Search"}
+        {loading ? t("common.loading") : "Search"}
       </button>
     </div>
   );

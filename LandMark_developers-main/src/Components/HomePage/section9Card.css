@@ -1,0 +1,43 @@
+/* section9Card.css */
+
+.sec9-card {
+  cursor: pointer;
+
+}
+
+
+.sec9-card-img-wrapper {
+  overflow: hidden;
+  border-radius: 23px;
+  height: 220px;
+  width: 100%;
+  display: block;
+}
+
+.sec9-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.sec9-card:hover .sec9-card-img {
+  transform: scale(1.1);
+}
+
+.sec9-card-content {
+  margin-top: 20px;
+}
+
+.sec9-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  color: #1c3b2a;
+}
+
+.sec9-card-desc {
+  color: #4b5563;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}

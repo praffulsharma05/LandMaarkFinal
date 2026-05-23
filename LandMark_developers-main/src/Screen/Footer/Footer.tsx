@@ -1,157 +1,84 @@
- 
-
 import React from "react";
-import {
-  Phone,
-  MapPin,
-  Mail,
-  Globe,
-  Facebook,
-  Twitter,
-  Instagram,
-  Youtube,
-  Linkedin,
-} from "lucide-react";
+import { Phone, MapPin, Globe } from "lucide-react";
+import { getSocialIcon } from "./FooterHelper";
+import { useFooter } from "./useFooter";
+import "./Footer.css";
+import { useTranslation } from "../../hooks/useTranslation";
 
-const Footer = () => {
-  const locations = [
-    
-    {
-      city: "Ajmer- LandMaark Properties",
-      address: "676H+2G2 -  Street New Salata, Doha, Qatar",
-      phone: "CALL NOW",
-    },
-    
-  ];
-
-  const agencies = [
-    ""
-  ];
-
-  const socialLinks = [
-    {
-      icon: Facebook,
-      href: "https://facebook.com/damacproperties",
-      label: "Facebook",
-    },
-    {
-      icon: Twitter,
-      href: "https://twitter.com/damacproperties",
-      label: "Twitter",
-    },
-    {
-      icon: Instagram,
-      href: "https://instagram.com/damacproperties",
-      label: "Instagram",
-    },
-    {
-      icon: Youtube,
-      href: "https://youtube.com/damacproperties",
-      label: "YouTube",
-    },
-    {
-      icon: Linkedin,
-      href: "https://linkedin.com/company/damac-properties",
-      label: "LinkedIn",
-    },
-  ];
+const Footer: React.FC = () => {
+  const { t } = useTranslation();
+  const { footerDetails, copyrightText } = useFooter();
 
   return (
-<footer className="bg-black text-white w-full h-full relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen pt-10 pb-0 px-4 md:px-36">
-      <div className="max-w-7xl mx-auto">
-        {/* DAMAC Logo with yellow accent */}
-        <div className="mb-10 relative">
-          <h1 className="text-4xl font-bold tracking-wider text-white">
-            LandMaark
-          </h1>
-         </div>
+    <footer className="footer-container">
+      <div className="footer-max-width">
+        <div className="footer-logo-section">
+          <h1 className="footer-title">{footerDetails.logoText}</h1>
+        </div>
 
-        {/* Locations Grid */}
-        
+        <div className="footer-divider">
+          <div className="footer-grid">
+            <div className="footer-locations">
+              <div className="locations-grid">
+                {footerDetails.locations.map((location, index) => (
+                  <div key={index} className="location-item">
+                    <h2 className="location-title">
+                      <MapPin className="location-icon" />
+                      <span>{location.city}</span>
+                    </h2>
+                    <p className="location-address">{location.address}</p>
+                    <div className="location-contact">
+                      <Phone className="location-icon" />
+                      <span className="contact-phone-label">{location.phone}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-      
-<div className="border-t border-gray-900 pt-5">
-  <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+            <div className="footer-social-section">
+              <h2 className="social-heading">
+                {t("footer.followUs")}
+                <div className="social-heading-underline"></div>
+              </h2>
 
-    {/* Locations */}
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {locations.map((location, index) => (
-        <div
-          key={index}
-          className="border-t border-gray-800 pt-4 hover:border-yellow-400 transition-colors duration-300"
-        >
-          <h3 className="text-sm font-semibold mb-2 text-gray-300 flex items-start">
-            <MapPin className="w-3 h-3 mr-1 text-yellow-400 flex-shrink-0 mt-0.5" />
-            <span>{location.city}</span>
-          </h3>
-
-          <p className="text-xs text-gray-400 mb-3 leading-relaxed pl-4">
-            {location.address}
-          </p>
-
-          <div className="flex items-center text-xs text-gray-300 pl-4">
-            <Phone className="w-3 h-3 mr-1 text-yellow-400" />
-            <span className="hover:text-yellow-400 cursor-pointer transition-colors">
-              {location.phone}
-            </span>
+              <div className="social-icons">
+                {footerDetails.socialLinks.map((social, index) => {
+                  const IconComponent = getSocialIcon(social.platform);
+                  return (
+                    <a
+                      key={index}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="social-icon-link"
+                      aria-label={social.platform}
+                    >
+                      <IconComponent size={24} />
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
-      ))}
-    </div>
 
-    {/* Social Media Links */}
-    <div>
-      <h3 className="text-sm font-semibold mb-4 text-gray-100 relative inline-block">
-        Follow Us
-        <div className="absolute -bottom-1 left-0 w-8 h-0.5 bg-yellow-400"></div>
-      </h3>
-
-      <div className="flex items-center space-x-4">
-        {socialLinks.map((social, index) => (
-          <a
-            key={index}
-            href={social.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-400 hover:text-yellow-400 transition-colors duration-300"
-            aria-label={social.label}
-          >
-            <social.icon className="w-5 h-5" />
-          </a>
-        ))}
-      </div>
-    </div>
-
-  </div>
-</div>
-        {/* Contact Info Bar with yellow accent */}
-        <div className="border-t border-gray-800 mt-8 pt-8 ">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center space-x-4 text-xs text-gray-400">
+        <div className="footer-bottom-bar">
+          <div className="footer-bottom-flex">
+            <div className="contact-links">
               <a
-                href="mailto:info@damacproperties.com"
-                className="flex items-center hover:text-yellow-400 transition-colors"
-              >
-                <Mail className="w-3 h-3 mr-1 text-yellow-400" />
-                info@damacproperties.com
-              </a>
-              <a
-                href="https://damacproperties.com"
+                href={footerDetails.websiteHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center hover:text-yellow-400 transition-colors"
+                className="contact-link-item"
               >
-                <Globe className="w-3 h-3 mr-1 text-yellow-400" />
-                www.LandMaarkproperties.com
+                <Globe className="location-icon" />
+                {footerDetails.websiteUrl}
               </a>
             </div>
 
-            {/* Copyright */}
-            <div className="text-xs mb-8 text-gray-500">
-              <p>
-                © {new Date().getFullYear()}LandMaark Properties. All rights
-                reserved.
-              </p>
+            <div className="copyright-text">
+              <p>{copyrightText}</p>
             </div>
           </div>
         </div>
@@ -161,4 +88,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

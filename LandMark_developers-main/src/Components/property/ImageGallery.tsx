@@ -1,145 +1,190 @@
-// import React, { useState } from 'react';
-// import {  Heart, Share2Icon } from 'lucide-react';
-
-// const ImageGallery = ({ images }) => {
-//   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-//   return (
-//     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-       
-      
-       
-//       <div className="relative md:col-span-2  w-full h-[450px] overflow-hidden ">
-
- 
-//   <img
-//     src={images[currentImageIndex]}
-//     alt="property"
-//     className="w-full h-full  object-cover"
-//   />
- 
-//   <div className="absolute top-0 left-0 h-full w-1/4 backdrop-blur-md bg-white/30">
-//   </div>
- 
-  
-//   <div className="absolute top-0 right-0 h-full w-1/4 backdrop-blur-md bg-white/30">
-//     <div className="absolute top-4 right-4 flex gap-2">
-//           <button className="p-2 bg-white rounded-lg text-blue hover:bg-gray-100 shadow-md">
-//             <Share2Icon className="w-5  h-5" />
-//           </button>
-//           <button className="p-2 bg-white rounded-lg hover:bg-gray-100 shadow-md">
-//             <Heart className="w-5 h-5" />
-//           </button>
-//         </div></div>
-
-// </div>
-//       <div className="flex flex-col gap-4">
-//         <img
-//           src={images[currentImageIndex]}
-//           alt="Side"
-//           className="w-full h-[210px] object-cover "
-//         />
-
-//         <div className="relative">
-//           <img
-//             src={images[currentImageIndex]}
-//             alt="Side"
-//             className="w-full h-[210px] object-cover "
-//           />
-
-//           <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl">
-//             <span className="text-white text-lg font-semibold">
-//               +17 more
-//             </span>
-
-//           </div>
-          
-//         </div>
-        
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ImageGallery;
-// src/components/ImageGallery.jsx
-import React, { useState } from 'react';
-import { Heart, Share2Icon } from 'lucide-react';
+import React, { useState, useCallback, useMemo } from 'react';
+import { Heart, Share2, Check, Image as ImageIcon, Play } from 'lucide-react';
 import ImageGalleryModal from '../../Components/ImageGalleryModal/ImageGalleryModal';
+import { CityProperty } from '../../services/services';
+import { COLORS } from '../../styles/colors';
+import useIsMobile from '../../hooks/useIsMobile';
+import { useTranslation } from '../../hooks/useTranslation';
+import './ImageGallery.css';
 
-const ImageGallery = ({ images, propertyId }) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalStartIndex, setModalStartIndex] = useState(0);
+interface ImageGalleryProps {
+  images: string[];
+  propertyId: number;
+  property: CityProperty;
+}
 
-  const handleImageClick = (index) => {
-    setModalStartIndex(index);
-    setIsModalOpen(true);
+const fetchImageAsBlob = async (url: string): Promise<Blob | null> => {
+  try {
+    const response = await fetch(url, { headers: { 'ngrok-skip-browser-warning': 'true' } });
+    if (response.ok) return await response.blob();
+  } catch (e) { console.warn('Direct fetch failed, trying proxy...', e); }
+  try {
+    let targetUrl = url;
+    if (url.includes('/uploads/')) targetUrl = url.substring(url.indexOf('/uploads/'));
+    const response = await fetch(targetUrl);
+    if (response.ok) return await response.blob();
+  } catch (fetchError) { console.warn('Proxy fetch failed, falling back to Canvas:', fetchError); }
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width; canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.85);
+      } catch (canvasError) { console.warn('Canvas conversion failed:', canvasError); resolve(null); }
+    };
+    img.onerror = () => resolve(null);
+    img.src = url;
+  });
+};
+
+const shareProperty = async (
+  imgUrl: string, title: string, link: string, showToast: () => void
+): Promise<void> => {
+  const fullShareText = `Hi there, \u{1F44B}\nCheck out this beautiful property which I have found on LandMaark. Could you take a quick look and connect if interested?: ${title}\n${link}`;
+  try {
+    if (navigator.share) {
+      if (imgUrl) {
+        try {
+          const blob = await fetchImageAsBlob(imgUrl);
+          if (blob) {
+            const blobType = blob.type || 'image/jpeg';
+            let extension = 'jpg';
+            if (blobType.includes('png')) extension = 'png';
+            else if (blobType.includes('webp')) extension = 'webp';
+            else if (blobType.includes('gif')) extension = 'gif';
+            const file = new File([blob], `property.${extension}`, { type: blobType });
+            const combinedShareData: Record<string, unknown> = { title, text: fullShareText, files: [file] };
+            if (navigator.canShare && navigator.canShare(combinedShareData as ShareData)) { await navigator.share(combinedShareData as ShareData); return; }
+            const fileOnlyShareData: Record<string, unknown> = { files: [file] };
+            if (navigator.canShare && navigator.canShare(fileOnlyShareData)) {
+              try { await navigator.clipboard.writeText(fullShareText); } catch (cErr) { console.warn('Silent clipboard copy failed', cErr); }
+              await navigator.share(fileOnlyShareData); return;
+            }
+          }
+        } catch (shareError) { console.warn('Sharing with image file failed:', shareError); }
+      }
+      await navigator.share({ title, text: fullShareText });
+      return;
+    }
+    await navigator.clipboard.writeText(fullShareText);
+    showToast();
+  } catch (err: unknown) {
+    const shareErr = err as { name?: string };
+    if (shareErr?.name !== 'AbortError') {
+      console.error('Share failed:', err);
+      try { await navigator.clipboard.writeText(fullShareText); showToast(); }
+      catch (clipboardError) { console.error('Failed to copy:', clipboardError); alert('Please copy the link manually: ' + link); }
+    }
+  }
+};
+
+const ImageGallery: React.FC<ImageGalleryProps> = ({ images, property: propData }) => {
+  const { t } = useTranslation();
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [modalState, setModalState] = useState<{ open: boolean; startIndex: number }>({ open: false, startIndex: 0 });
+  const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [, setToastVisible] = useState<boolean>(false);
+  const [property] = useState<CityProperty | null>(propData || null);
+  const isMobile = useIsMobile();
+
+  const displayImages = useMemo(() => 
+    property?.allImages?.length && property.allImages.length > 0 ? property.allImages : images,
+  [property, images]);
+  const videos = useMemo(() => property?.video ?? [], [property]);
+  const mediaItems = useMemo(() => [
+    ...displayImages.map(imgUrl => ({ type: 'image', url: imgUrl })),
+    ...videos.map(vUrl => ({ type: 'video', url: vUrl }))
+  ], [displayImages, videos]);
+
+  const handleImageClick = useCallback((index: number) => {
+    if (mediaItems[index]?.type === 'video') { setCurrentImageIndex(index); }
+    else { setModalState({ open: true, startIndex: index }); }
+  }, [mediaItems]);
+
+  const showTemporaryToast = useCallback(() => {
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 3000);
+  }, []);
+
+  const handleShare = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const imgUrl = (mediaItems[currentImageIndex] || mediaItems[0] || { url: '' }).url;
+    const link = window.location.href;
+    const title = property?.title || document.title;
+    await shareProperty(imgUrl, title, link, showTemporaryToast);
   };
 
-  const handleMoreClick = () => {
-    // Click on the "+17 more" overlay
-    setModalStartIndex(2); // Start from the third image since we have 2 visible in sidebar
-    setIsModalOpen(true);
-  };
+  const handleSave = (e: React.MouseEvent) => { e.stopPropagation(); setIsSaved(!isSaved); showTemporaryToast(); };
+  const activeMedia = mediaItems[currentImageIndex] || mediaItems[0] || { type: 'image', url: '' };
+  const handleMainImageClick = useCallback(() => { if (activeMedia.type !== 'video') handleImageClick(currentImageIndex); }, [activeMedia.type, currentImageIndex, handleImageClick]);
+  const handleCloseModal = useCallback(() => setModalState(prev => ({ ...prev, open: false })), []);
+  const handleSidebarClick = useCallback(() => { if (videos.length > 0) setCurrentImageIndex(mediaItems.length - 1); else handleImageClick(1); }, [videos.length, mediaItems.length, handleImageClick]);
+  const handleViewMoreClick = useCallback(() => handleImageClick(2), [handleImageClick]);
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-        {/* Main large image */}
-        <div className="relative md:col-span-2 w-full h-[450px] overflow-hidden cursor-pointer">
-          <img
-            src={images[currentImageIndex]}
-            alt="property"
-            className="w-full h-full object-cover"
-            onClick={() => handleImageClick(currentImageIndex)}
-          />
-          
-          <div className="absolute top-0 left-0 h-full w-1/4 backdrop-blur-md bg-white/30"></div>
-          
-          <div className="absolute top-0 right-0 h-full w-1/4 backdrop-blur-md bg-white/30">
-            <div className="absolute top-4 right-4 flex gap-2">
-              <button className="p-2 bg-white rounded-lg text-blue hover:bg-gray-100 shadow-md">
-                <Share2Icon className="w-5 h-5" />
-              </button>
-              <button className="p-2 bg-white rounded-lg hover:bg-gray-100 shadow-md">
-                <Heart className="w-5 h-5" />
+      <div className="gallery-container">
+        <div className="main-image-wrapper" onClick={handleMainImageClick}>
+          {activeMedia.type === 'video' ? (
+            <video src={activeMedia.url} className="main-image" controls autoPlay muted playsInline />
+          ) : (
+            <img src={activeMedia.url} alt={t('property.gallery.property')} className="main-image" loading="lazy" />
+          )}
+          {!isMobile && (
+            <div className="cover-image-label">
+              {activeMedia.type === 'video' ? t('property.gallery.videoTour') : t('property.gallery.coverImage')}
+            </div>
+          )}
+          {isMobile && property?.rera_id && (
+            <div className="rera-badge-capsule">
+              <div className="rera-check-circle"><Check size={12} strokeWidth={4} /></div>
+              <span className="rera-label">{t('property.gallery.rera')}</span>
+            </div>
+          )}
+          {!isMobile && (
+            <div className="desktop-action-btns">
+              <button className="desktop-share-btn" onClick={handleShare}><Share2 size={16} />{t('property.gallery.share')}</button>
+              <button className={`desktop-save-btn ${isSaved ? 'desktop-save-btn--saved' : ''}`} onClick={handleSave}>
+                <Heart size={16} fill={isSaved ? COLORS.error.DEFAULT : 'none'} stroke={isSaved ? COLORS.error.DEFAULT : 'currentColor'} />
+                {isSaved ? t('property.gallery.saved') : t('property.gallery.save')}
               </button>
             </div>
-          </div>
+          )}
+          {isMobile && (
+            <div className="prop-gallery-actions-unique">
+              <button className="prop-gallery-action-btn-unique" onClick={handleShare} aria-label={t('property.gallery.shareBtn')}><Share2 size={32} strokeWidth={2.5} /></button>
+              <button className="prop-gallery-action-btn-unique" onClick={handleSave} aria-label={t('property.gallery.saveBtn')}>
+                <Heart size={32} strokeWidth={2.5} fill={isSaved ? COLORS.error.DEFAULT : 'none'} stroke={isSaved ? COLORS.error.DEFAULT : COLORS.gray[600]} />
+              </button>
+            </div>
+          )}
+          {isMobile && activeMedia.type !== 'video' && (
+            <div className="tap-overlay"><span>{t('property.gallery.tapToSeeAll')}</span></div>
+          )}
+          <div className="image-count-badge"><ImageIcon size={14} /><span>{displayImages.length}</span></div>
         </div>
-
-        {/* Sidebar images */}
-        <div className="flex flex-col gap-4">
-          <img
-            src={images[0]}
-            alt="Side"
-            className="w-full h-[210px] object-cover cursor-pointer"
-            onClick={() => handleImageClick(0)}
-          />
-
-          <div className="relative cursor-pointer" onClick={handleMoreClick}>
-            <img
-              src={images[1] || images[0]}
-              alt="Side"
-              className="w-full h-[210px] object-cover"
-            />
-            <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl">
-              <span className="text-white text-lg font-semibold">
-                +{images.length - 2} more
+        <div className="sidebar-images-desktop">
+          <div className="sidebar-img-container" onClick={handleSidebarClick}>
+            <img src={displayImages[1] || displayImages[0]} alt={t('property.gallery.sideImage')} className="sidebar-img-wrapper" loading="lazy" />
+            <div className="play-overlay"><Play size={32} fill={COLORS.white} /></div>
+          </div>
+          <div className="view-more-wrapper" onClick={handleViewMoreClick}>
+            <img src={displayImages[2] || displayImages[0]} alt={t('property.gallery.sideImage')} className="view-more-img" loading="lazy" />
+            <div className="view-more-overlay">
+              <span className="view-more-text">
+                +{displayImages.length > 3 ? `${displayImages.length - 2} ${t('property.gallery.more')}` : t('property.gallery.viewMore')}
               </span>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Modal for viewing all images */}
-      <ImageGalleryModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        propertyId={propertyId}
-        initialImageIndex={modalStartIndex}
-      />
+      {property && (
+        <ImageGalleryModal isOpen={modalState.open} onClose={handleCloseModal} property={property} initialImageIndex={modalState.startIndex} />
+      )}
     </>
   );
 };

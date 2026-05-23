@@ -1,5 +1,9 @@
-import React from "react";
+/* eslint-disable custom/performance-strictness */
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useTranslation } from "../../hooks/useTranslation";
 import { Township } from "../../store/TownShip/townshipsData";
+import { Share2 } from "lucide-react";
+import "./TownShip.css";
 
 interface TownshipCardProps {
   item: Township;
@@ -7,28 +11,128 @@ interface TownshipCardProps {
 }
 
 const TownshipCard: React.FC<TownshipCardProps> = ({ item, onSelect }) => {
+  const { t } = useTranslation();
+  const cityName = item.name || 'Unknown';
+  const propertiesCount = item.property_count || item.properties?.length || 0;
+  const description = item.description || '';
+
+  const imagesList = useMemo(() => (
+    Array.isArray(item.images) && item.images.length > 0
+      ? item.images
+      : item.image ? [item.image] : ["https://images.unsplash.com/photo-1568605114967-8130f3a36994"]
+  ), [item.images, item.image]);
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const cb = () => setIsMobile(window.innerWidth <= 768);
+    cb(); window.addEventListener("resize", cb);
+    return () => window.removeEventListener("resize", cb);
+  }, []);
+
+  const startHover = useCallback(() => setIsHovered(true), []);
+  const stopHover = useCallback(() => {
+    setIsHovered(false);
+    setCurrentImageIndex(0);
+  }, []);
+
+  const startTouch = useCallback(() => {
+    setIsHovered(true);
+    setCurrentImageIndex((prev) => (prev + 1) % imagesList.length);
+  }, [imagesList.length]);
+
+  const stopTouch = useCallback(() => {
+    setIsHovered(false);
+  }, []);
+
+  useEffect(() => {
+    if (imagesList.length <= 1 || !isHovered) return;
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % imagesList.length);
+    }, isMobile ? 1500 : 3000);
+    return () => clearInterval(interval);
+  }, [imagesList.length, isHovered, isMobile]);
+
+  const handleShare = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    const shareUrl = `${window.location.origin}/property/${item.township_id}`;
+    const shareText = `${t("township.shareTextIntro")}: ${cityName}\n${t("township.shareTextLink")}: ${shareUrl}\n${t("township.shareTextPreview")}: ${imagesList[0] || ''}`;
+    if (navigator.share) {
+      navigator.share({ title: cityName, text: shareText, url: shareUrl })
+        .catch((err) => console.error("Share failed:", err));
+    } else {
+      navigator.clipboard.writeText(shareText);
+    }
+  }, [cityName, imagesList, item.township_id, t]);
+
+  const handleClick = useCallback(() => onSelect(item), [item, onSelect]);
+
+  const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.currentTarget;
+    if (!target.dataset.fallbackTriggered) {
+      target.dataset.fallbackTriggered = "true";
+      target.src = "https://images.unsplash.com/photo-1568605114967-8130f3a36994";
+    }
+  }, []);
+
   return (
-    <div
-      onClick={() => onSelect(item)}
-      className="group bg-white rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition duration-300"
+    <div 
+      onClick={handleClick} 
+      className="township-card"
+      onMouseEnter={startHover}
+      onMouseLeave={stopHover}
+      onTouchStart={startTouch}
+      onTouchEnd={stopTouch}
+      onTouchCancel={stopTouch}
     >
-      {/* City Image */}
-      <div className="overflow-hidden">
-        <img
-          src={item.image}
-          alt={item.city}
-          className="w-full aspect-square object-cover group-hover:scale-110 transition duration-300"
-        />
+      <div className="township-card-img-wrapper">
+        <div 
+          className="township-card-slider"
+          style={{
+            width: `${imagesList.length * 100}%`,
+            transform: `translateX(-${(currentImageIndex * 100) / imagesList.length}%)`,
+            transition: isMobile ? "transform 0.4s ease-in-out" : "transform 1.2s cubic-bezier(0.25, 1, 0.5, 1)"
+          }}
+        >
+          {imagesList.map((imgUrl, index) => (
+            <img key={index} src={imgUrl} alt={`${cityName} slide ${index + 1}`} className="township-card-img" style={{ width: `${100 / imagesList.length}%` }} loading={index === 0 ? "lazy" : "eager"} onError={handleImageError} />
+          ))}
+        </div>
+
+        {imagesList.length > 1 && (
+          <div className="township-card-lines">
+            {imagesList.map((_, idx) => (
+              <div key={idx} className={`township-card-line ${isHovered ? (idx < currentImageIndex ? "completed" : idx === currentImageIndex ? "active" : "") : ""}`}>
+                <div className="township-card-line-fill" style={isHovered && idx === currentImageIndex ? { animationDuration: isMobile ? "1.5s" : "3s" } : undefined} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* City Info */}
-      <div className="p-7">
-        <h3 className="font-semibold text-lg text-gray-800">{item.city}</h3>
+      <div className="township-card-info">
+        <div className="township-card-text">
+          <div className="township-card-title" title={cityName}>
+            {cityName.length > 30 ? `${cityName.substring(0, 30)}...` : cityName}
+          </div>
+          {(item.location || item.city) && (
+            <p className="township-card-location" title={[item.location, item.city].filter(Boolean).join(", ")}>
+              {[item.location, item.city].filter(Boolean).join(", ")}
+            </p>
+          )}
+          <p className="township-card-desc">{description}</p>
+        </div>
+      </div>
 
-        <p className="text-sm text-gray-500 mt-1">
-          {item.properties.length} Properties
-        </p>
-        <p>{item.description}</p> 
+      <div className="township-card-footer">
+        <span className="township-card-badge">
+          {propertiesCount} {propertiesCount === 1 ? t("township.property") : t("township.properties")}
+        </span>
+        <button onClick={handleShare} className="township-card-info-share-btn" title={t("township.shareTownship")} aria-label={t("township.shareTownship")}>
+          <Share2 size={16} />
+        </button>
       </div>
     </div>
   );

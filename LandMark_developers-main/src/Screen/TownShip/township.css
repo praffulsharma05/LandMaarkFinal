@@ -1,9 +1,9 @@
- 
+/* township.css */
 
 .vertical-btn {
   position: fixed;
   right: 20px;
-  top: 60%;
+  top: 50%;
   transform: translateY(-50%);
 
   background: #2563eb;
@@ -22,13 +22,14 @@
   align-items: center;
   justify-content: center;
 
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 
   transition: all 0.3s ease;
 }
 
 .vertical-btn span {
-  transform: rotate(-90deg); /* makes text parallel */
+  transform: rotate(-90deg);
+  /* makes text parallel */
   white-space: nowrap;
 }
 
@@ -36,7 +37,7 @@
   background: #1e40af;
   transform: translateY(-50%) scale(1.05);
 }
- 
+
 /* Custom scrollbar */
 aside::-webkit-scrollbar {
   width: 6px;
@@ -70,10 +71,35 @@ aside::-webkit-scrollbar-thumb:hover {
   transition-duration: 300ms;
 }
 
+aside {
+  padding-top: 5rem;
+}
+
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   aside {
+    padding-top: 0;
+  }
+
+  aside {
     width: 100% !important;
+  }
+
+  .vertical-btn {
+    top: auto;
+    bottom: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    width: 180px;
+    height: 40px;
+  }
+
+  .vertical-btn span {
+    transform: none;
+  }
+
+  .vertical-btn:hover {
+    transform: translateX(50%) scale(1.05);
   }
 }
 
@@ -87,4 +113,154 @@ aside::-webkit-scrollbar-thumb:hover {
   background-image: linear-gradient(#1d1d1d 1px, transparent 1px),
     linear-gradient(90deg, #1d1d1d 1px, transparent 1px);
   background-size: 40px 40px;
+}
+
+/* Townships Layout CSS Core */
+
+.townships-page-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  padding-top: 2.3rem;
+}
+
+@media (min-width: 1024px) {
+  .townships-page-container {}
+}
+
+.townships-grid-wrapper {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1.5rem;
+  padding-bottom: 3.5rem;
+  width: 100%;
+}
+
+/* Premium Header Styles */
+.townships-header-premium {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .townships-header-premium {
+    margin-top: 5.5rem;
+  }
+}
+
+.townships-tagline-premium {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #4f46e5;
+  text-transform: uppercase;
+  display: none;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .townships-tagline-premium {
+    display: inline-block;
+  }
+}
+
+.townships-title-premium {
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.townships-subtitle-premium {
+  font-size: 0.825rem;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+
+@media (min-width: 768px) {
+  .townships-title-premium {
+    font-size: 2.35rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .townships-grid-wrapper {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .townships-grid-wrapper {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .townships-grid-wrapper {
+    padding-bottom: 2rem;
+  }
+}
+
+/* Loading State & Spinner animation */
+.townships-loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 0;
+  /* py-20 */
+}
+
+.townships-loading-spinner {
+  animation: townshipsSpin 1s linear infinite;
+  border-radius: 50%;
+  height: 3rem;
+  /* h-12 */
+  width: 3rem;
+  /* w-12 */
+  border: 2px solid transparent;
+  border-bottom-color: #2563eb;
+  /* border-blue-600 */
+}
+
+@keyframes townshipsSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Townships Grid Columns - 1 -> 2 -> 3 -> 4 cols */
+.townships-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .townships-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .townships-grid {
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .townships-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
